@@ -1,340 +1,275 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#050907">
-<title>NULL_SYS — Digital Interface</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d0b">
+<title>Signal Lab — Contact Studio</title>
 <style>
-:root{--bg:#050907;--green:#55ff9b;--muted:#82958a;--line:#55ff9b30}
+:root{--bg:#070b09;--panel:#0d1511;--panel2:#101b15;--line:#20362a;--green:#65ffa1;--green2:#28d978;--muted:#8ba394;--white:#edf8f0;--red:#ff7e88}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 10% 35%,#0d3c22 0,transparent 40%),radial-gradient(ellipse at 90% 5%,#10301d 0,transparent 35%),var(--bg);color:#effff4;font-family:Consolas,"Courier New",monospace}
-body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(#235a3822 1px,transparent 1px),linear-gradient(90deg,#235a3822 1px,transparent 1px);background-size:35px 35px}
-header{height:68px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:#050907dc;backdrop-filter:blur(15px)}
-.brand{font-size:20px;font-weight:bold;letter-spacing:3px}.brand b{color:var(--green)}
-.live{font-size:10px;color:var(--green)}.live:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:8px;box-shadow:0 0 12px var(--green);animation:pulse 1.5s infinite}
-main{max-width:1150px;margin:auto;padding:42px 22px 55px}
-.hero{text-align:center;margin-bottom:35px}
-.eyebrow{font-size:10px;color:var(--green);letter-spacing:4px}
-h1{font-size:clamp(29px,5vw,47px);margin:16px 0 10px}
-h1 span{color:var(--green);text-shadow:0 0 25px #55ff9b55}
-.subtitle{font-size:12px;color:var(--muted);line-height:1.9}
-.layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:23px}
-.card{background:linear-gradient(145deg,#102017ed,#070c09f5);border:1px solid var(--line);border-radius:13px;padding:23px;box-shadow:0 18px 60px #0005;position:relative;overflow:hidden}
-.card:before{content:"";position:absolute;top:0;left:12%;width:76%;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
-.card-title{font-size:11px;color:var(--green);letter-spacing:1.5px;padding-bottom:17px;border-bottom:1px solid #ffffff10}
-.phone-stage{min-height:330px;display:flex;align-items:center;justify-content:center;position:relative}
-.orbit{position:absolute;width:255px;height:255px;border:1px solid #55ff9b18;border-radius:50%;animation:spin 20s linear infinite}
-.orbit:before,.orbit:after{content:"";position:absolute;inset:20px;border:1px dashed #55ff9b25;border-radius:50%}
-.orbit:after{inset:45px}
-.phone{width:157px;height:285px;border:2px solid #658b72;border-radius:26px;background:linear-gradient(145deg,#17271b,#020503);padding:10px;position:relative;z-index:1;box-shadow:0 0 40px #39ff8820,inset 0 0 0 4px #ffffff08;animation:float 4s ease-in-out infinite}
-.phone:before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:48px;height:10px;background:#020403;border-radius:20px;z-index:2}
-.phone-screen{height:100%;border-radius:17px;background:radial-gradient(ellipse at 50% 45%,#143722,transparent 60%),#050b07;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.phone-top{position:absolute;top:25px;font-size:8px;color:#8aab95;letter-spacing:2px}
-.phone-bottom{position:absolute;bottom:17px;font-size:8px;color:#60846c;letter-spacing:1px}
-.logo-stage{width:76px;height:76px;display:flex;align-items:center;justify-content:center;position:relative;animation:logoIn .4s ease-out}
-.app-logo{width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:17px;overflow:hidden;box-shadow:0 0 28px #55ff9b18;z-index:1}
-.app-logo svg{width:100%;height:100%;display:block}
-.logo-ring{position:absolute;inset:0;border:2px solid transparent;border-top-color:var(--green);border-right-color:#55ff9b88;border-radius:50%;animation:spin 1.5s linear infinite}
-.logo-ring:after{content:"";position:absolute;width:5px;height:5px;right:6px;top:8px;background:var(--green);border-radius:50%;box-shadow:0 0 9px var(--green)}
-.phone-app-name{font-size:10px;color:var(--green);margin-top:22px;letter-spacing:1.5px;text-align:center}
-.phone-wait{width:52px;height:52px;border:2px solid #234630;border-top-color:var(--green);border-radius:50%;animation:spin 1s linear infinite}
-.phone-wait:after{content:"";display:block;width:28px;height:28px;margin:10px;border:1px dashed #55ff9b77;border-radius:50%;animation:spin 2s linear infinite reverse}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{padding:12px;border:1px solid #ffffff0d;background:#ffffff04;border-radius:7px}
-.stat small{display:block;color:var(--muted);font-size:9px;margin-bottom:7px}.stat strong{font-size:11px;color:var(--green)}
-label{display:block;font-size:10px;color:#b7c9bd;margin:20px 0 9px}
-input{width:100%;padding:14px 12px;background:#030705;border:1px solid #294a34;border-radius:6px;color:white;font:inherit;font-size:13px;outline:none}
-input:focus{border-color:var(--green);box-shadow:0 0 0 3px #55ff9b12}input::placeholder{color:#4d6154}
-button{font:inherit;cursor:pointer;border-radius:6px;transition:.2s}
-button:disabled{opacity:.6;cursor:wait}
-.primary{width:100%;padding:14px;margin-top:18px;background:var(--green);color:#06150b;border:1px solid var(--green);font-weight:bold;letter-spacing:1px;font-size:11px}
-.primary:hover{box-shadow:0 0 24px #55ff9b30;transform:translateY(-1px)}
-.secondary{width:100%;padding:12px;margin-top:12px;background:transparent;color:#d9f6e2;border:1px solid #365440;font-size:11px}
-.result{margin-top:14px;border:1px solid #55ff9b35;border-radius:7px;background:#55ff9b08;padding:13px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.result small{display:block;color:var(--muted);font-size:9px;margin-bottom:6px}.result strong{color:var(--green);font-size:14px}
-.badge{font-size:9px;padding:6px 8px;border-radius:4px;color:var(--green);border:1px solid #55ff9b35}
-.note{font-size:10px;line-height:1.8;color:var(--muted);margin-top:16px}
-.status{font-size:10px;line-height:1.8;color:var(--green);margin-top:12px;min-height:18px}
-.hidden{display:none!important}
-.terminal-card{margin-top:23px}
-.terminal-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.dots{display:flex;gap:5px}.dots i{width:7px;height:7px;border-radius:50%;background:#385443}.dots i:first-child{background:#ff6464}.dots i:nth-child(2){background:#e9c85c}.dots i:nth-child(3){background:var(--green)}
-.terminal{height:240px;margin-top:18px;padding:14px;overflow:hidden;background:#020503;border:1px solid #1b3524;border-radius:7px;color:#67fda0;font-size:11px;line-height:1.9;overflow-wrap:anywhere;box-shadow:inset 0 0 35px #000}
-.terminal div{animation:appear .18s ease-out}.dim{color:#52735d}
-.timer-row{display:flex;justify-content:space-between;gap:12px;margin-top:15px;color:var(--muted);font-size:10px}.timer-row strong{color:var(--green)}
-.progress{height:3px;background:#203428;margin-top:12px;border-radius:5px;overflow:hidden}.progress div{height:100%;width:100%;background:var(--green);transition:width 1s linear}
-footer{border-top:1px solid var(--line);text-align:center;padding:22px;color:#53675a;font-size:9px;letter-spacing:1px}
-@keyframes spin{to{transform:rotate(360deg)}}@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}@keyframes pulse{50%{opacity:.35}}@keyframes appear{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}@keyframes logoIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
-@media(max-width:700px){header{height:62px;padding:0 18px}main{padding:30px 14px}.layout{grid-template-columns:1fr;gap:16px}.phone-stage{min-height:310px}.card{padding:19px}.hero{margin-bottom:25px}.terminal{height:220px}}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 72% 8%,#12352255,transparent 36%),radial-gradient(ellipse at 5% 45%,#0d2b1b66,transparent 34%),var(--bg);color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.15;background-image:linear-gradient(#8bffb20b 1px,transparent 1px),linear-gradient(90deg,#8bffb20b 1px,transparent 1px);background-size:36px 36px;mask-image:linear-gradient(to bottom,black,transparent 85%)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;max-width:1240px;margin:auto;padding:0 28px;border-bottom:1px solid #1c2c22;position:relative;z-index:2}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.13em;font-size:14px}.brand-mark{width:36px;height:36px;border:1px solid #3e8b5c;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#163c27,#0a1710);box-shadow:0 0 25px #36ed7d18}.brand-mark svg{width:20px;color:var(--green)}
+.top-right{display:flex;align-items:center;gap:16px;color:var(--muted);font-size:12px;letter-spacing:.08em}.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);display:inline-block;margin-right:7px}
+main{max-width:1240px;margin:auto;padding:46px 28px 80px;position:relative;z-index:1}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.8fr);gap:48px;align-items:center}
+.eyebrow{font-size:11px;letter-spacing:.2em;color:var(--green);font-weight:800;display:flex;align-items:center;gap:10px}.eyebrow:before{content:"";height:1px;width:28px;background:var(--green)}
+h1{font-size:clamp(38px,5.1vw,66px);line-height:1.02;letter-spacing:-.055em;margin:20px 0 20px;max-width:650px}h1 span{color:var(--green);text-shadow:0 0 32px #65ffa120}
+.lead{font-size:15px;line-height:1.8;color:#9db3a4;max-width:510px;margin:0 0 27px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}.pill{border:1px solid #24392c;background:#0b130e;color:#9db5a5;border-radius:100px;padding:8px 12px;font-size:11px;display:flex;gap:7px;align-items:center}.pill b{color:var(--green);font-weight:600}
+.panel{background:linear-gradient(145deg,#111b15ed,#0a100cfa);border:1px solid #243b2c;border-radius:18px;padding:22px;box-shadow:0 20px 70px #0005;position:relative;overflow:hidden}.panel:before{content:"";position:absolute;left:0;top:0;width:90px;height:1px;background:linear-gradient(90deg,var(--green),transparent)}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:17px}.panel-title{font-size:13px;letter-spacing:.08em;font-weight:800}.panel-sub{font-size:11px;color:var(--muted);margin-top:5px}.tiny-tag{font-size:9px;letter-spacing:.12em;border:1px solid #28543a;border-radius:5px;padding:5px 7px;color:var(--green);white-space:nowrap}
+label{display:block;color:#a8bdaf;font-size:11px;margin:0 0 8px;letter-spacing:.04em}
+input,select,textarea{width:100%;background:#080f0b;border:1px solid #263b2e;border-radius:9px;color:#e7f6eb;padding:12px 13px;outline:none;transition:border .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:#4ccf7d;box-shadow:0 0 0 3px #43f78612}input::placeholder,textarea::placeholder{color:#52695a}
+.search-row{display:flex;gap:9px}.search-row input{min-width:0;flex:1}.icon-btn{width:47px;min-width:47px;display:grid;place-items:center;border-radius:9px;border:1px solid #3d9c60;background:#10271a;color:var(--green);transition:.2s}.icon-btn:hover{background:#19432a;box-shadow:0 0 20px #4dff8b20}.icon-btn svg{width:21px;height:21px}
+.status{font-size:11px;min-height:18px;color:#86a894;margin-top:10px;line-height:1.6}.status.error{color:var(--red)}.status.good{color:var(--green)}
+.divider{height:1px;background:#1e3025;margin:20px 0}
+.code-row{display:flex;gap:9px}.code-row input{flex:1;min-width:0}.btn{border:1px solid #34794c;border-radius:9px;background:linear-gradient(135deg,#1b5932,#123a23);color:#dfffea;font-weight:700;padding:11px 15px;transition:.2s}.btn:hover{filter:brightness(1.18);box-shadow:0 0 20px #3bff7a15}.btn.secondary{background:#111b15;border-color:#2a4031;color:#b9d0c0}.btn.danger{background:#281116;border-color:#61313a;color:#ffb5bc}.btn.small{padding:7px 10px;font-size:11px}
+.code-hint{color:#6e8977;font-size:10px;line-height:1.6;margin-top:10px}
+.phone-wrap{display:flex;align-items:center;justify-content:center;position:relative;min-height:610px}.phone-tools{position:absolute;top:12px;right:12px;display:flex;gap:8px;z-index:12}.phone-tool{border:1px solid #31563c;background:#0d1a11;color:#baf7cb;border-radius:11px;padding:9px 11px;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px #0005}.phone-tool:hover{background:#173722}.phone-content{height:calc(100% - 43px);box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden;padding:12px 16px 24px;position:relative;z-index:2}.phone-home{flex:1;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#2e7044 transparent}.phone-contacts{display:none;flex:1;min-height:0;flex-direction:column}.phone-contacts.show{display:flex}.phone-home.hidden{display:none}.phone-contact-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 0 12px;border-bottom:1px solid #1d3825;margin-bottom:10px}.phone-contact-head b{font-size:15px}.phone-contact-head small{display:block;color:#80a58c;font-size:9px;margin-top:4px}.phone-back{border:1px solid #2b5838;background:#102719;color:#bff6ce;border-radius:9px;padding:7px 9px;font-size:10px}.phone-contact-list{display:flex;flex-direction:column;gap:7px;overflow-y:auto;min-height:0;flex:1;padding:2px 2px 12px 0;scrollbar-width:thin;scrollbar-color:#36794b #0a130d}.phone-contact{display:flex;align-items:center;gap:9px;padding:9px;border:1px solid #1e3a28;background:linear-gradient(135deg,#102117,#0a130d);border-radius:13px;min-width:0}.phone-contact .avatar{width:39px;height:39px;border-radius:50%;font-size:12px}.phone-contact .contact-info b{font-size:11px;color:#e4f5e8}.phone-contact .contact-info small{font-size:9px;line-height:1.45}.phone-contact .unread{flex-shrink:0;font-size:9px;padding:4px 6px}.phone-empty{margin:auto 0;text-align:center;padding:22px 10px;color:#7f9f89;font-size:11px;line-height:1.7;border:1px dashed #294633;border-radius:13px}.phone-wrap.is-fullscreen{position:fixed;inset:0;z-index:9999;min-height:0;background:radial-gradient(ellipse at center,#14271a,#030704 75%);padding:20px;box-sizing:border-box}.phone-wrap.is-fullscreen .phone-glow{width:70vw;height:70vh}.phone-wrap.is-fullscreen .phone{width:min(430px,90vw);height:min(900px,94vh);transform:none;border-radius:48px}.phone-wrap.is-fullscreen .phone-screen{border-radius:39px}.phone-wrap.is-fullscreen .phone-tools{top:20px;right:20px}.phone-wrap.is-fullscreen .phone-tool{font-size:12px;padding:11px 14px}.phone-screen{display:flex;flex-direction:column}.phone-status{flex-shrink:0}.phone-bottom{pointer-events:none}.viewer{display:none!important}
+.phone-glow{position:absolute;width:320px;height:420px;background:#32ff7820;filter:blur(70px);border-radius:50%;pointer-events:none}
+.phone{width:286px;height:570px;position:relative;border-radius:42px;padding:9px;background:linear-gradient(135deg,#aebbb3,#39443e 12%,#111813 27%,#48574c 48%,#101511 67%,#9ba99e 85%,#222b25);box-shadow:0 35px 75px #000b,0 0 0 1px #d0e3d440, inset 0 0 0 2px #060906;transform:rotate(-2deg);transition:transform .4s}
+.phone:hover{transform:rotate(0deg) translateY(-5px)}
+.phone:before{content:"";position:absolute;left:-3px;top:120px;width:3px;height:62px;border-radius:4px 0 0 4px;background:linear-gradient(#66746a,#202820)}.phone:after{content:"";position:absolute;right:-3px;top:155px;width:3px;height:78px;border-radius:0 4px 4px 0;background:linear-gradient(#647267,#222a24)}
+.phone-screen{height:100%;width:100%;border-radius:34px;overflow:hidden;position:relative;background:radial-gradient(ellipse at 50% 0%,#183d28,#09110c 43%,#070b08);border:1px solid #050805;box-shadow:inset 0 0 0 1px #9cb5a31b}
+.phone-screen:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,#ffffff12,transparent 25%,transparent 75%,#a7ffc408);z-index:5}
+.island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:91px;height:24px;border-radius:20px;background:#030504;border:1px solid #17231a;z-index:8;display:flex;align-items:center;justify-content:flex-end;padding-right:10px}.island:after{content:"";width:6px;height:6px;border-radius:50%;background:#142b1c;box-shadow:0 0 4px #3c8d5c}
+.phone-status{height:43px;padding:13px 18px 0;display:flex;justify-content:space-between;font-size:9px;font-weight:700;color:#e6f6eb;position:relative;z-index:6}.status-icons{letter-spacing:2px}
+.phone-content{padding:12px 16px 18px;position:relative;z-index:2}.mini-brand{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.09em;margin:10px 0 22px}.mini-logo{width:26px;height:26px;border-radius:9px;background:#153c25;border:1px solid #36744a;display:grid;place-items:center;color:var(--green)}.mini-logo svg{width:14px}
+.phone-title{font-size:22px;font-weight:800;letter-spacing:-.04em;margin:0 0 5px}.phone-sub{font-size:10px;color:#91a999;line-height:1.6;margin-bottom:20px}
+.phone-app{display:flex;align-items:center;gap:11px;padding:12px 10px;border:1px solid #2a4b34;background:#102017aa;border-radius:14px;margin-bottom:10px;box-shadow:0 8px 22px #0002}.app-icon{width:39px;height:39px;border-radius:12px;display:grid;place-items:center;color:#eaffef;box-shadow:inset 0 1px #ffffff35}.app-icon svg{width:21px;height:21px}.app-copy{flex:1}.app-copy b{display:block;font-size:11px}.app-copy small{display:block;font-size:9px;color:#86a28f;margin-top:4px}.app-arrow{color:#72d997;font-size:17px}.phone-bottom{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);width:90px;height:4px;border-radius:10px;background:#e9fff0aa;z-index:8}
+.phone-button{width:100%;display:flex;justify-content:center;align-items:center;gap:8px;border-radius:12px;padding:12px 10px;background:linear-gradient(135deg,#2fcb69,#1b8b48);color:#05140a;border:0;font-size:11px;font-weight:900;margin-top:15px;box-shadow:0 8px 20px #31f77b20}.phone-button svg{width:15px}
+.phone-footer{display:flex;justify-content:space-between;font-size:8px;color:#6e8a77;margin-top:17px;letter-spacing:.05em}
+.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:38px}.admin-panel{display:none;margin-top:20px}.admin-panel.show{display:block}.admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.admin-grid .field{min-width:0}.admin-grid textarea{resize:vertical;min-height:68px}.admin-panel{scroll-margin-top:20px}.contact-item{flex-wrap:wrap}.contact-info small{overflow-wrap:anywhere}.field.full{grid-column:1/-1}.admin-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.contact-list{display:grid;gap:9px;margin-top:15px}.contact-item{display:flex;gap:11px;align-items:center;padding:11px;border:1px solid #20372a;border-radius:11px;background:#0a120d}.avatar{width:39px;height:39px;border-radius:12px;background:#173d26;border:1px solid #315d3e;display:grid;place-items:center;overflow:hidden;color:var(--green);font-weight:800;flex-shrink:0}.avatar img{width:100%;height:100%;object-fit:cover}.contact-info{flex:1;min-width:0}.contact-info b{font-size:12px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.contact-info small{font-size:10px;color:#8aa492;display:block;margin-top:4px}.unread{font-size:10px;color:#06130a;background:var(--green);border-radius:100px;padding:4px 7px;font-weight:900}.empty{border:1px dashed #2b4534;border-radius:12px;padding:22px;text-align:center;color:#7d9886;font-size:12px}
+.viewer{display:none;margin-top:20px}.viewer.show{display:block}.viewer-list{display:grid;gap:9px}.notice{border:1px solid #264331;background:#0b1810;padding:12px 14px;border-radius:10px;color:#9fbaaa;font-size:11px;line-height:1.6;margin-top:14px}
+.footer{max-width:1240px;margin:auto;padding:0 28px 35px;display:flex;justify-content:space-between;color:#52685a;font-size:10px;letter-spacing:.08em;position:relative;z-index:1}
+.spin{width:19px;height:19px;border:2px solid #284a35;border-top-color:#65ffa1;border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{0%,100%{opacity:.7}50%{opacity:1}}
+@media(max-width:900px){.hero{grid-template-columns:1fr;gap:20px}.phone-wrap{order:-1;min-height:570px}.hero-copy{max-width:700px}.section-grid{grid-template-columns:1fr}.phone{width:270px;height:545px}main{padding-top:28px}}
+@media(max-width:560px){.topbar{padding:0 17px;height:65px}.top-right .status-label{display:none}main{padding:25px 16px 55px}.top-right{font-size:10px}.brand{font-size:12px}h1{font-size:43px}.lead{font-size:13px}.phone-wrap{min-height:530px}.phone{width:253px;height:510px;border-radius:37px}.phone-screen{border-radius:30px}.phone-content{padding:10px 13px}.phone-title{font-size:20px}.phone-app{padding:10px 8px}.app-icon{width:35px;height:35px}.phone-sub{margin-bottom:15px}.admin-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.panel{padding:17px}.code-row{flex-direction:column}.code-row .btn{width:100%}.footer{padding:0 16px 25px;gap:12px;flex-wrap:wrap}}
 </style>
 </head>
 <body>
-<header>
-  <div class="brand">NULL<b>_</b>SYS</div>
-  <div class="live">SYSTEM ONLINE</div>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m8 12 2.5 2.5L16 9"/></svg></span><span>SIGNAL LAB</span></div>
+  <div class="top-right"><span><i class="live-dot"></i><span class="status-label">CONTACT WORKSPACE</span></span><span>v1.4.0</span></div>
 </header>
-
 <main>
   <section class="hero">
-    <div class="eyebrow">DIGITAL ENVIRONMENT // 001</div>
-    <h1>Enter the <span>Unknown.</span></h1>
-    <div class="subtitle">A simulated digital interface.<br>Explore the system in a visual demo environment.</div>
+    <div class="hero-copy">
+      <div class="eyebrow">CONTACT INTERFACE / 001</div>
+      <h1>Your contacts.<br><span>Your interface.</span></h1>
+      <p class="lead">A polished contact workspace for selecting messaging apps and organizing profiles. Your entries are saved in this browser.</p>
+      <div class="pills"><span class="pill"><b>●</b> Saved locally</span><span class="pill"><b>◇</b> Interactive UI</span><span class="pill"><b>↗</b> Mobile ready</span></div>
+
+      <section class="panel" aria-labelledby="numberTitle">
+        <div class="panel-head"><div><div class="panel-title" id="numberTitle">PHONE NUMBER</div><div class="panel-sub">Enter a number to check its format</div></div><span class="tiny-tag">STEP 01</span></div>
+        <label for="phoneNumber">PHONE NUMBER</label>
+        <div class="search-row"><input id="phoneNumber" type="tel" inputmode="tel" maxlength="20" placeholder="+1 555 000 0000" autocomplete="tel"><button class="icon-btn" id="phoneSearch" type="button" aria-label="Search phone number"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button></div>
+        <div class="status" id="phoneStatus" aria-live="polite">› Enter a number, then press search.</div>
+        <div class="divider"></div>
+        <div class="panel-head"><div><div class="panel-title">APP CODE</div><div class="panel-sub">Enter the code for the app you want to open</div></div><span class="tiny-tag">STEP 02</span></div>
+        <label for="contactCode">APP CODE</label>
+        <div class="code-row"><input id="contactCode" inputmode="numeric" maxlength="12" placeholder="Enter app code"><button class="btn" id="stepButton" type="button">Open app</button></div>
+        <div class="status" id="appStatus" aria-live="polite">› › Enter the app code.</div>
+        <div class="code-hint">App codes: 111111 · 222222 · 333333 · 444444 · 555555</div>
+      </section>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone-glow"></div>
+      <div class="phone-tools"><button class="phone-tool" id="phoneFullscreen" type="button" aria-label="Make phone full screen">⛶ Full screen</button></div>
+      <div class="phone" aria-label="Interactive smartphone mockup">
+        <div class="phone-screen">
+          <div class="island"></div>
+          <div class="phone-status"><span id="phoneClock">9:41</span><span class="status-icons">▮▮ ◉ ▰</span></div>
+          <div class="phone-content">
+            <div class="phone-home" id="phoneHome">
+              <div class="mini-brand"><span class="mini-logo" id="phoneMiniLogo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z"/></svg></span><span id="phoneBrandName">SIGNAL LAB</span></div>
+              <h2 class="phone-title" id="selectedName">Welcome back.</h2>
+              <div class="phone-sub" id="selectedSub">Your workspace is ready.<br>Select an app to continue.</div>
+              <div class="phone-app"><span class="app-icon" id="selectedIcon" style="background:#176dba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 5 16 7-16 7 3-7-3-7Z"/><path d="m7 12 5 0"/></svg></span><span class="app-copy"><b id="selectedApp">Telegram</b><small id="selectedHint">Ready to open</small></span><span class="app-arrow">›</span></div>
+              <div class="phone-app"><span class="app-icon" style="background:#158e50"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5h14v11H9l-4 3V5Z"/><path d="M8 9h8M8 12h5"/></svg></span><span class="app-copy"><b>Contact hub</b><small>Saved contacts</small></span><span class="app-arrow">›</span></div>
+              <button class="phone-button" id="appButton" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> OPEN CONTACTS</button>
+              <div class="phone-footer"><span>SECURE CONTACT UI</span><span>LOCAL ONLY ◉</span></div>
+            </div>
+            <div class="phone-contacts" id="phoneContacts">
+              <div class="phone-contact-head"><div><b>Messages</b><small id="phoneContactCount">Your saved conversations</small></div><button class="phone-back" id="phoneBack" type="button">‹ Back</button></div>
+              <div class="phone-contact-list" id="phoneContactList"><div class="phone-empty">No conversations yet.<br>Add contacts in the admin panel.</div></div>
+            </div>
+          </div>
+          <div class="phone-bottom"></div>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <div class="layout">
-    <section class="card">
-      <div class="card-title">[ DEVICE INTERFACE ]</div>
-      <div class="phone-stage">
-        <div class="orbit"></div>
-        <div class="phone">
-          <div class="phone-screen">
-            <div class="phone-top">NULL SYSTEM</div>
-
-            <div id="phoneWait" class="phone-wait"></div>
-
-            <div id="phoneLogo" class="hidden" style="display:flex;flex-direction:column;align-items:center">
-              <div class="logo-stage">
-                <div class="logo-ring"></div>
-                <div class="app-logo" id="logoIcon"></div>
-              </div>
-              <div class="phone-app-name" id="phoneAppName">APP</div>
-            </div>
-
-            <div class="phone-bottom">SIMULATION MODE</div>
-          </div>
-        </div>
-      </div>
-      <div class="stats">
-        <div class="stat"><small>CONNECTION</small><strong>LOCAL DEMO</strong></div>
-        <div class="stat"><small>MODE</small><strong>VISUAL ONLY</strong></div>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="card-title">[ 01 / DEMO ACCESS ]</div>
-      <label for="phoneNumber">DEMO PHONE NUMBER</label>
-      <input id="phoneNumber" type="tel" placeholder="Enter a test number" maxlength="20">
-      <button class="primary" id="startBtn">INITIALIZE SESSION ↗</button>
-      <div id="phoneStatus" class="status">> Waiting for input...</div>
-
-      <div id="codeArea" class="hidden">
-        <label for="demoCode">DEMO APP CODE</label>
-        <input id="demoCode" inputmode="numeric" maxlength="6" placeholder="Enter a demo code">
-        <div class="result">
-          <div><small>DEMO CODE</small><strong id="codeDisplay">------</strong></div>
-          <span class="badge" id="appName">NOT DETECTED</span>
-        </div>
-        <div class="note">This is a visual demo. No SMS is sent, and no real messaging account is accessed.</div>
-        <button class="primary" id="nextBtn">OPEN TERMINAL →</button>
-      </div>
-    </section>
-  </div>
-
-  <section class="card terminal-card hidden" id="terminalCard">
-    <div class="terminal-head">
-      <div class="card-title" style="border:0;padding:0">[ 02 / LIVE TERMINAL ]</div>
-      <div class="dots"><i></i><i></i><i></i></div>
+  <section class="section-grid">
+    <div class="panel">
+      <div class="panel-head"><div><div class="panel-title">CONTACTS</div><div class="panel-sub">Open the phone interface to view saved contacts.</div></div><span class="tiny-tag">LOCAL</span></div>
+      <div class="notice">Contacts are contacts stored in this browser only. This page does not access real messaging accounts or private contact databases.</div>
+      <div class="admin-actions"><button class="btn" id="openViewer" type="button">Open contact hub</button><button class="btn secondary" id="adminToggle" type="button">Admin panel</button></div>
     </div>
-    <div class="subtitle" style="margin-top:12px">GENERATED VISUAL DATA // NO EXTERNAL CONNECTION</div>
-    <div class="terminal" id="terminal"></div>
-    <div class="timer-row">
-      <span>STATUS: <strong id="runStatus">ACTIVE</strong></span>
-      <span id="timer">05:00</span>
+    <div class="panel">
+      <div class="panel-head"><div><div class="panel-title">HOW IT WORKS</div><div class="panel-sub">A simple contact workspace</div></div><span class="tiny-tag">INFO</span></div>
+      <div style="display:grid;gap:13px">
+        <div style="display:flex;gap:12px"><span class="tiny-tag">01</span><div><b style="font-size:12px">Enter a number</b><div class="panel-sub">Search checks the number format after a short loading state.</div></div></div>
+        <div style="display:flex;gap:12px"><span class="tiny-tag">02</span><div><b style="font-size:12px">Verify an app code</b><div class="panel-sub">Enter an app code to show that app's icon on the phone.</div></div></div>
+        <div style="display:flex;gap:12px"><span class="tiny-tag">03</span><div><b style="font-size:12px">Manage contacts</b><div class="panel-sub">Add contact details in the admin panel and view them here.</div></div></div>
+      </div>
     </div>
-    <div class="progress"><div id="progressBar"></div></div>
-    <button class="secondary" id="stopBtn">STOP SIMULATION</button>
+  </section>
+
+  <section class="panel admin-panel" id="adminPanel">
+    <div class="panel-head"><div><div class="panel-title">ADMIN CONSOLE</div><div class="panel-sub">Add profiles, recent activity and contact details.</div></div><span class="tiny-tag">ADMIN</span></div>
+    <form id="contactForm">
+      <div class="admin-grid">
+        <div class="field"><label for="contactName">CONTACT NAME</label><input id="contactName" required maxlength="80" placeholder="e.g. Alex Morgan"></div>
+        <div class="field"><label for="contactApp">APP CATEGORY</label><select id="contactApp"><option>Telegram</option><option>Rubika</option><option>Shad</option><option>Eitaa</option><option>Bale</option><option>Other</option></select></div>
+        <div class="field"><label for="contactUsername">USERNAME / ID</label><input id="contactUsername" maxlength="80" placeholder="@username or ID"></div>
+        <div class="field"><label for="contactPhone">PHONE NUMBER</label><input id="contactPhone" type="tel" inputmode="tel" maxlength="24" placeholder="+98 ..."></div>
+        <div class="field"><label for="contactLastSeen">LAST SEEN</label><input id="contactLastSeen" maxlength="80" placeholder="e.g. Today, 18:45"></div>
+        <div class="field"><label for="unreadCount">UNREAD MESSAGES</label><input id="unreadCount" type="number" min="0" max="9999" value="0"></div>
+        <div class="field full"><label for="contactPhoto">PROFILE PHOTO URL</label><input id="contactPhoto" type="url" placeholder="https://example.com/profile.jpg"></div>
+        <div class="field full"><label for="contactBio">PROFILE / CONTEXT</label><textarea id="contactBio" rows="2" maxlength="300" placeholder="Bio, context or short profile description..."></textarea></div>
+        <div class="field full"><label for="contactNote">LAST MESSAGE / NOTE</label><textarea id="contactNote" rows="2" maxlength="300" placeholder="Recent message or a note about this contact..."></textarea></div>
+      </div>
+      <div class="admin-actions"><button class="btn" type="submit">＋ Save contact</button><button class="btn secondary" id="clearForm" type="button">Clear fields</button><button class="btn danger" id="clearContacts" type="button">Delete all contacts</button></div>
+    </form>
+    <div class="divider"></div><div class="panel-title">SAVED CONTACTS <span id="contactCount" style="color:var(--green)">(0)</span></div>
+    <div class="contact-list" id="adminContacts"><div class="empty">No contacts yet. Add your first contact above.</div></div>
+  </section>
+
+  <section class="panel viewer" id="viewerPanel">
+    <div class="panel-head"><div><div class="panel-title" id="viewerTitle">CONTACTS</div><div class="panel-sub">Your saved contacts</div></div><button class="btn secondary small" id="closeViewer" type="button">Close ×</button></div>
+    <div class="viewer-list" id="viewerContacts"><div class="empty">No contacts saved yet.</div></div>
+    <div class="notice">This page does not send or retrieve messages from Telegram, Rubika, Shad, Eitaa, Bale, or other services.</div>
   </section>
 </main>
-
-<footer>NULL_SYS // DIGITAL VISUAL SIMULATION // NO DATA TRANSMISSION</footer>
-
+<footer class="footer"><span>SIGNAL LAB © 2026</span><span>DESIGNED FOR INTERACTIVE DEMOS</span></footer>
 <script>
-const $ = id => document.getElementById(id);
+(() => {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const APP_INFO = {
+    "111111": {name:"Rubika Contact", short:"Rubika", color:"#8c4bd9", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5h14v11H9l-4 3V5Z"/><path d="M8 9h8M8 12h5"/></svg>'},
+    "222222": {name:"Telegram", short:"Telegram", color:"#1687c9", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 5 16 7-16 7 3-7-3-7Z"/><path d="m7 12 5 0"/></svg>'},
+    "333333": {name:"Shad Contact", short:"Shad", color:"#188a56", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v12H9l-5 3V5Z"/><path d="M8 9h8M8 12h6"/></svg>'},
+    "444444": {name:"Eitaa Contact", short:"Eitaa", color:"#d17c2b", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5 20 12 4 19l3-7-3-7Z"/><path d="m7 12 7 0"/></svg>'},
+    "555555": {name:"Bale Contact", short:"Bale", color:"#239c68", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5h14v11H9l-4 3V5Z"/><path d="M8 9h8M8 12h5"/></svg>'}
+  };
+  let contacts = [];
+  try { contacts = JSON.parse(localStorage.getItem("signalLabContacts") || "[]"); if (!Array.isArray(contacts)) contacts=[]; } catch { contacts=[]; }
+  let selectedApp = APP_INFO["222222"];
 
-/*
-  Offline SVG logo illustrations.
-  Demo codes:
-  111111 = Rubika
-  222222 = Telegram
-  333333 = Shad
-  444444 = Eitaa
-  555555 = Bale
-*/
-const apps = {
-  "111111": {
-    name:"RUBIKA",
-    svg:`<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="rubikaG" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#ff3c92"/><stop offset=".5" stop-color="#9a4dff"/><stop offset="1" stop-color="#3e78ff"/></linearGradient></defs>
-      <rect width="64" height="64" rx="17" fill="url(#rubikaG)"/>
-      <path d="M32 11 49 21v21L32 53 15 42V21Z" fill="none" stroke="white" stroke-width="4" stroke-linejoin="round"/>
-      <path d="M22 26h20v13H30l-7 5v-5h-1Z" fill="white"/>
-      <circle cx="28" cy="32" r="1.5" fill="#a04cff"/><circle cx="33" cy="32" r="1.5" fill="#a04cff"/><circle cx="38" cy="32" r="1.5" fill="#a04cff"/>
-    </svg>`
-  },
-  "222222": {
-    name:"TELEGRAM",
-    svg:`<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <rect width="64" height="64" rx="18" fill="#229ED9"/>
-      <path d="M49 16 42 49c-.5 2.3-1.9 2.9-3.9 1.7L27 42l-5.4 5.2c-.6.6-1.1 1.1-2.3 1.1l.8-11.3L40.7 20c.9-.8-.2-1.2-1.4-.4L13.1 36l-11-3.4c-2.4-.8-2.4-2.4.5-3.5L45 13.7c2-.7 3.8.5 4 2.3Z" fill="white" transform="translate(6 3) scale(.86)"/>
-    </svg>`
-  },
-  "333333": {
-    name:"SHAD",
-    svg:`<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="shadG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#20c8e8"/><stop offset="1" stop-color="#2469e9"/></linearGradient></defs>
-      <rect width="64" height="64" rx="17" fill="url(#shadG)"/>
-      <path d="M15 21Q15 16 21 16H43Q49 16 49 22V37Q49 43 43 43H30L20 50V43Q15 42 15 37Z" fill="white"/>
-      <path d="M23 27h18M23 33h12" stroke="#2586ed" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="46" cy="45" r="8" fill="#42e6b0"/><path d="m42 45 3 3 5-6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`
-  },
-  "444444": {
-    name:"EITAA",
-    svg:`<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="eitaaG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb04a"/><stop offset="1" stop-color="#f26a21"/></linearGradient></defs>
-      <rect width="64" height="64" rx="17" fill="url(#eitaaG)"/>
-      <path d="M13 23Q13 16 21 16H43Q51 16 51 24V36Q51 44 43 44H31L19 51V43Q13 41 13 35Z" fill="white"/>
-      <path d="M23 26h18M23 32h13" stroke="#f48b32" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="45" cy="19" r="5" fill="#ffe8c5"/>
-    </svg>`
-  },
-  "555555": {
-    name:"BALE",
-    svg:`<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="baleG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#55b9ff"/><stop offset="1" stop-color="#2470d9"/></linearGradient></defs>
-      <rect width="64" height="64" rx="17" fill="url(#baleG)"/>
-      <path d="M13 23Q13 16 21 16H43Q51 16 51 24V36Q51 44 43 44H31L19 51V43Q13 41 13 35Z" fill="white"/>
-      <path d="M23 26h18M23 32h13" stroke="#3187e7" stroke-width="3" stroke-linecap="round"/>
-      <path d="m39 37 4 4 7-9" fill="none" stroke="#3187e7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`
+  function persistContacts(){ try { localStorage.setItem("signalLabContacts", JSON.stringify(contacts)); } catch { alert("Browser storage is unavailable. Contacts may not be saved."); } }
+  function escapeHTML(value){return String(value ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+  function iconForApp(app){
+    const found=Object.values(APP_INFO).find(x=>x.short.toLowerCase()===String(app).toLowerCase());
+    return found ? found.icon : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>';
   }
-};
-
-let outputLoop=null, countdown=null, remaining=300, lineNo=1;
-
-function updatePhone(app){
-  const wait=$("phoneWait");
-  const logo=$("phoneLogo");
-
-  if(!app){
-    wait.classList.remove("hidden");
-    logo.classList.add("hidden");
-    $("logoIcon").innerHTML="";
-    $("phoneAppName").textContent="";
-    return;
+  function initials(name){return String(name||"?").trim().split(/\s+/).slice(0,2).map(s=>s[0]||"").join("").toUpperCase();}
+  function avatarMarkup(c){return c.photo ? `<span class="avatar"><img src="${escapeHTML(c.photo)}" alt="" onerror="this.parentElement.textContent='${escapeHTML(initials(c.name))}'"></span>` : `<span class="avatar">${escapeHTML(initials(c.name))}</span>`;}
+  function renderContacts(){
+    $("contactCount").textContent=`(${contacts.length})`;
+    const admin=$("adminContacts"), viewer=$("viewerContacts");
+    if(!contacts.length){admin.innerHTML='<div class="empty">No contacts yet. Add your first contact above.</div>';viewer.innerHTML='<div class="empty">No contacts saved yet. Use the admin panel to add contacts.</div>';renderPhoneContacts();return;}
+    admin.innerHTML=contacts.map(c=>`<div class="contact-item">${avatarMarkup(c)}<div class="contact-info"><b>${escapeHTML(c.name)}${c.username ? " · "+escapeHTML(c.username):""}</b><small>${escapeHTML(c.app)}${c.lastSeen ? " · Last seen: "+escapeHTML(c.lastSeen):""}${c.phone ? " · "+escapeHTML(c.phone):""}</small>${c.bio ? `<small>${escapeHTML(c.bio)}</small>`:""}${c.note ? `<small>Recent: ${escapeHTML(c.note)}</small>`:""}</div>${Number(c.unread)>0?`<span class="unread">${Number(c.unread)}</span>`:""}<button class="btn danger small" type="button" data-delete="${escapeHTML(c.id)}">Delete</button></div>`).join("");
+    viewer.innerHTML=contacts.map(c=>`<div class="contact-item">${avatarMarkup(c)}<div class="contact-info"><b>${escapeHTML(c.name)}${c.username ? " · "+escapeHTML(c.username):""}</b><small>${escapeHTML(c.app)}${c.lastSeen ? " · Last seen: "+escapeHTML(c.lastSeen):""}${c.phone ? " · "+escapeHTML(c.phone):""}</small>${c.bio ? `<small>${escapeHTML(c.bio)}</small>`:""}${c.note ? `<small>Recent: ${escapeHTML(c.note)}</small>`:""}</div>${Number(c.unread)>0?`<span class="unread">${Number(c.unread)} unread</span>`:""}</div>`).join("");
+    renderPhoneContacts();
+    admin.querySelectorAll("[data-delete]").forEach(b=>b.addEventListener("click",()=>{contacts=contacts.filter(c=>c.id!==b.dataset.delete);persistContacts();renderContacts();}));
   }
-
-  $("logoIcon").innerHTML=app.svg;
-  $("phoneAppName").textContent=app.name;
-  wait.classList.add("hidden");
-  logo.classList.remove("hidden");
-}
-
-$("startBtn").addEventListener("click",()=>{
-  const number=$("phoneNumber").value.trim();
-
-  if(!/^[0-9+() -]{5,20}$/.test(number)){
-    $("phoneStatus").textContent="> Enter a valid demo number.";
-    return;
+  $("contactForm").addEventListener("submit",e=>{
+    e.preventDefault();
+    const name=$("contactName").value.trim(); if(!name){$("contactName").focus();return;}
+    const photo=$("contactPhoto").value.trim();
+    if(photo && !/^https?:\/\//i.test(photo)){alert("Photo URL must start with http:// or https://");return;}
+    contacts.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),name,app:$("contactApp").value,username:$("contactUsername").value.trim(),phone:$("contactPhone").value.trim(),lastSeen:$("contactLastSeen").value.trim(),unread:Math.max(0,Math.min(9999,Number($("unreadCount").value)||0)),photo,bio:$("contactBio").value.trim(),note:$("contactNote").value.trim()});
+    persistContacts();renderContacts();$("contactForm").reset();$("unreadCount").value="0";
+  });
+  $("clearForm").addEventListener("click",()=>{$("contactForm").reset();$("unreadCount").value="0";});
+  $("clearContacts").addEventListener("click",()=>{if(!contacts.length)return;if(confirm("Delete all saved contacts from this browser?")){contacts=[];persistContacts();renderContacts();}});
+  $("adminToggle").addEventListener("click",()=>{$("adminPanel").classList.toggle("show");if($("adminPanel").classList.contains("show"))$("adminPanel").scrollIntoView({behavior:"smooth",block:"start"});});
+  function renderPhoneContacts(){
+    const list=$("phoneContactList"); if(!list)return;
+    $("phoneContactCount").textContent=contacts.length ? `${contacts.length} saved conversation${contacts.length===1?"":"s"}` : "Your saved conversations";
+    if(!contacts.length){list.innerHTML='<div class="phone-empty">No conversations yet.<br>Add contacts in the admin panel.</div>';return;}
+    list.innerHTML=contacts.map(c=>`<div class="phone-contact">${avatarMarkup(c)}<div class="contact-info"><b>${escapeHTML(c.name)}</b><small>${escapeHTML(c.note || c.bio || c.app)}${c.lastSeen ? `<br>Last seen ${escapeHTML(c.lastSeen)}`:""}</small></div>${Number(c.unread)>0?`<span class="unread">${Number(c.unread)}</span>`:""}</div>`).join("");
   }
-
-  $("phoneStatus").textContent="> Demo session initialized. No message sent.";
-  $("codeArea").classList.remove("hidden");
-  $("demoCode").focus();
-});
-
-$("demoCode").addEventListener("input",()=>{
-  const code=$("demoCode").value.replace(/\D/g,"").slice(0,6);
-  $("demoCode").value=code;
-  $("codeDisplay").textContent=code||"------";
-
-  const app=apps[code];
-  $("appName").textContent=app?app.name:(code.length?"UNKNOWN":"NOT DETECTED");
-  updatePhone(app||null);
-});
-
-$("nextBtn").addEventListener("click",()=>{
-  if(!$("demoCode").value){
-    $("phoneStatus").textContent="> Enter a demo identifier first.";
-    return;
+  function openViewer(){renderContacts();$("phoneHome").classList.add("hidden");$("phoneContacts").classList.add("show");}
+  $("openViewer").addEventListener("click",openViewer);
+  $("phoneBack").addEventListener("click",()=>{$("phoneContacts").classList.remove("show");$("phoneHome").classList.remove("hidden");});
+  const phoneWrap=document.querySelector(".phone-wrap");
+  function updateFullscreenButton(){
+    const active = document.fullscreenElement === phoneWrap || phoneWrap.classList.contains("is-fullscreen");
+    $("phoneFullscreen").textContent = active ? "✕ Exit full screen" : "⛶ Full screen";
+    $("phoneFullscreen").setAttribute("aria-label", active ? "Exit full screen" : "Make phone full screen");
   }
-
-  $("nextBtn").disabled=true;
-  $("nextBtn").textContent="LOADING...";
-
-  setTimeout(()=>{
-    $("terminalCard").classList.remove("hidden");
-    $("nextBtn").disabled=false;
-    $("nextBtn").textContent="OPEN TERMINAL →";
-    $("terminalCard").scrollIntoView({behavior:"smooth",block:"start"});
-    startTerminal();
-  },1500);
-});
-
-function startTerminal(){
-  stopTerminal();
-  remaining=300;
-  lineNo=1;
-  $("terminal").innerHTML="";
-  $("runStatus").textContent="ACTIVE";
-
-  outputLoop=setInterval(()=>{
-    const fragment=document.createDocumentFragment();
-
-    for(let i=0;i<3;i++){
-      const row=document.createElement("div");
-      const value=String(Math.floor(Math.random()*100)).padStart(2,"0");
-      row.textContent="> ["+String(lineNo++).padStart(4,"0")+"] SIM_PACKET_"+value+" // VISUAL DATA";
-      fragment.appendChild(row);
+  $("phoneFullscreen").addEventListener("click",async()=>{
+    try {
+      if(document.fullscreenElement === phoneWrap){
+        await document.exitFullscreen();
+        phoneWrap.classList.remove("is-fullscreen");
+      } else if(phoneWrap.classList.contains("is-fullscreen")) {
+        phoneWrap.classList.remove("is-fullscreen");
+      } else if(phoneWrap.requestFullscreen) {
+        await phoneWrap.requestFullscreen();
+        phoneWrap.classList.add("is-fullscreen");
+      } else {
+        phoneWrap.classList.add("is-fullscreen");
+      }
+    } catch {
+      phoneWrap.classList.toggle("is-fullscreen");
     }
-
-    $("terminal").appendChild(fragment);
-    while($("terminal").children.length>60){
-      $("terminal").firstElementChild.remove();
+    updateFullscreenButton();
+  });
+  document.addEventListener("fullscreenchange",()=>{
+    if(document.fullscreenElement === phoneWrap) phoneWrap.classList.add("is-fullscreen");
+    else phoneWrap.classList.remove("is-fullscreen");
+    updateFullscreenButton();
+  });
+  $("appButton").addEventListener("click",()=>{
+    const panel=$("viewerPanel");
+    $("appButton").disabled=true;
+    $("appButton").innerHTML='<span class="spin"></span> LOADING CONTACTS…';
+    setTimeout(()=>{ $("appButton").disabled=false;$("appButton").innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> OPEN CONTACTS';openViewer(); },5000);
+  });
+  $("closeViewer").addEventListener("click",()=>$("viewerPanel").classList.remove("show"));
+  $("stepButton").addEventListener("click",()=>{
+    const code=$("contactCode").value.trim(), info=APP_INFO[code];
+    if(!info){$("appStatus").className="status error";$("appStatus").textContent="› Code not recognized. Use one of the sample codes below.";return;}
+    selectedApp=info;
+    $("selectedName").textContent="You're all set.";
+    $("selectedSub").textContent="App selected successfully. Your contact hub is ready.";
+    $("phoneBrandName").textContent=info.short.toUpperCase();
+    $("phoneMiniLogo").style.background=info.color;
+    $("selectedApp").textContent=info.name;
+    $("selectedHint").textContent="App icon loaded";
+    $("selectedIcon").style.background=info.color;
+    $("selectedIcon").innerHTML=info.icon;
+    $("appStatus").className="status good";
+    $("appStatus").textContent="› "+info.short+" contact selected. Phone preview updated.";
+  });
+  $("contactCode").addEventListener("keydown",e=>{if(e.key==="Enter")$("stepButton").click();});
+  $("phoneSearch").addEventListener("click",()=>{
+    const input=$("phoneNumber"),number=input.value.trim(),btn=$("phoneSearch"),status=$("phoneStatus");
+    if(!/^\+?[0-9\s().-]{7,20}$/.test(number)){
+      status.className="status error";status.textContent="› Enter a valid-looking number (7–20 characters).";input.focus();return;
     }
-  },180);
-
-  updateTimer();
-  countdown=setInterval(()=>{
-    remaining--;
-    updateTimer();
-
-    if(remaining<=0){
-      stopTerminal();
-      $("runStatus").textContent="COMPLETED";
-      addTerminalLine("> Simulation completed.");
-    }
-  },1000);
-}
-
-function updateTimer(){
-  const min=Math.floor(remaining/60),sec=remaining%60;
-  $("timer").textContent=String(min).padStart(2,"0")+":"+String(sec).padStart(2,"0");
-  $("progressBar").style.width=(remaining/300*100)+"%";
-}
-
-function addTerminalLine(text){
-  const row=document.createElement("div");
-  row.className="dim";
-  row.textContent=text;
-  $("terminal").appendChild(row);
-}
-
-function stopTerminal(){
-  if(outputLoop)clearInterval(outputLoop);
-  if(countdown)clearInterval(countdown);
-  outputLoop=null;
-  countdown=null;
-}
-
-$("stopBtn").addEventListener("click",()=>{
-  stopTerminal();
-  $("runStatus").textContent="STOPPED";
-  addTerminalLine("> Simulation stopped by user.");
-});
+    btn.disabled=true;btn.innerHTML='<span class="spin"></span>';status.className="status";status.textContent="› Checking number format…";
+    setTimeout(()=>{
+      btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>';
+      status.className="status good";status.textContent="› Number format checked: "+number+". This only checks the number format; it does not search real accounts.";
+    },2300);
+  });
+  $("phoneNumber").addEventListener("keydown",e=>{if(e.key==="Enter")$("phoneSearch").click();});
+  function updateClock(){const d=new Date();$("phoneClock").textContent=d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",hour12:false});}
+  updateClock();setInterval(updateClock,30000);renderContacts();
+})();
 </script>
 </body>
 </html>
