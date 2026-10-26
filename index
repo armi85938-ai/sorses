@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NULL // SYSTEM</title>
+<style>
+:root {
+  --green: #39ff88;
+  --bg: #050807;
+  --panel: #0a100d;
+  --muted: #718078;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: #f2fff6;
+  font-family: Consolas, "Courier New", monospace;
+  overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .12;
+  z-index: -1;
+  background-image:
+    linear-gradient(#163b27 1px, transparent 1px),
+    linear-gradient(90deg, #163b27 1px, transparent 1px);
+  background-size: 35px 35px;
+}
+header {
+  height: 65px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #183324;
+  background: #050807e8;
+}
+.logo { font-weight: 900; letter-spacing: 3px; }
+.logo span { color: var(--green); }
+.status { color: var(--green); font-size: 11px; }
+main {
+  width: min(480px, 92%);
+  margin: 8vh auto 40px;
+}
+.eyebrow {
+  color: var(--green);
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+h1 { font-size: clamp(27px, 7vw, 40px); margin: 14px 0 8px; }
+.subtitle { color: var(--muted); font-size: 13px; line-height: 1.8; }
+.panel {
+  margin-top: 28px;
+  padding: 25px;
+  background: linear-gradient(145deg, #0d1711, #070b09);
+  border: 1px solid #21432e;
+  box-shadow: 0 0 40px #39ff8808;
+}
+.panel-title {
+  color: var(--green);
+  font-size: 12px;
+  margin-bottom: 23px;
+}
+label {
+  display: block;
+  color: #b7c9be;
+  font-size: 12px;
+  margin: 19px 0 9px;
+}
+input {
+  width: 100%;
+  background: #030605;
+  border: 1px solid #294534;
+  padding: 14px;
+  color: white;
+  outline: none;
+  font: inherit;
+  border-radius: 3px;
+}
+input:focus { border-color: var(--green); box-shadow: 0 0 12px #39ff8818; }
+.phone-row { display: flex; gap: 9px; }
+.phone-row input { min-width: 0; }
+button {
+  font: inherit;
+  cursor: pointer;
+  transition: .2s;
+}
+.search-btn {
+  min-width: 52px;
+  color: var(--green);
+  background: #0c1a11;
+  border: 1px solid var(--green);
+  border-radius: 3px;
+  font-size: 23px;
+}
+button:hover { filter: brightness(1.25); }
+.primary {
+  width: 100%;
+  padding: 14px;
+  margin-top: 23px;
+  color: #001a09;
+  background: var(--green);
+  border: 1px solid var(--green);
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+.secondary {
+  width: 100%;
+  padding: 13px;
+  margin-top: 15px;
+  background: transparent;
+  border: 1px solid #345541;
+  color: white;
+}
+.hidden { display: none !important; }
+.message { font-size: 12px; color: var(--green); margin-top: 14px; line-height: 1.7; }
+.error { color: #ff7777; }
+.spinner {
+  width: 23px;
+  height: 23px;
+  border: 2px solid #254532;
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin: auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.check { font-size: 23px; color: var(--green); }
+.provider {
+  border: 1px solid #294534;
+  background: #050a07;
+  margin-top: 14px;
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+.provider strong { color: var(--green); }
+.terminal {
+  height: 320px;
+  overflow: hidden;
+  padding: 14px;
+  background: #020403;
+  border: 1px solid #23442e;
+  color: var(--green);
+  font-size: 12px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.terminal div { opacity: .85; }
+footer {
+  text-align: center;
+  color: #56665b;
+  font-size: 10px;
+  padding: 25px;
+}
+.small-note { font-size: 10px; color: #718078; line-height: 1.8; margin-top: 18px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">NULL<span>_</span>SYS</div>
+  <div class="status">● SYSTEM ONLINE</div>
+</header>
+
+<main>
+  <div class="eyebrow">// SECURE INTERFACE v1.0</div>
+  <h1>Enter the <span style="color:var(--green)">Unknown.</span></h1>
+  <p class="subtitle">A dark digital environment. Initialize your session to continue.</p>
+
+  <section class="panel" id="loginPanel">
+    <div class="panel-title">[ 01 / SESSION INITIALIZATION ]</div>
+
+    <label for="phone">PHONE NUMBER</label>
+    <div class="phone-row">
+      <input id="phone" type="tel" placeholder="Enter a test number"
+             autocomplete="off" maxlength="20">
+      <button class="search-btn" id="verifyBtn" aria-label="Verify number">⌕</button>
+    </div>
+
+    <div id="verifyStatus" class="message hidden" aria-live="polite"></div>
+
+    <div id="codeSection" class="hidden">
+      <label for="code">DEMO ACCESS CODE</label>
+      <input id="code" inputmode="numeric" maxlength="6"
+             placeholder="Enter any 6 digits" autocomplete="off">
+      <button class="primary" id="codeBtn">VALIDATE CODE →</button>
+      <div class="small-note">
+        DEMO MODE: No SMS is sent. Do not enter real account passwords or verification codes.
+      </div>
+    </div>
+
+    <div id="providerSection" class="hidden">
+      <div class="provider">
+        <span>DEMO SERVICE</span>
+        <strong id="providerName">UNIDENTIFIED</strong>
+      </div>
+      <button class="primary" id="nextBtn">NEXT SEQUENCE →</button>
+    </div>
+
+    <div id="loginMessage" class="message" aria-live="polite">
+      > Awaiting input...
+    </div>
+  </section>
+
+  <section class="panel hidden" id="loadingPanel">
+    <div class="panel-title">[ 02 / INITIALIZING ]</div>
+    <div style="text-align:center;padding:35px 0">
+      <div class="spinner"></div>
+      <p id="loadingText" class="message">Preparing environment...</p>
+    </div>
+  </section>
+
+  <section class="panel hidden" id="terminalPanel">
+    <div class="panel-title">[ 03 / LIVE TERMINAL ]</div>
+    <p class="subtitle">SIMULATED OUTPUT // VISUAL EFFECT ONLY</p>
+    <div class="terminal" id="terminal" aria-live="off"></div>
+    <div class="message" id="timer">Sequence active: 10:00</div>
+    <button class="secondary" id="stopBtn">STOP SEQUENCE</button>
+  </section>
+</main>
+
+<footer>NULL_SYS // VISUAL SIMULATION // NO EXTERNAL CONNECTIONS</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+let countdown = null;
+let outputLoop = null;
+let secondsLeft = 600;
+let lineNumber = 1;
+
+const demoServices = {
+  "005874586": "Rubika",
+  "987856952": "Telegram",
+  "478965235": "Shad",
+  "4523554008": "Eitaa",
+  "7458659855": "Bale"
+};
+
+function showMessage(text, error = false) {
+  $("loginMessage").textContent = "> " + text;
+  $("loginMessage").classList.toggle("error", error);
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+$("verifyBtn").addEventListener("click", async () => {
+  const phone = $("phone").value.trim();
+
+  if (!/^[0-9+()\-\s]{5,20}$/.test(phone)) {
+    showMessage("Enter a valid test number.", true);
+    return;
+  }
+
+  const btn = $("verifyBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div>';
+  $("verifyStatus").classList.remove("hidden");
+  $("verifyStatus").textContent = "Simulating verification...";
+
+  await delay(10000);
+
+  btn.disabled = false;
+  btn.innerHTML = '<span class="check">✓</span>';
+  $("codeSection").classList.remove("hidden");
+  $("verifyStatus").textContent = "Demo verification complete.";
+  showMessage("Verification simulation completed.");
+});
+
+$("codeBtn").addEventListener("click", () => {
+  const code = $("code").value.trim();
+
+  if (!/^\d{6}$/.test(code)) {
+    showMessage("Enter exactly 6 digits.", true);
+    return;
+  }
+
+  // Demo-only validation; no real account is authenticated.
+  const phone = $("phone").value.trim().replace(/\D/g, "");
+  const service = demoServices[phone] || "Unknown Service";
+
+  $("providerName").textContent = service;
+  $("providerSection").classList.remove("hidden");
+  showMessage("Demo code accepted. No account was accessed.");
+});
+
+$("nextBtn").addEventListener("click", async () => {
+  $("loginPanel").classList.add("hidden");
+  $("loadingPanel").classList.remove("hidden");
+  $("loadingText").textContent = "Loading simulation...";
+
+  await delay(5000);
+
+  $("loadingPanel").classList.add("hidden");
+  $("terminalPanel").classList.remove("hidden");
+  startTerminal();
+});
+
+function startTerminal() {
+  secondsLeft = 600;
+  lineNumber = 1;
+  $("terminal").innerHTML = "";
+
+  outputLoop = setInterval(() => {
+    for (let i = 0; i < 4; i++) {
+      const line = document.createElement("div");
+      const code = String(Math.floor(Math.random() * 100)).padStart(2, "0");
+      line.textContent =
+        "[" + String(lineNumber++).padStart(4, "0") + "] " +
+        "SIM_PACKET_" + code + " // GENERATED VISUAL DATA";
+      $("terminal").appendChild(line);
+    }
+
+    while ($("terminal").children.length > 80) {
+      $("terminal").firstElementChild.remove();
+    }
+  }, 100);
+
+  countdown = setInterval(() => {
+    secondsLeft--;
+    const mins = Math.floor(secondsLeft / 60);
+    const secs = secondsLeft % 60;
+    $("timer").textContent =
+      "Sequence active: " +
+      String(mins).padStart(2, "0") + ":" +
+      String(secs).padStart(2, "0");
+
+    if (secondsLeft <= 0) stopTerminal();
+  }, 1000);
+}
+
+function stopTerminal() {
+  clearInterval(outputLoop);
+  clearInterval(countdown);
+  outputLoop = countdown = null;
+  $("timer").textContent = "Sequence stopped.";
+}
+
+$("stopBtn").addEventListener("click", stopTerminal);
+</script>
+</body>
+</html>
