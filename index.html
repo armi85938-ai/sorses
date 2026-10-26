@@ -3,215 +3,84 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#050907">
 <title>NULL_SYS — Digital Interface</title>
 <style>
-:root{
-  --bg:#050907;
-  --panel:rgba(12,22,16,.82);
-  --green:#55ff9b;
-  --green2:#14c968;
-  --muted:#82958a;
-  --line:rgba(85,255,155,.19);
-}
+:root{--bg:#050907;--green:#55ff9b;--muted:#82958a;--line:#55ff9b30}
 *{box-sizing:border-box}
-body{
-  margin:0;min-height:100vh;background:var(--bg);color:#effff4;
-  font-family:Consolas,"Courier New",monospace;overflow-x:hidden;
-}
-body:before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;
-  background:
-    radial-gradient(ellipse at 15% 40%,#0c4826 0,transparent 38%),
-    radial-gradient(ellipse at 90% 10%,#123d25 0,transparent 35%),
-    #050907;
-}
-.grid-bg{
-  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.16;
-  background-image:linear-gradient(#235a382b 1px,transparent 1px),
-  linear-gradient(90deg,#235a382b 1px,transparent 1px);
-  background-size:35px 35px;
-  mask-image:linear-gradient(to bottom,black,transparent);
-}
-header{
-  height:72px;padding:0 5%;display:flex;align-items:center;
-  justify-content:space-between;border-bottom:1px solid var(--line);
-  background:#050907c9;backdrop-filter:blur(18px);
-  position:relative;z-index:2;
-}
-.brand{font-size:20px;font-weight:bold;letter-spacing:3px}
-.brand b{color:var(--green)}
-.header-right{display:flex;align-items:center;gap:18px;font-size:10px;color:var(--muted)}
-.live{color:var(--green)}
-.live:before{content:"";display:inline-block;width:7px;height:7px;
-  background:var(--green);border-radius:50%;margin-right:7px;
-  box-shadow:0 0 12px var(--green);animation:pulse 1.5s infinite}
-main{
-  max-width:1180px;margin:0 auto;padding:45px 24px 55px;
-}
-.hero{text-align:center;margin-bottom:38px}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 10% 35%,#0d3c22 0,transparent 40%),radial-gradient(ellipse at 90% 5%,#10301d 0,transparent 35%),var(--bg);color:#effff4;font-family:Consolas,"Courier New",monospace}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(#235a3822 1px,transparent 1px),linear-gradient(90deg,#235a3822 1px,transparent 1px);background-size:35px 35px}
+header{height:68px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:#050907dc;backdrop-filter:blur(15px)}
+.brand{font-size:20px;font-weight:bold;letter-spacing:3px}.brand b{color:var(--green)}
+.live{font-size:10px;color:var(--green)}.live:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:8px;box-shadow:0 0 12px var(--green);animation:pulse 1.5s infinite}
+main{max-width:1150px;margin:auto;padding:42px 22px 55px}
+.hero{text-align:center;margin-bottom:35px}
 .eyebrow{font-size:10px;color:var(--green);letter-spacing:4px}
-h1{font-size:clamp(28px,5vw,48px);margin:17px 0 12px;letter-spacing:-1px}
-h1 span{color:var(--green);text-shadow:0 0 24px #55ff9b40}
+h1{font-size:clamp(29px,5vw,47px);margin:16px 0 10px}
+h1 span{color:var(--green);text-shadow:0 0 25px #55ff9b55}
 .subtitle{font-size:12px;color:var(--muted);line-height:1.9}
-.layout{
-  display:grid;grid-template-columns:minmax(230px,.8fr) minmax(0,1.3fr);
-  gap:25px;align-items:stretch;
-}
-.card{
-  background:linear-gradient(145deg,rgba(16,31,22,.9),rgba(5,11,8,.94));
-  border:1px solid var(--line);border-radius:13px;padding:25px;
-  box-shadow:0 18px 65px #0005,inset 0 1px #ffffff05;
-  backdrop-filter:blur(14px);position:relative;overflow:hidden;
-}
-.card:after{
-  content:"";position:absolute;top:0;left:12%;width:76%;height:1px;
-  background:linear-gradient(90deg,transparent,var(--green),transparent);
-  opacity:.55;
-}
-.card-title{
-  font-size:11px;color:var(--green);letter-spacing:1.5px;
-  padding-bottom:18px;border-bottom:1px solid #ffffff0d;
-}
-.phone-stage{
-  min-height:340px;display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
-}
-.orbit{
-  position:absolute;width:250px;height:250px;border:1px solid #55ff9b14;
-  border-radius:50%;animation:orbit 18s linear infinite;
-}
-.orbit:before,.orbit:after{
-  content:"";position:absolute;border:1px dashed #55ff9b26;border-radius:50%;
-}
-.orbit:before{inset:20px}
+.layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:23px}
+.card{background:linear-gradient(145deg,#102017ed,#070c09f5);border:1px solid var(--line);border-radius:13px;padding:23px;box-shadow:0 18px 60px #0005;position:relative;overflow:hidden}
+.card:before{content:"";position:absolute;top:0;left:12%;width:76%;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.card-title{font-size:11px;color:var(--green);letter-spacing:1.5px;padding-bottom:17px;border-bottom:1px solid #ffffff10}
+.phone-stage{min-height:330px;display:flex;align-items:center;justify-content:center;position:relative}
+.orbit{position:absolute;width:255px;height:255px;border:1px solid #55ff9b18;border-radius:50%;animation:spin 20s linear infinite}
+.orbit:before,.orbit:after{content:"";position:absolute;inset:20px;border:1px dashed #55ff9b25;border-radius:50%}
 .orbit:after{inset:45px}
-.phone{
-  width:155px;height:285px;border:2px solid #658b72;border-radius:26px;
-  background:linear-gradient(145deg,#111e15,#030604);
-  box-shadow:0 0 40px #39ff8820,inset 0 0 0 4px #ffffff08;
-  padding:10px;position:relative;z-index:1;
-  animation:float 4s ease-in-out infinite;
-}
-.phone:before{
-  content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);
-  width:48px;height:10px;background:#020403;border-radius:20px;
-}
-.phone-screen{
-  height:100%;border-radius:17px;background:
-  radial-gradient(ellipse at 50% 45%,#123922 0,transparent 55%),#050b07;
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;position:relative;overflow:hidden;
-}
+.phone{width:157px;height:285px;border:2px solid #658b72;border-radius:26px;background:linear-gradient(145deg,#17271b,#020503);padding:10px;position:relative;z-index:1;box-shadow:0 0 40px #39ff8820,inset 0 0 0 4px #ffffff08;animation:float 4s ease-in-out infinite}
+.phone:before{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:48px;height:10px;background:#020403;border-radius:20px;z-index:2}
+.phone-screen{height:100%;border-radius:17px;background:radial-gradient(ellipse at 50% 45%,#143722,transparent 60%),#050b07;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .phone-top{position:absolute;top:25px;font-size:8px;color:#8aab95;letter-spacing:2px}
-.phone-bottom{position:absolute;bottom:18px;font-size:8px;color:#60846c}
-.loader{
-  width:62px;height:62px;border:2px solid #1c3827;border-top-color:var(--green);
-  border-right-color:var(--green);border-radius:50%;
-  animation:spin 1.1s linear infinite;
-  box-shadow:0 0 24px #55ff9b19;
-}
-.loader-inner{
-  position:absolute;width:39px;height:39px;border:1px dashed #55ff9b69;
-  border-radius:50%;animation:spin 3s linear infinite reverse;
-}
-.phone-caption{font-size:10px;color:var(--green);margin-top:22px;letter-spacing:2px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
-.stat{padding:12px;border:1px solid #ffffff0b;background:#ffffff03;border-radius:7px}
-.stat small{display:block;color:var(--muted);font-size:9px;margin-bottom:7px}
-.stat strong{font-size:13px;color:var(--green)}
+.phone-bottom{position:absolute;bottom:17px;font-size:8px;color:#60846c;letter-spacing:1px}
+.logo-stage{width:76px;height:76px;display:flex;align-items:center;justify-content:center;position:relative;animation:logoIn .4s ease-out}
+.app-logo{width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:17px;overflow:hidden;box-shadow:0 0 28px #55ff9b18;z-index:1}
+.app-logo svg{width:100%;height:100%;display:block}
+.logo-ring{position:absolute;inset:0;border:2px solid transparent;border-top-color:var(--green);border-right-color:#55ff9b88;border-radius:50%;animation:spin 1.5s linear infinite}
+.logo-ring:after{content:"";position:absolute;width:5px;height:5px;right:6px;top:8px;background:var(--green);border-radius:50%;box-shadow:0 0 9px var(--green)}
+.phone-app-name{font-size:10px;color:var(--green);margin-top:22px;letter-spacing:1.5px;text-align:center}
+.phone-wait{width:52px;height:52px;border:2px solid #234630;border-top-color:var(--green);border-radius:50%;animation:spin 1s linear infinite}
+.phone-wait:after{content:"";display:block;width:28px;height:28px;margin:10px;border:1px dashed #55ff9b77;border-radius:50%;animation:spin 2s linear infinite reverse}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{padding:12px;border:1px solid #ffffff0d;background:#ffffff04;border-radius:7px}
+.stat small{display:block;color:var(--muted);font-size:9px;margin-bottom:7px}.stat strong{font-size:11px;color:var(--green)}
 label{display:block;font-size:10px;color:#b7c9bd;margin:20px 0 9px}
-input{
-  display:block;width:100%;min-width:0;padding:14px 12px;
-  background:#030705;border:1px solid #294a34;border-radius:6px;
-  color:white;font:inherit;font-size:13px;outline:none;
-  transition:border .2s,box-shadow .2s;
-}
-input:focus{border-color:var(--green);box-shadow:0 0 0 3px #55ff9b12}
-input::placeholder{color:#4d6154}
-button{
-  font:inherit;cursor:pointer;border-radius:6px;transition:.2s;
-}
+input{width:100%;padding:14px 12px;background:#030705;border:1px solid #294a34;border-radius:6px;color:white;font:inherit;font-size:13px;outline:none}
+input:focus{border-color:var(--green);box-shadow:0 0 0 3px #55ff9b12}input::placeholder{color:#4d6154}
+button{font:inherit;cursor:pointer;border-radius:6px;transition:.2s}
 button:disabled{opacity:.6;cursor:wait}
-.primary{
-  width:100%;padding:14px;margin-top:18px;background:var(--green);
-  color:#06150b;border:1px solid var(--green);font-weight:bold;
-  letter-spacing:1px;font-size:11px;
-}
+.primary{width:100%;padding:14px;margin-top:18px;background:var(--green);color:#06150b;border:1px solid var(--green);font-weight:bold;letter-spacing:1px;font-size:11px}
 .primary:hover{box-shadow:0 0 24px #55ff9b30;transform:translateY(-1px)}
-.secondary{
-  width:100%;padding:12px;margin-top:12px;background:transparent;
-  color:#d9f6e2;border:1px solid #365440;font-size:11px;
-}
-.code-result{
-  margin-top:14px;border:1px solid #55ff9b35;border-radius:7px;
-  background:#55ff9b08;padding:13px;display:flex;
-  align-items:center;justify-content:space-between;gap:10px;
-}
-.code-result small{display:block;color:var(--muted);font-size:9px;margin-bottom:6px}
-.code-result strong{color:var(--green);font-size:14px}
-.badge{font-size:9px;padding:6px 8px;border-radius:4px;
-  color:var(--green);border:1px solid #55ff9b35}
-.note{font-size:10px;line-height:1.8;color:var(--muted);margin-top:18px}
+.secondary{width:100%;padding:12px;margin-top:12px;background:transparent;color:#d9f6e2;border:1px solid #365440;font-size:11px}
+.result{margin-top:14px;border:1px solid #55ff9b35;border-radius:7px;background:#55ff9b08;padding:13px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.result small{display:block;color:var(--muted);font-size:9px;margin-bottom:6px}.result strong{color:var(--green);font-size:14px}
+.badge{font-size:9px;padding:6px 8px;border-radius:4px;color:var(--green);border:1px solid #55ff9b35}
+.note{font-size:10px;line-height:1.8;color:var(--muted);margin-top:16px}
 .status{font-size:10px;line-height:1.8;color:var(--green);margin-top:12px;min-height:18px}
 .hidden{display:none!important}
-.terminal-card{margin-top:25px}
+.terminal-card{margin-top:23px}
 .terminal-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.window-dots{display:flex;gap:5px}
-.window-dots i{width:7px;height:7px;border-radius:50%;background:#385443}
-.window-dots i:first-child{background:#ff6464}
-.window-dots i:nth-child(2){background:#e9c85c}
-.window-dots i:nth-child(3){background:var(--green)}
-.terminal{
-  height:250px;margin-top:18px;padding:15px;overflow:hidden;
-  background:#020503;border:1px solid #1b3524;border-radius:7px;
-  color:#67fda0;font-size:11px;line-height:1.9;overflow-wrap:anywhere;
-  box-shadow:inset 0 0 35px #000;
-}
-.terminal div{animation:appear .18s ease-out}
-.terminal .dim{color:#52735d}
-.timer-row{display:flex;justify-content:space-between;gap:12px;
-  margin-top:15px;color:var(--muted);font-size:10px}
-.timer-row strong{color:var(--green)}
-.progress{height:3px;background:#203428;margin-top:12px;border-radius:5px;overflow:hidden}
-.progress div{height:100%;width:100%;background:var(--green);transition:width 1s linear}
-footer{border-top:1px solid var(--line);text-align:center;padding:23px;color:#53675a;font-size:9px;letter-spacing:1px}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes orbit{to{transform:rotate(360deg)}}
-@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-9px) rotate(1deg)}}
-@keyframes pulse{50%{opacity:.35}}
-@keyframes appear{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:700px){
-  header{height:62px;padding:0 18px}
-  .header-right{gap:7px}
-  main{padding:32px 14px}
-  .layout{grid-template-columns:1fr;gap:16px}
-  .phone-stage{min-height:310px}
-  .card{padding:20px}
-  .terminal{height:220px}
-  .hero{margin-bottom:25px}
-}
+.dots{display:flex;gap:5px}.dots i{width:7px;height:7px;border-radius:50%;background:#385443}.dots i:first-child{background:#ff6464}.dots i:nth-child(2){background:#e9c85c}.dots i:nth-child(3){background:var(--green)}
+.terminal{height:240px;margin-top:18px;padding:14px;overflow:hidden;background:#020503;border:1px solid #1b3524;border-radius:7px;color:#67fda0;font-size:11px;line-height:1.9;overflow-wrap:anywhere;box-shadow:inset 0 0 35px #000}
+.terminal div{animation:appear .18s ease-out}.dim{color:#52735d}
+.timer-row{display:flex;justify-content:space-between;gap:12px;margin-top:15px;color:var(--muted);font-size:10px}.timer-row strong{color:var(--green)}
+.progress{height:3px;background:#203428;margin-top:12px;border-radius:5px;overflow:hidden}.progress div{height:100%;width:100%;background:var(--green);transition:width 1s linear}
+footer{border-top:1px solid var(--line);text-align:center;padding:22px;color:#53675a;font-size:9px;letter-spacing:1px}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}@keyframes pulse{50%{opacity:.35}}@keyframes appear{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}@keyframes logoIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+@media(max-width:700px){header{height:62px;padding:0 18px}main{padding:30px 14px}.layout{grid-template-columns:1fr;gap:16px}.phone-stage{min-height:310px}.card{padding:19px}.hero{margin-bottom:25px}.terminal{height:220px}}
 </style>
 </head>
 <body>
-<div class="grid-bg"></div>
 <header>
   <div class="brand">NULL<b>_</b>SYS</div>
-  <div class="header-right">
-    <span class="live">SYSTEM ONLINE</span>
-    <span>V 2.0</span>
-  </div>
+  <div class="live">SYSTEM ONLINE</div>
 </header>
 
 <main>
   <section class="hero">
     <div class="eyebrow">DIGITAL ENVIRONMENT // 001</div>
     <h1>Enter the <span>Unknown.</span></h1>
-    <div class="subtitle">
-      A simulated digital interface.<br>
-      Explore the system in a visual demo environment.
-    </div>
+    <div class="subtitle">A simulated digital interface.<br>Explore the system in a visual demo environment.</div>
   </section>
 
   <div class="layout">
@@ -222,16 +91,24 @@ footer{border-top:1px solid var(--line);text-align:center;padding:23px;color:#53
         <div class="phone">
           <div class="phone-screen">
             <div class="phone-top">NULL SYSTEM</div>
-            <div class="loader"></div>
-            <div class="loader-inner"></div>
-            <div class="phone-caption">INITIALIZING</div>
+
+            <div id="phoneWait" class="phone-wait"></div>
+
+            <div id="phoneLogo" class="hidden" style="display:flex;flex-direction:column;align-items:center">
+              <div class="logo-stage">
+                <div class="logo-ring"></div>
+                <div class="app-logo" id="logoIcon"></div>
+              </div>
+              <div class="phone-app-name" id="phoneAppName">APP</div>
+            </div>
+
             <div class="phone-bottom">SIMULATION MODE</div>
           </div>
         </div>
       </div>
       <div class="stats">
         <div class="stat"><small>CONNECTION</small><strong>LOCAL DEMO</strong></div>
-        <div class="stat"><small>ENCRYPTION</small><strong>VISUAL ONLY</strong></div>
+        <div class="stat"><small>MODE</small><strong>VISUAL ONLY</strong></div>
       </div>
     </section>
 
@@ -243,20 +120,13 @@ footer{border-top:1px solid var(--line);text-align:center;padding:23px;color:#53
       <div id="phoneStatus" class="status">> Waiting for input...</div>
 
       <div id="codeArea" class="hidden">
-        <label for="demoCode">DEMO IDENTIFIER</label>
-        <input id="demoCode" inputmode="numeric" maxlength="6"
-               placeholder="Try 111111, 222222, etc.">
-        <div class="code-result">
-          <div>
-            <small>DEMO CODE</small>
-            <strong id="codeDisplay">------</strong>
-          </div>
+        <label for="demoCode">DEMO APP CODE</label>
+        <input id="demoCode" inputmode="numeric" maxlength="6" placeholder="Enter a demo code">
+        <div class="result">
+          <div><small>DEMO CODE</small><strong id="codeDisplay">------</strong></div>
           <span class="badge" id="appName">NOT DETECTED</span>
         </div>
-        <div class="note">
-          Demo identifiers are fictional labels for this interface.
-          No SMS is sent, and no real account is verified.
-        </div>
+        <div class="note">This is a visual demo. No SMS is sent, and no real messaging account is accessed.</div>
         <button class="primary" id="nextBtn">OPEN TERMINAL →</button>
       </div>
     </section>
@@ -265,14 +135,12 @@ footer{border-top:1px solid var(--line);text-align:center;padding:23px;color:#53
   <section class="card terminal-card hidden" id="terminalCard">
     <div class="terminal-head">
       <div class="card-title" style="border:0;padding:0">[ 02 / LIVE TERMINAL ]</div>
-      <div class="window-dots"><i></i><i></i><i></i></div>
+      <div class="dots"><i></i><i></i><i></i></div>
     </div>
-    <div class="subtitle" style="margin-top:12px">
-      GENERATED VISUAL DATA // NO EXTERNAL CONNECTION
-    </div>
+    <div class="subtitle" style="margin-top:12px">GENERATED VISUAL DATA // NO EXTERNAL CONNECTION</div>
     <div class="terminal" id="terminal"></div>
     <div class="timer-row">
-      <span>SIMULATION STATUS: <strong id="runStatus">ACTIVE</strong></span>
+      <span>STATUS: <strong id="runStatus">ACTIVE</strong></span>
       <span id="timer">05:00</span>
     </div>
     <div class="progress"><div id="progressBar"></div></div>
@@ -285,129 +153,187 @@ footer{border-top:1px solid var(--line);text-align:center;padding:23px;color:#53
 <script>
 const $ = id => document.getElementById(id);
 
-const demoApps = {
-  "111111": "RUBIKA",
-  "222222": "TELEGRAM",
-  "333333": "SHAD",
-  "444444": "EITAA",
-  "555555": "BALE"
+/*
+  Offline SVG logo illustrations.
+  Demo codes:
+  111111 = Rubika
+  222222 = Telegram
+  333333 = Shad
+  444444 = Eitaa
+  555555 = Bale
+*/
+const apps = {
+  "111111": {
+    name:"RUBIKA",
+    svg:`<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="rubikaG" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ff3c92"/><stop offset=".5" stop-color="#9a4dff"/><stop offset="1" stop-color="#3e78ff"/></linearGradient></defs>
+      <rect width="64" height="64" rx="17" fill="url(#rubikaG)"/>
+      <path d="M32 11 49 21v21L32 53 15 42V21Z" fill="none" stroke="white" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M22 26h20v13H30l-7 5v-5h-1Z" fill="white"/>
+      <circle cx="28" cy="32" r="1.5" fill="#a04cff"/><circle cx="33" cy="32" r="1.5" fill="#a04cff"/><circle cx="38" cy="32" r="1.5" fill="#a04cff"/>
+    </svg>`
+  },
+  "222222": {
+    name:"TELEGRAM",
+    svg:`<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="18" fill="#229ED9"/>
+      <path d="M49 16 42 49c-.5 2.3-1.9 2.9-3.9 1.7L27 42l-5.4 5.2c-.6.6-1.1 1.1-2.3 1.1l.8-11.3L40.7 20c.9-.8-.2-1.2-1.4-.4L13.1 36l-11-3.4c-2.4-.8-2.4-2.4.5-3.5L45 13.7c2-.7 3.8.5 4 2.3Z" fill="white" transform="translate(6 3) scale(.86)"/>
+    </svg>`
+  },
+  "333333": {
+    name:"SHAD",
+    svg:`<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="shadG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#20c8e8"/><stop offset="1" stop-color="#2469e9"/></linearGradient></defs>
+      <rect width="64" height="64" rx="17" fill="url(#shadG)"/>
+      <path d="M15 21Q15 16 21 16H43Q49 16 49 22V37Q49 43 43 43H30L20 50V43Q15 42 15 37Z" fill="white"/>
+      <path d="M23 27h18M23 33h12" stroke="#2586ed" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="46" cy="45" r="8" fill="#42e6b0"/><path d="m42 45 3 3 5-6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`
+  },
+  "444444": {
+    name:"EITAA",
+    svg:`<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="eitaaG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb04a"/><stop offset="1" stop-color="#f26a21"/></linearGradient></defs>
+      <rect width="64" height="64" rx="17" fill="url(#eitaaG)"/>
+      <path d="M13 23Q13 16 21 16H43Q51 16 51 24V36Q51 44 43 44H31L19 51V43Q13 41 13 35Z" fill="white"/>
+      <path d="M23 26h18M23 32h13" stroke="#f48b32" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="45" cy="19" r="5" fill="#ffe8c5"/>
+    </svg>`
+  },
+  "555555": {
+    name:"BALE",
+    svg:`<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="baleG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#55b9ff"/><stop offset="1" stop-color="#2470d9"/></linearGradient></defs>
+      <rect width="64" height="64" rx="17" fill="url(#baleG)"/>
+      <path d="M13 23Q13 16 21 16H43Q51 16 51 24V36Q51 44 43 44H31L19 51V43Q13 41 13 35Z" fill="white"/>
+      <path d="M23 26h18M23 32h13" stroke="#3187e7" stroke-width="3" stroke-linecap="round"/>
+      <path d="m39 37 4 4 7-9" fill="none" stroke="#3187e7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`
+  }
 };
 
-let outputLoop = null;
-let countdown = null;
-let remaining = 300;
-let lineNo = 1;
+let outputLoop=null, countdown=null, remaining=300, lineNo=1;
 
-$("startBtn").addEventListener("click", () => {
-  const phone = $("phoneNumber").value.trim();
+function updatePhone(app){
+  const wait=$("phoneWait");
+  const logo=$("phoneLogo");
 
-  if (!/^[0-9+() -]{5,20}$/.test(phone)) {
-    $("phoneStatus").textContent = "> Enter a valid demo number.";
+  if(!app){
+    wait.classList.remove("hidden");
+    logo.classList.add("hidden");
+    $("logoIcon").innerHTML="";
+    $("phoneAppName").textContent="";
     return;
   }
 
-  $("phoneStatus").textContent =
-    "> Local demo initialized. No message was sent.";
+  $("logoIcon").innerHTML=app.svg;
+  $("phoneAppName").textContent=app.name;
+  wait.classList.add("hidden");
+  logo.classList.remove("hidden");
+}
 
+$("startBtn").addEventListener("click",()=>{
+  const number=$("phoneNumber").value.trim();
+
+  if(!/^[0-9+() -]{5,20}$/.test(number)){
+    $("phoneStatus").textContent="> Enter a valid demo number.";
+    return;
+  }
+
+  $("phoneStatus").textContent="> Demo session initialized. No message sent.";
   $("codeArea").classList.remove("hidden");
   $("demoCode").focus();
 });
 
-$("demoCode").addEventListener("input", () => {
-  const code = $("demoCode").value.replace(/\D/g, "").slice(0, 6);
-  $("demoCode").value = code;
-  $("codeDisplay").textContent = code || "------";
+$("demoCode").addEventListener("input",()=>{
+  const code=$("demoCode").value.replace(/\D/g,"").slice(0,6);
+  $("demoCode").value=code;
+  $("codeDisplay").textContent=code||"------";
 
-  const name = demoApps[code];
-  $("appName").textContent = name || (code.length ? "UNKNOWN" : "NOT DETECTED");
+  const app=apps[code];
+  $("appName").textContent=app?app.name:(code.length?"UNKNOWN":"NOT DETECTED");
+  updatePhone(app||null);
 });
 
-$("nextBtn").addEventListener("click", () => {
-  if (!$("demoCode").value) {
-    $("phoneStatus").textContent = "> Enter a demo identifier first.";
+$("nextBtn").addEventListener("click",()=>{
+  if(!$("demoCode").value){
+    $("phoneStatus").textContent="> Enter a demo identifier first.";
     return;
   }
 
-  $("nextBtn").disabled = true;
-  $("nextBtn").textContent = "LOADING...";
+  $("nextBtn").disabled=true;
+  $("nextBtn").textContent="LOADING...";
 
-  setTimeout(() => {
+  setTimeout(()=>{
     $("terminalCard").classList.remove("hidden");
-    $("nextBtn").disabled = false;
-    $("nextBtn").textContent = "OPEN TERMINAL →";
+    $("nextBtn").disabled=false;
+    $("nextBtn").textContent="OPEN TERMINAL →";
     $("terminalCard").scrollIntoView({behavior:"smooth",block:"start"});
     startTerminal();
-  }, 1500);
+  },1500);
 });
 
-function startTerminal() {
+function startTerminal(){
   stopTerminal();
-  remaining = 300;
-  lineNo = 1;
-  $("terminal").innerHTML = "";
-  $("runStatus").textContent = "ACTIVE";
+  remaining=300;
+  lineNo=1;
+  $("terminal").innerHTML="";
+  $("runStatus").textContent="ACTIVE";
 
-  outputLoop = setInterval(() => {
-    const fragment = document.createDocumentFragment();
+  outputLoop=setInterval(()=>{
+    const fragment=document.createDocumentFragment();
 
-    for (let i = 0; i < 3; i++) {
-      const row = document.createElement("div");
-      const value = String(Math.floor(Math.random() * 100)).padStart(2,"0");
-      row.textContent =
-        "> [" + String(lineNo++).padStart(4,"0") +
-        "] SIM_PACKET_" + value + " // VISUAL DATA";
+    for(let i=0;i<3;i++){
+      const row=document.createElement("div");
+      const value=String(Math.floor(Math.random()*100)).padStart(2,"0");
+      row.textContent="> ["+String(lineNo++).padStart(4,"0")+"] SIM_PACKET_"+value+" // VISUAL DATA";
       fragment.appendChild(row);
     }
 
     $("terminal").appendChild(fragment);
-
-    while ($("terminal").children.length > 60) {
+    while($("terminal").children.length>60){
       $("terminal").firstElementChild.remove();
     }
-  }, 180);
+  },180);
 
   updateTimer();
-
-  countdown = setInterval(() => {
+  countdown=setInterval(()=>{
     remaining--;
     updateTimer();
 
-    if (remaining <= 0) {
+    if(remaining<=0){
       stopTerminal();
-      $("runStatus").textContent = "COMPLETED";
-      $("terminal").insertAdjacentHTML(
-        "beforeend",
-        "<div class='dim'>&gt; Simulation completed.</div>"
-      );
+      $("runStatus").textContent="COMPLETED";
+      addTerminalLine("> Simulation completed.");
     }
-  }, 1000);
+  },1000);
 }
 
-function updateTimer() {
-  const min = Math.floor(remaining / 60);
-  const sec = remaining % 60;
-
-  $("timer").textContent =
-    String(min).padStart(2,"0") + ":" +
-    String(sec).padStart(2,"0");
-
-  $("progressBar").style.width = (remaining / 300 * 100) + "%";
+function updateTimer(){
+  const min=Math.floor(remaining/60),sec=remaining%60;
+  $("timer").textContent=String(min).padStart(2,"0")+":"+String(sec).padStart(2,"0");
+  $("progressBar").style.width=(remaining/300*100)+"%";
 }
 
-function stopTerminal() {
-  if (outputLoop) clearInterval(outputLoop);
-  if (countdown) clearInterval(countdown);
-  outputLoop = null;
-  countdown = null;
+function addTerminalLine(text){
+  const row=document.createElement("div");
+  row.className="dim";
+  row.textContent=text;
+  $("terminal").appendChild(row);
 }
 
-$("stopBtn").addEventListener("click", () => {
+function stopTerminal(){
+  if(outputLoop)clearInterval(outputLoop);
+  if(countdown)clearInterval(countdown);
+  outputLoop=null;
+  countdown=null;
+}
+
+$("stopBtn").addEventListener("click",()=>{
   stopTerminal();
-  $("runStatus").textContent = "STOPPED";
-  $("terminal").insertAdjacentHTML(
-    "beforeend",
-    "<div class='dim'>&gt; Simulation stopped by user.</div>"
-  );
+  $("runStatus").textContent="STOPPED";
+  addTerminalLine("> Simulation stopped by user.");
 });
 </script>
 </body>
