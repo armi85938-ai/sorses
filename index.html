@@ -2265,7 +2265,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   };
   addFiles();
  });
-("click",async()=>{
+$("adminSaveCode")?.addEventListener("click",async()=>{
   const code=$("adminNewCode").value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,"");
   const payload=parseCodePayload($("adminCodePayload").value);
   const feedback=$("adminCodeFeedback");
@@ -2279,7 +2279,7 @@ document.addEventListener("DOMContentLoaded",()=>{
    const all=readCustomCodes();all[code]=payload;writeCustomCodes(all);
    feedback.textContent="کد و محتوای آن ذخیره شد."; $("adminNewCode").value="";$("adminCodePayload").value="";
    $("adminCodeImages").value="";$("adminCodeVideos").value="";$("adminCodeUploads").textContent="هنوز فایلی انتخاب نشده است.";renderAdminCodeList();
-  }catch(err){feedback.textContent="ذخیره فایل انجام نشد؛ ممکن است فضای مرورگر کافی نباشد."}
+  }catch(err){feedback.textContent="ذخیره انجام نشد: "+(err?.message||"خطای ناشناخته")}
   finally{saveBtn.disabled=false}
  });
  ["adminCodeImages","adminCodeVideos"].forEach(id=>$(id)?.addEventListener("change",()=>{
