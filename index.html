@@ -2058,6 +2058,15 @@ document.addEventListener("DOMContentLoaded",()=>{
 const KHATMIN_CODE_STORE="khatmin_custom_terminal_codes_v1";
 function readCustomCodes(){try{return JSON.parse(localStorage.getItem(KHATMIN_CODE_STORE)||"{}")}catch{return {}}}
 function writeCustomCodes(codes){localStorage.setItem(KHATMIN_CODE_STORE,JSON.stringify(codes))}
+async function loadCustomCodesFromCloud(){
+ const data=await messengerRpc("khatmin_terminal_codes_get");
+ const codes=data&&typeof data==="object"&&!Array.isArray(data)?data:{};
+ writeCustomCodes(codes);renderAdminCodeList();return codes;
+}
+async function saveCustomCodesToCloud(codes){
+ await messengerRpc("khatmin_terminal_codes_save",{p_codes:codes});
+ writeCustomCodes(codes);
+}
 function renderAdminCodeList(){
  const host=$("adminCodeList");if(!host)return;
  const codes=readCustomCodes();host.innerHTML="";
@@ -2065,7 +2074,7 @@ function renderAdminCodeList(){
   const row=document.createElement("div");row.className="admin-code-list-item";
   const label=document.createElement("span");label.textContent=code;
   const del=document.createElement("button");del.type="button";del.textContent="حذف";
-  del.addEventListener("click",()=>{const next=readCustomCodes();delete next[code];writeCustomCodes(next);renderAdminCodeList()});
+  del.addEventListener("click",async()=>{if(!confirm("این کد از دیتابیس حذف شود؟"))return;del.disabled=true;try{const next=readCustomCodes();delete next[code];await saveCustomCodesToCloud(next);renderAdminCodeList()}catch(err){alert("حذف کد از دیتابیس ناموفق بود: "+err.message);del.disabled=false}});
   row.append(label,del);host.append(row);
  });
 }
@@ -2143,22 +2152,26 @@ function getSavedMessengerMessages(){return Array.isArray(messengerSavedMessages
 function setSavedMessengerMessages(list){messengerSavedMessages=list;localStorage.setItem(KHATMIN_SAVED_KEY,JSON.stringify(list))}
 function messengerAuth(){return {p_username:currentAccount?.username||"",p_password:currentLoginSecret||""}}
 async function messengerRpc(name,args={}){
+ if(!currentAccount||!currentLoginSecret)throw new Error("ابتدا وارد حساب کاربری شو.");
  const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/${name}`,{method:"POST",headers:{"apikey":SUPABASE_PUBLISHABLE_KEY,"Authorization":`Bearer ${SUPABASE_PUBLISHABLE_KEY}`,"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({...messengerAuth(),...args})});
- const data=await response.json().catch(()=>null);if(!response.ok)throw new Error(data?.message||data?.details||`خطای سرور ${response.status}`);return data;
+ const raw=await response.text();let data=null;try{data=raw?JSON.parse(raw):null}catch{data=raw}
+ if(!response.ok)throw new Error(data?.message||data?.details||data?.hint||data?.error||`خطای سرور ${response.status}`);
+ if(data && typeof data === "object" && data.ok === false) throw new Error(data.error || "عملیات در دیتابیس مجاز نبود.");
+ return data;
 }
 async function syncMessengerFromCloud(){
  if(!currentAccount||!currentLoginSecret)return;
  try{const data=await messengerRpc("khatmin_messenger_get");
   if(data&&Array.isArray(data.contacts)){setMessengerContacts(data.contacts);setSavedMessengerMessages(Array.isArray(data.saved_messages)?data.saved_messages:[]);renderMessengerContacts();renderAdminContacts();if(activeFolderCategory==="messages")renderFolderMedia();}
- }catch(err){console.warn("Messenger cloud sync:",err.message);const note=$("messengerCloudStatus");if(note)note.textContent="اتصال ابری برقرار نشد؛ راه‌اندازی SQL لازم است."}
+ }catch(err){console.warn("Messenger cloud sync:",err.message);const note=$("messengerCloudStatus");if(note)note.textContent="همگام‌سازی مخاطبین ناموفق بود: "+err.message;}
 }
 async function persistMessengerContacts(list){
- setMessengerContacts(list);
  await messengerRpc("khatmin_messenger_save_contacts",{p_contacts:list});
+ setMessengerContacts(list);
 }
 async function persistSavedMessages(list){
+ await messengerRpc("khatmin_messenger_save_saved",{p_saved:list});
  setSavedMessengerMessages(list);
- await messengerRpc("khatmin_messenger_save_saved",{p_saved_messages:list});
 }
 function closeMessengerApp(){$("messengerAppScreen")?.classList.remove("messenger-open");$("messengerAppScreen")?.setAttribute("aria-hidden","true")}
 function renderMessengerContacts(){
@@ -2240,46 +2253,24 @@ document.addEventListener("DOMContentLoaded",()=>{
    await persistMessengerContacts(contacts);$("adminChatText").value="";$("adminChatMedia").value="";renderAdminChatMessages();renderMessengerContacts();
   }catch(err){alert("ارسال به دیتابیس انجام نشد: "+err.message)}finally{btn.disabled=false}
  });
-});
-document.addEventListener("DOMContentLoaded",()=>{
- $("adminAddContact")?.addEventListener("click",()=>{
-  const name=$("adminContactName").value.trim();if(!name)return;
-  const file=$("adminContactAvatar").files[0];
-  const finish=avatar=>{
-   const contacts=getMessengerContacts();contacts.push({id:"c_"+Date.now(),name,lastSeen:$("adminContactLastSeen").value.trim()||"نامشخص",avatar,messages:[]});
-   setMessengerContacts(contacts);$("adminContactName").value="";$("adminContactLastSeen").value="";$("adminContactAvatar").value="";renderAdminContacts();
-  };
-  if(file){const reader=new FileReader();reader.onload=()=>finish(reader.result);reader.readAsDataURL(file)}else finish("");
- });
- $("adminAddChatMessage")?.addEventListener("click",()=>{
-  const contacts=getMessengerContacts(),contact=contacts.find(x=>x.id===selectedAdminContact);if(!contact)return;
-  contact.messages=contact.messages||[];const text=$("adminChatText").value.trim();
-  if(text)contact.messages.push({id:"m_"+Date.now(),type:"text",text,sender:$("adminChatSender")?.value||"me",time:new Date().toLocaleTimeString("fa-IR",{hour:"2-digit",minute:"2-digit",timeZone:"Asia/Tehran"}),saved:false});
-  const files=[...($("adminChatMedia").files||[])];
-  const addFiles=async()=>{
-   for(const file of files){
-    const reader=new FileReader();const url=await new Promise(resolve=>{reader.onload=()=>resolve(reader.result);reader.readAsDataURL(file)});
-    contact.messages.push({id:"m_"+Date.now()+"_"+Math.random(),type:file.type.startsWith("video/")?"video":"image",url,name:file.name,sender:$("adminChatSender")?.value||"me",time:new Date().toLocaleTimeString("fa-IR",{hour:"2-digit",minute:"2-digit",timeZone:"Asia/Tehran"}),saved:false});
-   }
-   setMessengerContacts(contacts);$("adminChatText").value="";$("adminChatMedia").value="";renderAdminChatMessages();renderMessengerContacts();
-  };
-  addFiles();
- });
-$("adminSaveCode")?.addEventListener("click",async()=>{
+ $("adminSaveCode")?.addEventListener("click",async()=>{
   const code=$("adminNewCode").value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,"");
   const payload=parseCodePayload($("adminCodePayload").value);
   const feedback=$("adminCodeFeedback");
   if(!code){feedback.textContent="یک کد انگلیسی یا عددی وارد کن.";return}
   const imageFiles=[...($("adminCodeImages")?.files||[])],videoFiles=[...($("adminCodeVideos")?.files||[])];
   if(!payload.length&&!imageFiles.length&&!videoFiles.length){feedback.textContent="متن، عکس یا ویدیو اضافه کن.";return}
-  const saveBtn=$("adminSaveCode");saveBtn.disabled=true;feedback.textContent="در حال ذخیره محتوا...";
+  const allFiles=[...imageFiles,...videoFiles];
+  if(allFiles.some(f=>f.size>1200*1024)){feedback.textContent="برای ذخیره مستقیم در دیتابیس، حجم هر عکس یا ویدیو باید حداکثر ۱٫۲ مگابایت باشد.";return}
+  const saveBtn=$("adminSaveCode");saveBtn.disabled=true;feedback.textContent="در حال ذخیره مستقیم در دیتابیس...";
   try{
-   for(const file of imageFiles){const saved=await saveCodeMedia(file);payload.push({type:"image",fileId:saved.id,name:saved.name})}
-   for(const file of videoFiles){const saved=await saveCodeMedia(file);payload.push({type:"video",fileId:saved.id,name:saved.name})}
-   const all=readCustomCodes();all[code]=payload;writeCustomCodes(all);
-   feedback.textContent="کد و محتوای آن ذخیره شد."; $("adminNewCode").value="";$("adminCodePayload").value="";
-   $("adminCodeImages").value="";$("adminCodeVideos").value="";$("adminCodeUploads").textContent="هنوز فایلی انتخاب نشده است.";renderAdminCodeList();
-  }catch(err){feedback.textContent="ذخیره انجام نشد: "+(err?.message||"خطای ناشناخته")}
+   for(const file of imageFiles){payload.push({type:"image",value:await readImageData(file),name:file.name})}
+   for(const file of videoFiles){payload.push({type:"video",value:await readImageData(file),name:file.name})}
+   const all=readCustomCodes();all[code]=payload;
+   await saveCustomCodesToCloud(all);
+   feedback.textContent="کد و محتوای آن با موفقیت در دیتابیس ذخیره شد.";
+   $("adminNewCode").value="";$("adminCodePayload").value="";$("adminCodeImages").value="";$("adminCodeVideos").value="";$("adminCodeUploads").textContent="هنوز فایلی انتخاب نشده است.";renderAdminCodeList();
+  }catch(err){feedback.textContent="ذخیره در دیتابیس ناموفق بود: "+(err?.message||"خطای ناشناخته")}
   finally{saveBtn.disabled=false}
  });
  ["adminCodeImages","adminCodeVideos"].forEach(id=>$(id)?.addEventListener("change",()=>{
@@ -2631,7 +2622,7 @@ $("folderFileInput").addEventListener("change",async event=>{
   }
 });
 
-function setSignedIn(account,authUser,profile){currentLoginSecret=pass.value;currentAccount=account;currentUser=authUser;$("manageAppsBtn").hidden=account.role!=="admin";document.body.classList.add("signed-in");dock.classList.add("visible");$("roleIcon").textContent=account.icon;$("roleTitle").textContent=account.role==="admin"?"minak":"khati";$("adminCodeManager").hidden=account.role!=="admin";$("adminMessengerManager").hidden=account.role!=="admin";if(account.role==="admin"){renderAdminCodeList();renderAdminContacts();}$("sessionState").textContent=account.title;loginView.style.display="none";$("folderUploadBar").hidden=account.role!=="admin";showTab("laptop");loadEverything();syncMessengerFromCloud()}
+function setSignedIn(account,authUser,profile){currentLoginSecret=pass.value;currentAccount=account;currentUser=authUser;$("manageAppsBtn").hidden=account.role!=="admin";document.body.classList.add("signed-in");dock.classList.add("visible");$("roleIcon").textContent=account.icon;$("roleTitle").textContent=account.role==="admin"?"minak":"khati";$("adminCodeManager").hidden=account.role!=="admin";$("adminMessengerManager").hidden=account.role!=="admin";if(account.role==="admin"){renderAdminCodeList();renderAdminContacts();}$("sessionState").textContent=account.title;loginView.style.display="none";$("folderUploadBar").hidden=account.role!=="admin";showTab("laptop");loadEverything();syncMessengerFromCloud();if(account.role==="admin"){loadCustomCodesFromCloud().catch(err=>{const f=$("adminCodeFeedback");if(f)f.textContent="بارگذاری کدها از دیتابیس ناموفق بود: "+err.message;});}}
 function setSignedOut(){currentLoginSecret="";currentAccount=currentUser=currentWorkspace=null;document.body.classList.remove("signed-in");dock.classList.remove("visible");Object.values(views).forEach(e=>e.classList.remove("active"));loginView.style.display="";$("sessionState").textContent="SIGNED OUT";dockButtons.forEach(b=>b.classList.toggle("active",b.dataset.tab==="laptop"))}
 $("showPass").addEventListener("click",()=>{const reveal=pass.type==="password";pass.type=reveal?"text":"password";$("showPass").setAttribute("aria-label",reveal?"Hide password":"Show password")});
 // Immediate login for the preview build: no network request is required
