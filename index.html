@@ -1612,6 +1612,248 @@ body.signed-in #panelView .dashboard-option-glow {
   body.signed-in #panelView .dashboard-option { transition: none; }
 }
 </style>
+<style id="khatmin-coding-journey-premium">
+/* Adventure-map coding journey: scoped only to the coding screen. */
+body.signed-in #codingScreen.coding-screen{
+  position:fixed!important;inset:0!important;z-index:99999!important;
+  width:100vw!important;height:100vh!important;height:100dvh!important;min-height:100vh!important;max-height:100dvh!important;
+  box-sizing:border-box!important;margin:0!important;border-radius:0!important;overflow:hidden!important;isolation:isolate;
+  color:#26354a!important;
+  background:
+    radial-gradient(ellipse at 12% 14%,rgba(255,255,255,.95) 0 7%,transparent 29%),
+    radial-gradient(ellipse at 88% 18%,rgba(255,255,255,.65) 0 5%,transparent 24%),
+    radial-gradient(ellipse at 78% 86%,rgba(255,220,185,.42),transparent 32%),
+    linear-gradient(155deg,#eaf8f0 0%,#f7f4e9 44%,#eeeaff 100%)!important;
+}
+body.signed-in #codingScreen.coding-screen:before,body.signed-in #codingScreen.coding-screen:after{
+  content:"";position:absolute;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(2px)
+}
+body.signed-in #codingScreen.coding-screen:before{width:70vw;height:34vw;left:-18vw;bottom:-18vw;background:rgba(147,207,177,.22);transform:rotate(-18deg);box-shadow:0 0 0 26px rgba(147,207,177,.08),0 0 0 58px rgba(147,207,177,.05)}
+body.signed-in #codingScreen.coding-screen:after{width:66vw;height:36vw;right:-20vw;top:18%;background:rgba(182,166,230,.18);transform:rotate(22deg);box-shadow:0 0 0 24px rgba(182,166,230,.07),0 0 0 54px rgba(182,166,230,.04)}
+body.signed-in #codingScreen.coding-screen.screen-open{display:flex!important;flex-direction:column!important;align-items:stretch!important;padding:calc(env(safe-area-inset-top) + 8px) 0 calc(env(safe-area-inset-bottom) + 8px)!important;overflow:hidden!important}
+body.signed-in #codingScreen .folder-topbar{position:relative;z-index:4;flex:0 0 auto;width:100%;max-width:none;min-height:54px;box-sizing:border-box;padding:4px 15px 8px!important;margin:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+body.signed-in #codingScreen .folder-top-title h3{color:#28394d!important;font-weight:950}
+body.signed-in #codingScreen .folder-top-kicker{color:#6c9b80!important;letter-spacing:2px}
+body.signed-in #codingScreen .folder-back{background:rgba(255,255,255,.78)!important;border:1px solid rgba(89,127,105,.18)!important;color:#42634f!important;box-shadow:0 5px 16px rgba(68,105,82,.09)!important;backdrop-filter:blur(12px)}
+body.signed-in #codingScreen .folder-top-symbol{color:#7666a9!important;background:rgba(255,255,255,.65)!important;border:1px solid rgba(124,104,169,.13)!important}
+body.signed-in #codingScreen .coding-journey-shell{position:relative;z-index:1;display:flex;flex:1 1 auto;min-height:0;width:100%;flex-direction:column;justify-content:center;box-sizing:border-box;padding:0 0 8px}
+body.signed-in #codingScreen .coding-journey-heading{text-align:center;padding:clamp(8px,2.4vh,23px) 16px 10px}
+body.signed-in #codingScreen .coding-journey-eyebrow{display:inline-block;color:#73967d;font-size:10px;font-weight:950;letter-spacing:3px;margin-bottom:8px}
+body.signed-in #codingScreen .coding-journey-heading h2{margin:0;color:#2d3b50;font-size:clamp(25px,4vw,39px);font-weight:950;letter-spacing:-1px}
+body.signed-in #codingScreen .coding-journey-heading p{margin:7px 0 0;color:#788493;font-size:12px;font-weight:650}
+body.signed-in #codingScreen .coding-journey-progress{display:inline-flex;align-items:center;gap:8px;margin-top:11px;padding:7px 13px;border:1px solid rgba(117,151,128,.17);border-radius:999px;background:rgba(255,255,255,.64);color:#5e7968;font-size:11px;font-weight:850;box-shadow:0 5px 16px rgba(73,105,84,.055)}
+body.signed-in #codingScreen .coding-journey-progress b{color:#7866ac;font-variant-numeric:tabular-nums}
+body.signed-in #codingScreen .coding-journey-viewport{position:relative;flex:0 1 470px;height:min(54vh,470px);min-height:290px;width:100%;max-width:100%;box-sizing:border-box;overflow-x:auto;overflow-y:hidden;padding:0 0 12px;overscroll-behavior-x:contain;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;touch-action:pan-x;scrollbar-width:none;direction:ltr;cursor:grab}
+body.signed-in #codingScreen .coding-journey-viewport:active{cursor:grabbing}
+body.signed-in #codingScreen .coding-journey-viewport::-webkit-scrollbar{display:none}
+body.signed-in #codingScreen .coding-journey-track{position:relative;height:100%;min-height:290px;width:max-content;direction:ltr;box-sizing:border-box;padding:0;isolation:isolate;overflow:hidden;border-radius:24px;background-color:#e8cb91;background-image:radial-gradient(ellipse at 12% 22%,rgba(255,248,218,.72),transparent 26%),radial-gradient(ellipse at 74% 76%,rgba(166,111,55,.13),transparent 28%),radial-gradient(ellipse at 46% 38%,rgba(255,244,202,.42),transparent 34%),repeating-radial-gradient(ellipse at 18% 58%,transparent 0 34px,rgba(135,91,42,.105) 35px 36px,transparent 37px 63px),repeating-radial-gradient(ellipse at 82% 26%,transparent 0 48px,rgba(135,91,42,.09) 49px 50px,transparent 51px 83px),repeating-linear-gradient(12deg,rgba(115,77,36,.035) 0 1px,transparent 1px 7px),linear-gradient(135deg,#f2dfb1 0%,#e7c98f 48%,#f0d9a6 100%);box-shadow:inset 0 0 38px rgba(112,72,31,.23),inset 0 0 0 2px rgba(255,247,214,.58)}
+body.signed-in #codingScreen .coding-journey-track:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.45;background-image:radial-gradient(circle at 14% 25%,rgba(115,75,36,.17) 0 1px,transparent 2px),radial-gradient(circle at 65% 67%,rgba(115,75,36,.15) 0 1px,transparent 2px),radial-gradient(circle at 91% 18%,rgba(255,255,255,.55) 0 1px,transparent 2px);background-size:31px 29px,43px 37px,53px 47px}
+body.signed-in #codingScreen .coding-map-landmark{position:absolute;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:88px;min-height:62px;transform:translate(-50%,-50%);border:1px solid rgba(130,87,42,.18);border-radius:15px;background:linear-gradient(145deg,rgba(255,247,220,.82),rgba(223,190,130,.62));box-shadow:0 5px 12px rgba(105,69,34,.13),inset 0 1px 0 rgba(255,255,255,.75);pointer-events:none;backdrop-filter:blur(2px)}
+body.signed-in #codingScreen .coding-map-landmark span{font-size:31px;line-height:1.05;filter:drop-shadow(0 3px 2px rgba(86,57,29,.2))}
+body.signed-in #codingScreen .coding-map-landmark small{font-size:9px;line-height:1.2;font-weight:950;color:#79542e;white-space:nowrap;text-shadow:0 1px rgba(255,255,255,.65)}
+body.signed-in #codingScreen .coding-path-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:0}
+body.signed-in #codingScreen .coding-path-shadow{fill:none;stroke:rgba(255,248,221,.94);stroke-width:11;stroke-linecap:round;stroke-linejoin:round}
+body.signed-in #codingScreen .coding-path-line{fill:none;stroke:#9b6a35;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3 11;opacity:1}
+body.signed-in #codingScreen .coding-path-line:nth-of-type(3n){stroke:#b07c43;stroke-dasharray:2 10}
+body.signed-in #codingScreen .coding-step{position:absolute;z-index:2;display:grid;place-items:center;width:72px;height:72px;transform:translate(-50%,-50%);padding:0;border:0;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+body.signed-in #codingScreen .coding-step-circle{position:relative;display:grid;place-items:center;width:58px;height:58px;box-sizing:border-box;border-radius:50%;border:2px solid rgba(255,255,255,.94);background:linear-gradient(145deg,#f9c98c,#e9a969);color:#65452d;font-size:17px;font-weight:950;font-variant-numeric:tabular-nums;box-shadow:0 7px 0 #c98550,0 10px 18px rgba(116,82,55,.16),inset 0 2px 4px rgba(255,255,255,.65);transition:transform .24s cubic-bezier(.2,.8,.2,1),box-shadow .24s,border-color .24s}
+body.signed-in #codingScreen .coding-step:nth-of-type(3n) .coding-step-circle{background:linear-gradient(145deg,#c9baf0,#9c8bd4);color:#42366d;box-shadow:0 7px 0 #7869b0,0 10px 18px rgba(94,78,143,.15),inset 0 2px 4px rgba(255,255,255,.7)}
+body.signed-in #codingScreen .coding-step:nth-of-type(3n + 1) .coding-step-circle{background:linear-gradient(145deg,#b9e4ce,#79bd9a);color:#285b43;box-shadow:0 7px 0 #559b78,0 10px 18px rgba(57,111,80,.14),inset 0 2px 4px rgba(255,255,255,.7)}
+body.signed-in #codingScreen .coding-step:active .coding-step-circle{transform:translateY(4px) scale(.96);box-shadow:0 3px 0 rgba(89,112,94,.55),0 5px 10px rgba(75,88,75,.12)}
+body.signed-in #codingScreen .coding-step.is-current .coding-step-circle{transform:scale(1.12);border:3px solid #fff;background:linear-gradient(145deg,#ffdf9e,#f3b65f);color:#63411f;box-shadow:0 0 0 6px rgba(244,184,98,.2),0 8px 0 #c88a43,0 15px 28px rgba(140,94,42,.22),inset 0 2px 5px rgba(255,255,255,.8);animation:codingCurrentPulse 2.4s ease-in-out infinite}
+body.signed-in #codingScreen .coding-step.is-complete .coding-step-circle{filter:saturate(.82);border-color:rgba(255,255,255,.98)}
+body.signed-in #codingScreen .coding-step:focus-visible{outline:3px solid rgba(116,100,173,.65);outline-offset:2px;border-radius:50%}
+body.signed-in #codingScreen .coding-journey-hint{display:flex;align-items:center;justify-content:center;gap:10px;color:#829083;font-size:10px;font-weight:750;padding:6px 12px 0}
+body.signed-in #codingScreen .coding-journey-hint i{width:28px;height:1px;background:linear-gradient(90deg,transparent,rgba(103,151,127,.48))}
+@keyframes codingCurrentPulse{0%,100%{box-shadow:0 0 0 5px rgba(244,184,98,.16),0 8px 0 #c88a43,0 15px 28px rgba(140,94,42,.2),inset 0 2px 5px rgba(255,255,255,.8)}50%{box-shadow:0 0 0 10px rgba(244,184,98,.08),0 8px 0 #c88a43,0 18px 34px rgba(140,94,42,.24),inset 0 2px 5px rgba(255,255,255,.8)}}
+@media(max-width:650px){
+ body.signed-in #codingScreen .folder-topbar{min-height:48px;padding:2px 12px 5px!important}
+ body.signed-in #codingScreen .coding-journey-heading{padding:8px 12px 8px}
+ body.signed-in #codingScreen .coding-journey-heading h2{font-size:26px}
+ body.signed-in #codingScreen .coding-journey-heading p{font-size:11px;margin-top:5px}
+ body.signed-in #codingScreen .coding-journey-progress{margin-top:8px;padding:6px 11px}
+ body.signed-in #codingScreen .coding-journey-viewport{height:min(56vh,430px);min-height:270px;flex-basis:430px}
+ body.signed-in #codingScreen .coding-journey-track{min-height:270px;padding-inline:32px}
+ body.signed-in #codingScreen .coding-map-landmark{width:72px;min-height:54px;border-radius:12px}
+ body.signed-in #codingScreen .coding-map-landmark span{font-size:26px}
+ body.signed-in #codingScreen .coding-map-landmark small{font-size:8px}
+ body.signed-in #codingScreen .coding-step{width:64px;height:64px}
+ body.signed-in #codingScreen .coding-step-circle{width:51px;height:51px;font-size:15px;box-shadow:0 6px 0 #c98550,0 8px 14px rgba(116,82,55,.14),inset 0 2px 4px rgba(255,255,255,.65)}
+ body.signed-in #codingScreen .coding-step:nth-of-type(3n) .coding-step-circle{box-shadow:0 6px 0 #7869b0,0 8px 14px rgba(94,78,143,.14),inset 0 2px 4px rgba(255,255,255,.7)}
+ body.signed-in #codingScreen .coding-step:nth-of-type(3n + 1) .coding-step-circle{box-shadow:0 6px 0 #559b78,0 8px 14px rgba(57,111,80,.13),inset 0 2px 4px rgba(255,255,255,.7)}
+ body.signed-in #codingScreen .coding-journey-hint{font-size:9px;gap:7px}
+}
+@media(max-height:560px) and (orientation:landscape){body.signed-in #codingScreen .coding-journey-heading{padding:3px 10px}body.signed-in #codingScreen .coding-journey-heading h2{font-size:21px}body.signed-in #codingScreen .coding-journey-viewport{height:62vh;min-height:190px}body.signed-in #codingScreen .coding-journey-track{min-height:190px}}
+@media(prefers-reduced-motion:reduce){body.signed-in #codingScreen .coding-step-circle,body.signed-in #codingScreen .coding-step.is-current .coding-step-circle{animation:none!important;transition:none!important}body.signed-in #codingScreen .coding-journey-viewport{scroll-behavior:auto}}
+
+/* Treasure-atlas finish: all scenery belongs to the horizontally scrolling map track. */
+body.signed-in #codingScreen.coding-screen{
+  background-color:#d9b77c!important;
+  background-image:
+    radial-gradient(ellipse at 8% 12%,rgba(255,248,218,.72),transparent 30%),
+    radial-gradient(ellipse at 92% 82%,rgba(151,99,48,.19),transparent 34%),
+    repeating-linear-gradient(7deg,rgba(116,75,35,.025) 0 1px,transparent 1px 5px),
+    linear-gradient(135deg,#e8d2a2 0%,#f2e2bd 48%,#dfc18b 100%)!important;
+}
+body.signed-in #codingScreen .coding-journey-track{
+  border:1px solid rgba(121,78,35,.28)!important;
+  border-radius:20px!important;
+  background-color:#e8cb91!important;
+  background-image:
+    radial-gradient(ellipse at 7% 17%,rgba(255,251,226,.8),transparent 24%),
+    radial-gradient(ellipse at 91% 73%,rgba(142,91,42,.18),transparent 27%),
+    radial-gradient(ellipse at 49% 46%,rgba(255,244,205,.5),transparent 35%),
+    repeating-radial-gradient(ellipse at 18% 58%,transparent 0 32px,rgba(119,79,39,.13) 33px 34px,transparent 35px 62px),
+    repeating-radial-gradient(ellipse at 82% 26%,transparent 0 45px,rgba(119,79,39,.11) 46px 47px,transparent 48px 80px),
+    repeating-linear-gradient(12deg,rgba(115,77,36,.045) 0 1px,transparent 1px 6px),
+    linear-gradient(135deg,#f3e2b8 0%,#e5c58b 48%,#f0d9a6 100%)!important;
+  box-shadow:inset 0 0 48px rgba(112,72,31,.25),inset 0 0 0 3px rgba(255,247,214,.62),0 8px 24px rgba(101,68,34,.12)!important;
+}
+body.signed-in #codingScreen .coding-journey-track:before{
+  opacity:.62!important;
+  background-image:
+    radial-gradient(circle at 14% 25%,rgba(115,75,36,.2) 0 1px,transparent 2px),
+    radial-gradient(circle at 65% 67%,rgba(115,75,36,.17) 0 1px,transparent 2px),
+    radial-gradient(circle at 91% 18%,rgba(255,255,255,.7) 0 1px,transparent 2px),
+    repeating-linear-gradient(165deg,transparent 0 95px,rgba(131,91,48,.055) 96px 97px,transparent 98px 170px)!important;
+}
+body.signed-in #codingScreen .coding-map-landmark{
+  width:104px!important;min-height:78px!important;padding:6px 5px!important;
+  border:1px solid rgba(119,75,32,.28)!important;border-radius:17px!important;
+  background:linear-gradient(145deg,rgba(255,249,224,.94),rgba(211,174,111,.82))!important;
+  box-shadow:0 7px 15px rgba(91,59,28,.2),inset 0 2px 0 rgba(255,255,255,.88),inset 0 -3px 0 rgba(130,83,38,.12)!important;
+}
+body.signed-in #codingScreen .coding-map-landmark span{font-size:38px!important;filter:drop-shadow(0 4px 2px rgba(86,57,29,.25))!important}
+body.signed-in #codingScreen .coding-map-landmark small{font-size:9px!important;color:#694522!important;font-weight:1000!important}
+body.signed-in #codingScreen .coding-path-shadow{stroke:rgba(255,247,220,.98)!important;stroke-width:13!important}
+body.signed-in #codingScreen .coding-path-line{stroke:#875a2d!important;stroke-width:4.5!important;stroke-dasharray:3 13!important}
+@media(max-width:650px){body.signed-in #codingScreen .coding-map-landmark{width:80px!important;min-height:62px!important;padding:4px!important}body.signed-in #codingScreen .coding-map-landmark span{font-size:29px!important}}
+
+
+/* Premium adventure-map finish and floating navigation */
+body.signed-in #codingScreen .coding-map-back{
+  position:fixed!important;z-index:30!important;top:calc(env(safe-area-inset-top,0px) + 16px)!important;
+  left:calc(env(safe-area-inset-left,0px) + 16px)!important;width:58px!important;height:58px!important;
+  display:grid!important;place-items:center!important;border:1px solid rgba(255,255,255,.8)!important;
+  border-radius:19px!important;background:linear-gradient(145deg,#8d55ed,#5d28bb)!important;
+  box-shadow:0 8px 0 #48218e,0 13px 26px rgba(47,24,80,.3),inset 0 2px 4px rgba(255,255,255,.45)!important;
+  cursor:pointer!important;transition:transform .18s ease,filter .18s ease!important;
+}
+body.signed-in #codingScreen .coding-map-back:active{transform:translateY(5px) scale(.97)!important;box-shadow:0 3px 0 #48218e,0 6px 14px rgba(47,24,80,.24)!important}
+body.signed-in #codingScreen .coding-map-back svg{width:29px!important;height:29px!important;fill:none!important;stroke:#fff!important;stroke-width:2.7!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+body.signed-in #codingScreen .coding-journey-track{
+  background-color:#e7c58c!important;
+  background-image:
+    radial-gradient(ellipse at 14% 20%,rgba(255,255,230,.8),transparent 25%),
+    radial-gradient(ellipse at 78% 76%,rgba(103,68,35,.18),transparent 30%),
+    repeating-radial-gradient(ellipse at 20% 55%,transparent 0 31px,rgba(117,76,37,.12) 32px 33px,transparent 34px 58px),
+    repeating-linear-gradient(18deg,rgba(104,67,34,.055) 0 1px,transparent 1px 6px),
+    linear-gradient(135deg,#f8e8bf,#e8c78e 52%,#f4dca8)!important;
+  box-shadow:inset 0 0 80px rgba(92,55,24,.23),inset 0 0 0 2px rgba(255,248,220,.55)!important;
+}
+body.signed-in #codingScreen .coding-path-shadow{stroke:rgba(255,250,225,.98)!important;stroke-width:17!important;filter:drop-shadow(0 3px 2px rgba(91,57,27,.2))}
+body.signed-in #codingScreen .coding-path-line{stroke:#8a542b!important;stroke-width:7!important;stroke-dasharray:2 15!important;filter:drop-shadow(0 1px 0 rgba(255,255,255,.55))}
+body.signed-in #codingScreen .coding-step{z-index:5!important;width:82px!important;height:82px!important}
+body.signed-in #codingScreen .coding-step-circle{
+  width:64px!important;height:64px!important;border:3px solid #fff9e9!important;
+  box-shadow:0 7px 0 #9b6336,0 12px 18px rgba(80,49,25,.27),inset 0 3px 7px rgba(255,255,255,.8),inset 0 -5px 8px rgba(91,53,25,.12)!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.7)!important;
+}
+body.signed-in #codingScreen .coding-step.is-current .coding-step-circle{
+  transform:scale(1.17)!important;border-color:#fff!important;
+  box-shadow:0 0 0 7px rgba(255,220,126,.4),0 0 30px rgba(255,185,63,.85),0 8px 0 #a75b25,0 16px 24px rgba(82,45,19,.35),inset 0 3px 7px rgba(255,255,255,.9)!important;
+}
+body.signed-in #codingScreen .coding-map-landmark{
+  z-index:3!important;filter:drop-shadow(0 12px 9px rgba(72,45,23,.32)) drop-shadow(0 2px 1px rgba(255,255,255,.45))!important;
+}
+body.signed-in #codingScreen .coding-map-landmark .landmark-art{
+  filter:drop-shadow(0 5px 0 rgba(90,57,28,.18)) saturate(1.18) contrast(1.04)!important;
+  transform:perspective(550px) rotateX(7deg)!important;
+}
+body.signed-in #codingScreen .coding-map-landmark:nth-child(3n) .landmark-art{transform:perspective(550px) rotateX(7deg) rotateZ(-2deg)!important}
+body.signed-in #codingScreen .coding-map-landmark:nth-child(4n) .landmark-art{transform:perspective(550px) rotateX(7deg) rotateZ(2deg)!important}
+@media(max-width:650px){
+ body.signed-in #codingScreen .coding-map-back{width:50px!important;height:50px!important;border-radius:16px!important}
+ body.signed-in #codingScreen .coding-step{width:72px!important;height:72px!important}
+ body.signed-in #codingScreen .coding-step-circle{width:56px!important;height:56px!important}
+}
+/* Full-bleed illustrated map: no titles, captions, labels or header chrome. */
+body.signed-in #codingScreen .coding-map-landmark.landmark-academy{width:220px!important;height:170px!important;z-index:2!important;filter:drop-shadow(0 13px 10px rgba(69,43,22,.28))!important}
+@media(max-width:650px){body.signed-in #codingScreen .coding-map-landmark.landmark-academy{width:164px!important;height:132px!important}}
+
+body.signed-in #codingScreen.coding-screen.screen-open{
+  padding:0!important;
+  background:#e7c991!important;
+}
+body.signed-in #codingScreen .folder-topbar,
+body.signed-in #codingScreen .coding-journey-heading,
+body.signed-in #codingScreen .coding-journey-hint{display:none!important}
+body.signed-in #codingScreen .coding-journey-shell.coding-journey-fullscreen{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  min-height:100%!important;padding:0!important;margin:0!important;justify-content:stretch!important;
+}
+body.signed-in #codingScreen .coding-journey-viewport{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  min-height:0!important;max-height:none!important;flex:1 1 auto!important;padding:0!important;
+  border-radius:0!important;overflow-x:auto!important;overflow-y:hidden!important;
+  background:#e9d2a5!important;touch-action:pan-x!important;
+}
+body.signed-in #codingScreen .coding-journey-track{
+  height:100%!important;min-height:100%!important;border:0!important;border-radius:0!important;
+  box-shadow:none!important;
+}
+body.signed-in #codingScreen .coding-map-landmark{
+  width:150px!important;height:126px!important;min-height:0!important;padding:0!important;
+  overflow:visible!important;border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;
+  transform:translate(-50%,-50%)!important;filter:drop-shadow(0 8px 7px rgba(79,48,22,.23));
+}
+body.signed-in #codingScreen .coding-map-landmark .landmark-art{
+  display:block;width:100%;height:100%;overflow:visible;
+  transform-origin:50% 90%;animation:landmarkBreath 5.8s ease-in-out infinite;
+}
+body.signed-in #codingScreen .coding-map-landmark:nth-child(odd) .landmark-art{animation-delay:-2.1s}
+body.signed-in #codingScreen .coding-map-landmark .building-glow{opacity:.32;animation:buildingGlow 3.8s ease-in-out infinite}
+body.signed-in #codingScreen .coding-map-landmark .building-flag{transform-box:fill-box;transform-origin:50% 100%;animation:flagWave 2.7s ease-in-out infinite}
+body.signed-in #codingScreen .coding-map-landmark .building-window{animation:windowGlow 4.2s ease-in-out infinite alternate}
+body.signed-in #codingScreen .coding-map-landmark small,
+body.signed-in #codingScreen .coding-map-landmark span{display:none!important}
+@keyframes landmarkBreath{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.012)}}
+@keyframes buildingGlow{0%,100%{opacity:.2}50%{opacity:.62}}
+@keyframes flagWave{0%,100%{transform:skewY(0)}50%{transform:skewY(-7deg)}}
+@keyframes windowGlow{from{opacity:.7}to{opacity:1}}
+@media(max-width:650px){
+ body.signed-in #codingScreen .coding-map-landmark{width:112px!important;height:98px!important}
+ body.signed-in #codingScreen .coding-step{width:60px!important;height:60px!important}
+ body.signed-in #codingScreen .coding-step-circle{width:48px!important;height:48px!important;font-size:14px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ body.signed-in #codingScreen .coding-map-landmark .landmark-art,
+ body.signed-in #codingScreen .coding-map-landmark .building-glow,
+ body.signed-in #codingScreen .coding-map-landmark .building-flag,
+ body.signed-in #codingScreen .coding-map-landmark .building-window{animation:none!important}
+}
+
+/* Polished 3D map scenery and floating back control */
+body.signed-in #codingScreen .coding-map-back{position:fixed;z-index:30;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));width:54px;height:54px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.85);border-radius:18px;background:linear-gradient(145deg,#fff8df,#d9b77c);box-shadow:0 7px 0 #a77b48,0 12px 24px rgba(76,48,23,.24),inset 0 2px 4px #fff;cursor:pointer;touch-action:manipulation}
+body.signed-in #codingScreen .coding-map-back svg{width:25px;height:25px;fill:none;stroke:#68492c;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+body.signed-in #codingScreen .coding-map-back:active{transform:translateY(4px);box-shadow:0 3px 0 #a77b48,0 6px 12px rgba(76,48,23,.2)}
+body.signed-in #codingScreen .coding-map-landmark{width:156px!important;height:132px!important;z-index:1!important;filter:drop-shadow(0 12px 8px rgba(74,46,22,.28))!important}
+body.signed-in #codingScreen .coding-map-landmark .landmark-art{overflow:visible;filter:drop-shadow(0 3px 1px rgba(255,245,211,.45))}
+body.signed-in #codingScreen .coding-map-landmark.landmark-academy{width:220px!important;height:176px!important;z-index:2!important}
+body.signed-in #codingScreen .coding-map-landmark.landmark-pond,
+body.signed-in #codingScreen .coding-map-landmark.landmark-forest,
+body.signed-in #codingScreen .coding-map-landmark.landmark-chest,
+body.signed-in #codingScreen .coding-map-landmark.landmark-bridge,
+body.signed-in #codingScreen .coding-map-landmark.landmark-waterfall,
+body.signed-in #codingScreen .coding-map-landmark.landmark-cave{width:170px!important;height:126px!important}
+body.signed-in #codingScreen .coding-step{z-index:5!important}
+body.signed-in #codingScreen .coding-step-circle{position:relative;z-index:2}
+body.signed-in #codingScreen .coding-path-svg{z-index:2!important}
+body.signed-in #codingScreen .coding-step{z-index:4!important}
+@media(max-width:650px){body.signed-in #codingScreen .coding-map-back{width:46px;height:46px;border-radius:15px}body.signed-in #codingScreen .coding-map-landmark{width:116px!important;height:102px!important}body.signed-in #codingScreen .coding-map-landmark.landmark-academy{width:160px!important;height:132px!important}body.signed-in #codingScreen .coding-map-landmark.landmark-pond,body.signed-in #codingScreen .coding-map-landmark.landmark-forest,body.signed-in #codingScreen .coding-map-landmark.landmark-chest,body.signed-in #codingScreen .coding-map-landmark.landmark-bridge,body.signed-in #codingScreen .coding-map-landmark.landmark-waterfall,body.signed-in #codingScreen .coding-map-landmark.landmark-cave{width:124px!important;height:100px!important}}
+</style>
+
 </head>
 <body>
 <div class="scene" aria-hidden="true"></div>
@@ -1868,31 +2110,13 @@ body.signed-in #panelView .dashboard-option-glow {
     </section>
 
     <section class="folder-screen coding-screen" id="codingScreen" aria-hidden="true" dir="rtl">
-      <div class="folder-topbar">
-        <button class="folder-back" id="codingBack" type="button" aria-label="بازگشت">
-          <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+      <div class="coding-journey-shell coding-journey-fullscreen">
+        <button class="coding-map-back" id="codingBack" type="button" aria-label="بازگشت به پنل">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
         </button>
-        <div class="folder-top-title">
-          <span class="folder-top-kicker">KHATMIN DEVELOPER SPACE</span>
-          <h3>کد نویسی</h3>
+        <div class="coding-journey-viewport" id="codingJourneyViewport" tabindex="0" aria-label="نقشه مراحل؛ برای حرکت به چپ و راست بکشید">
+          <div class="coding-journey-track" id="codingJourneyTrack"></div>
         </div>
-        <div class="folder-top-symbol"><svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div>
-      </div>
-      <div class="coding-workspace">
-        <label for="codingLanguage">زبان برنامه‌نویسی</label>
-        <select id="codingLanguage">
-          <option value="html">HTML</option><option value="css">CSS</option>
-          <option value="javascript">JavaScript</option><option value="python">Python</option>
-        </select>
-        <label for="codingEditor">محیط نوشتن کد</label>
-        <textarea id="codingEditor" spellcheck="false" dir="ltr" placeholder="کد خود را اینجا بنویسید..."></textarea>
-        <div class="coding-actions">
-          <button type="button" id="codingRun">اجرا / پیش‌نمایش</button>
-          <button type="button" id="codingClear">پاک کردن</button>
-        </div>
-        <div class="coding-output-title">خروجی</div>
-        <iframe id="codingOutput" title="پیش‌نمایش کد" sandbox="allow-scripts"></iframe>
-        <p id="codingStatus" aria-live="polite">کد HTML، CSS یا JavaScript را می‌توانید در پیش‌نمایش اجرا کنید.</p>
       </div>
     </section>
 
@@ -2352,7 +2576,7 @@ function openDashboardScreen(screen){
   }
 }
 function closeDashboardScreen(){
-  ["folderScreen","parameterScreen"].forEach(id=>{
+  ["folderScreen","parameterScreen","codingScreen"].forEach(id=>{
     const el=document.getElementById(id);
     if(el){
       el.classList.remove("screen-open");
@@ -2369,58 +2593,230 @@ function closeDashboardScreen(){
     dockEl.style.removeProperty("pointer-events");
   }
 }
-function showCodingComingSoon(){
-  if(document.getElementById("codingComingSoonOverlay")) return;
-  const overlay=document.createElement("div");
-  overlay.id="codingComingSoonOverlay";
-  overlay.setAttribute("dir","rtl");
-  overlay.innerHTML='<div class="coding-coming-soon-card"><div class="coding-coming-soon-mark">⌨</div><p id="codingComingSoonText" aria-live="polite"></p></div>';
-  const style=document.createElement("style");
-  style.id="coding-coming-soon-style";
-  style.textContent=`
-    #codingComingSoonOverlay{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:26px;background:rgba(9,5,18,.82);backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px);opacity:0;transition:opacity .42s ease}
-    #codingComingSoonOverlay.is-visible{opacity:1}
-    #codingComingSoonOverlay.is-leaving{opacity:0}
-    #codingComingSoonOverlay .coding-coming-soon-card{width:min(720px,100%);text-align:center;color:#fff;font-family:inherit}
-    #codingComingSoonOverlay .coding-coming-soon-mark{width:58px;height:58px;margin:0 auto 22px;display:grid;place-items:center;border:1px solid rgba(210,174,255,.45);border-radius:18px;color:#d8b8ff;font-size:28px;box-shadow:0 0 34px rgba(159,91,235,.22)}
-    #codingComingSoonOverlay p{margin:0;font-size:clamp(19px,3.5vw,27px);font-weight:800;line-height:2.05;text-shadow:0 3px 22px rgba(0,0,0,.4);min-height:5em}
-    @media(prefers-reduced-motion:reduce){#codingComingSoonOverlay{transition:none}}
-  `;
-  document.head.appendChild(style);
-  document.body.appendChild(overlay);
-  const target=overlay.querySelector("#codingComingSoonText");
-  const message="دورت بگردم،توی این قسمت قراره یه خیلی چیز میز درمورد کد نوشتن یاد بگیریم و خاطی کد هاییو که مینویسه اینجا اجرا کنه و ببینه درسته یا نه.پسس زود فعالش میکنمم،بووس 💜";
-  const chars=Array.from(message);
-  let index=0;
-  requestAnimationFrame(()=>overlay.classList.add("is-visible"));
-  const typeNext=()=>{
-    if(!overlay.isConnected) return;
-    target.textContent+=chars[index++]||"";
-    if(index<chars.length){
-      window.setTimeout(typeNext,85);
-    }else{
-      window.setTimeout(()=>{
-        overlay.classList.add("is-leaving");
-        window.setTimeout(()=>{
-          overlay.remove();
-          style.remove();
-        },450);
-      },1000);
-    }
+function buildCodingJourney(){
+  const track=document.getElementById("codingJourneyTrack");
+  const viewport=document.getElementById("codingJourneyViewport");
+  if(!track||!viewport) return;
+  const accountKey=(currentAccount&&(currentAccount.username||currentAccount.id||currentAccount.title))||"default";
+  const storageKey="khatmin-coding-current-stage:"+String(accountKey).replace(/[^a-zA-Z0-9_-]/g,"_");
+  let current=1;
+  try{current=Math.max(1,Math.min(100,parseInt(localStorage.getItem(storageKey)||"1",10)||1));}catch(e){}
+  const width=116,height=Math.max(300,Math.min(430,viewport.clientHeight||390));
+  const yPattern=[.48,.31,.20,.30,.53,.69,.78,.62,.39,.22,.14,.28,.49,.73,.82,.68,.45,.25,.18,.34,.57,.76,.70,.48,.27,.16,.30,.55,.79,.72,.50,.29,.19,.36,.61,.80,.66,.43,.23,.15,.32,.58,.77,.73,.51,.30,.17,.28,.52,.76];
+  const points=[];let x=88;
+  for(let i=0;i<100;i++){
+    const band=yPattern[i%yPattern.length];
+    const wobble=Math.sin(i*1.73)*.035+Math.cos(i*.61)*.025;
+    const y=Math.max(52,Math.min(height-52,(band+wobble)*height));
+    points.push({x,y});
+    if(i<99)x+=98+((i*17)%5)*7;
+  }
+  const totalWidth=x+88;
+  track.style.width=totalWidth+"px";
+  track.style.height=height+"px";
+  track.innerHTML="";
+  // Hand-built vector landmarks (not emoji): medieval keeps, technology shops,
+  // observatories and launch facilities, all embedded in the scrolling parchment.
+  const landmarkKinds=[
+    {after:1,kind:"academy"},{after:5,kind:"pond"},{after:9,kind:"tech"},
+    {after:13,kind:"forest"},{after:17,kind:"castle"},{after:21,kind:"chest"},
+    {after:25,kind:"waterfall"},{after:29,kind:"observatory"},{after:33,kind:"bridge"},
+    {after:37,kind:"rocket"},{after:41,kind:"windmill"},{after:45,kind:"cave"},
+    {after:49,kind:"tower"},{after:53,kind:"pond"},{after:57,kind:"forest"},
+    {after:61,kind:"tech"},{after:65,kind:"chest"},{after:69,kind:"waterfall"},
+    {after:73,kind:"castle"},{after:77,kind:"observatory"},{after:81,kind:"bridge"},
+    {after:85,kind:"rocket"},{after:89,kind:"windmill"},{after:93,kind:"cave"},
+    {after:97,kind:"academy"}
+  ];
+  const buildingArt={
+    academy:`<svg class="landmark-art" viewBox="0 0 220 170" aria-hidden="true"><ellipse cx="110" cy="153" rx="94" ry="12" fill="#694522" opacity=".28"/><path d="M20 145V76h180v69Z" fill="#9b7045" stroke="#60452f" stroke-width="5"/><path d="M27 78 110 22l83 56Z" fill="#8d4935" stroke="#5b392a" stroke-width="5"/><path d="M35 80h150v12H35Z" fill="#e8c38a"/><path d="M45 91h130v54H45Z" fill="#d4aa70" stroke="#795536" stroke-width="3"/><path d="M84 145v-37q26-42 52 0v37Z" fill="#49352b"/><path d="M56 103h17v23H56Zm91 0h17v23h-17Z" fill="#f8df9a" stroke="#775337" stroke-width="3"/><path class="building-window" d="M60 107h9v15h-9Zm91 0h9v15h-9Z" fill="#fff3be"/><path d="M91 70V39h38v31Z" fill="#b68a58" stroke="#704d34" stroke-width="3"/><path d="M84 40 110 5l26 35Z" fill="#a34e3d" stroke="#603a2b" stroke-width="3"/><path d="M110 7V0m0 2h26l-9 9 9 9h-26Z" fill="#d9b34f" stroke="#77512f" stroke-width="2" class="building-flag"/><path d="M12 145h196v11H12Z" fill="#6c492d"/><path class="building-glow" d="M40 79h140" stroke="#fff1c4" stroke-width="5"/></svg>`,
+    tech:`<svg class="landmark-art" viewBox="0 0 160 132" aria-hidden="true"><ellipse cx="80" cy="120" rx="67" ry="9" fill="#493d3a" opacity=".25"/><path d="M15 111V55l17-20h96l17 20v56Z" fill="#485666" stroke="#283b4b" stroke-width="4"/><path d="M18 56h124v14H18Z" fill="#a9a49b"/><path d="M27 54 43 26h74l16 28Z" fill="#283e52" stroke="#1f3040" stroke-width="3"/><path d="M48 43h64l-8-12H56Z" fill="#54d4eb"/><path d="M25 73h110v39H25Z" fill="#64717c"/><rect x="34" y="78" width="34" height="27" rx="2" fill="#102a40" stroke="#c1e4e5" stroke-width="2"/><rect class="building-window" x="38" y="82" width="26" height="18" fill="#57cce8"/><path d="M77 76h51v36H77Z" fill="#263d50" stroke="#c0e0e3" stroke-width="2"/><path d="M83 82h39v22H83Z" fill="#58c9e7"/><path d="M87 87h30m-30 6h22m-22 6h26" stroke="#e8ffff" stroke-width="2"/><path d="M64 112V92q16-16 32 0v20Z" fill="#27343d"/><path d="M18 111h125v9H18Z" fill="#30343a"/><path class="building-glow" d="M34 29h92" stroke="#75edff" stroke-width="5"/></svg>`,
+    castle:`<svg class="landmark-art" viewBox="0 0 160 132" aria-hidden="true"><ellipse cx="80" cy="120" rx="67" ry="9" fill="#65452b" opacity=".26"/><path d="M19 112V53h25V35h20v18h32V34h20v19h25v59Z" fill="#b58a58" stroke="#704a2d" stroke-width="4"/><path d="m14 56 20-32 20 32Zm44 0 16-40 18 40Zm45 0 17-31 20 31Z" fill="#7f4635" stroke="#603b2a" stroke-width="3"/><path d="M22 60h116v12H22Z" fill="#e0bd86"/><path d="M68 112V85q12-22 24 0v27Z" fill="#49372b"/><path d="M30 77h12v19H30Zm87 0h12v19h-12Z" fill="#ffe19b" stroke="#74502f" stroke-width="2"/><path d="M76 18V5h8v13" stroke="#65452d" stroke-width="3"/><path class="building-flag" d="M84 7h24l-8 8 8 8H84Z" fill="#b44d3d"/><path d="M10 112h140v9H10Z" fill="#805735"/></svg>`,
+    observatory:`<svg class="landmark-art" viewBox="0 0 160 132" aria-hidden="true"><ellipse cx="80" cy="120" rx="65" ry="8" fill="#493e38" opacity=".25"/><path d="M25 112V75h110v37Z" fill="#747d83" stroke="#3f505a" stroke-width="4"/><path d="M19 78h122v11H19Z" fill="#b5a184"/><path d="M39 76a41 41 0 0 1 82 0Z" fill="#d8c9a9" stroke="#62564c" stroke-width="4"/><path d="M80 37v39M48 76a32 32 0 0 1 64 0" fill="none" stroke="#fff0cb" stroke-width="3"/><path d="M68 112V92h24v20Z" fill="#404c54"/><path d="M80 39 97 10l9 5-18 29Z" fill="#687f8c" stroke="#3e4e59" stroke-width="3"/><circle cx="101" cy="13" r="7" fill="#80dff2" stroke="#465965" stroke-width="2"/><path class="building-glow" d="M44 75a36 36 0 0 1 72 0" fill="none" stroke="#83e7ff" stroke-width="5"/></svg>`,
+    rocket:`<svg class="landmark-art" viewBox="0 0 160 132" aria-hidden="true"><ellipse cx="80" cy="120" rx="65" ry="8" fill="#594331" opacity=".25"/><path d="M22 112h116v8H22Z" fill="#75604b"/><path d="M42 111V82h76v29Z" fill="#6f777c" stroke="#4e5154" stroke-width="3"/><path d="M34 84h92v10H34Z" fill="#b4a58e"/><path d="M61 68V39h38v29Z" fill="#87949a" stroke="#49545a" stroke-width="3"/><path d="M58 42 80 7l22 35Z" fill="#b54d3e" stroke="#713d32" stroke-width="3"/><circle cx="80" cy="54" r="8" fill="#56c4e2" stroke="#344f5d" stroke-width="3"/><path d="m63 60-16 15v8l22-9m28-14 16 15v8l-22-9" fill="#b94e39" stroke="#733a2f" stroke-width="3"/><path d="M73 68h14l-3 24h-8Z" fill="#f2c36a"/><path class="building-glow" d="M76 91q-10 14 0 22-1-10 4-14 5 7 4 14 10-13 0-22Z" fill="#f18d35"/></svg>`,
+    pond:`<svg class="landmark-art" viewBox="0 0 170 126" aria-hidden="true"><ellipse cx="85" cy="104" rx="76" ry="17" fill="#927044" opacity=".2"/><path d="M9 70q16-34 62-29 43-19 84 13 14 34-28 52-57 22-104-2Q1 91 9 70Z" fill="#a88b5c"/><path d="M18 70q18-25 55-22 39-17 69 10 8 25-31 37-46 15-81-2Q10 84 18 70Z" fill="#4b9fb0" stroke="#e0c58e" stroke-width="5"/><path d="M38 68q26-15 48-5m-25 22q30-14 57-2" fill="none" stroke="#b7eff0" stroke-width="4" stroke-linecap="round"/><path d="M22 49q9-15 22-7l8 13m77 0q8-17 21-9l8 13" fill="none" stroke="#47734b" stroke-width="7" stroke-linecap="round"/><circle cx="45" cy="39" r="8" fill="#6e9d55"/><circle cx="133" cy="45" r="9" fill="#54864a"/><path class="building-glow" d="M48 75q30-12 57 0" stroke="#fff" stroke-width="3" fill="none"/></svg>`,
+    forest:`<svg class="landmark-art" viewBox="0 0 170 126" aria-hidden="true"><ellipse cx="85" cy="112" rx="76" ry="8" fill="#654c2c" opacity=".22"/><path d="M14 106 42 79l18 20 26-37 27 39 20-26 26 31Z" fill="#9c7848"/><g stroke="#65462c" stroke-width="3"><path d="M39 105V62m40 43V43m43 62V58m24 47V73"/></g><g><path d="m39 22-22 47h44Z" fill="#2e7049" stroke="#20553b" stroke-width="3"/><path d="m79 5-28 55h56Z" fill="#367e4d" stroke="#20553b" stroke-width="3"/><path d="m122 20-24 48h48Z" fill="#2b6942" stroke="#20553b" stroke-width="3"/><path d="m146 43-18 37h36Z" fill="#478957" stroke="#20553b" stroke-width="3"/></g><path d="M34 106h12m27 0h13m30 0h12" stroke="#d6b47a" stroke-width="5" stroke-linecap="round"/></svg>`,
+    chest:`<svg class="landmark-art" viewBox="0 0 170 126" aria-hidden="true"><ellipse cx="85" cy="112" rx="58" ry="8" fill="#62401f" opacity=".25"/><path d="M32 57q0-32 53-32t53 32v15H32Z" fill="#9b542b" stroke="#633b22" stroke-width="4"/><path d="M32 60q0-27 53-27t53 27" fill="none" stroke="#e3a34e" stroke-width="7"/><path d="M25 62h120v45H25Z" fill="#9c5d2e" stroke="#5f3b23" stroke-width="4"/><path d="M25 74h120v10H25Z" fill="#d9a34e"/><path d="M76 62h18v45H76Z" fill="#e7bd64" stroke="#6c4827" stroke-width="3"/><rect x="79" y="80" width="12" height="15" rx="3" fill="#4c4a4a"/><path class="building-glow" d="M67 22q18-22 36 0" stroke="#ffd96a" stroke-width="5" fill="none"/><circle cx="61" cy="52" r="4" fill="#ffe68c"/><circle cx="109" cy="52" r="4" fill="#ffe68c"/></svg>`,
+    bridge:`<svg class="landmark-art" viewBox="0 0 170 126" aria-hidden="true"><path d="M7 94q35-20 78 0t78 0v24H7Z" fill="#58a8b2" opacity=".8"/><path d="M14 79h142v13H14Z" fill="#8a5734" stroke="#593c29" stroke-width="3"/><path d="M24 79V47m122 32V47M24 50h122" stroke="#69452d" stroke-width="6"/><path d="M34 79q51-65 102 0" fill="none" stroke="#b47a43" stroke-width="9"/><path d="M34 79q51-65 102 0" fill="none" stroke="#e3b875" stroke-width="3"/><path d="M13 92q25-9 48 0m47 0q25-9 48 0" stroke="#c7f4e9" stroke-width="3" fill="none"/></svg>`,
+    waterfall:`<svg class="landmark-art" viewBox="0 0 170 126" aria-hidden="true"><path d="M10 98 33 36l26-18 25 30 25-30 28 18 22 62Z" fill="#8b7962" stroke="#66523c" stroke-width="3"/><path d="M53 38h64l-8 59H62Z" fill="#61b6c7" stroke="#d4e8d9" stroke-width="4"/><path d="M65 39v56m17-56v58m17-58v56" stroke="#d9fbf4" stroke-width="5" opacity=".8"/><path d="M28 99q55-21 113 0 18 13-4 19H35Q10 112 28 99Z" fill="#4199ad" stroke="#d9c38f" stroke-width="4"/><path class="building-glow" d="M72 49v39m18-39v39" stroke="#fff" stroke-width="3"/></svg>`,
+    windmill:`<svg class="landmark-art" viewBox="0 0 160 132" aria-hidden="true"><ellipse cx="80" cy="120" rx="58" ry="8" fill="#5b482f" opacity=".22"/><path d="M56 112 66 48h28l10 64Z" fill="#c6a06c" stroke="#755338" stroke-width="4"/><path d="M68 49h24l-4-14H72Z" fill="#8c5738"/><circle cx="80" cy="42" r="7" fill="#765035"/><g stroke="#7a5032" stroke-width="7" stroke-linecap="round"><path d="M80 42 80 5m0 37 36 16M80 42 44 59m36-17-24-29"/></g><g fill="#e5c28b" stroke="#845b38" stroke-width="2"><path d="M76 7h8l8 26H68Z"/><path d="m115 54 4 7-25-4-10-15Z"/><path d="m45 62-4-7 25-4 10 15Z"/><path d="m55 12 7-4 13 23-16 6Z"/></g><path d="M72 112V89h16v23Z" fill="#4d3c2d"/></svg>`,
+    cave:`<svg class="landmark-art" viewBox="0 0 170 126" aria-hidden="true"><path d="M8 110q7-65 42-78 20-9 35 14 20-30 43-15 29 19 34 79Z" fill="#77604a" stroke="#4c3d31" stroke-width="4"/><path d="M42 110q2-44 43-48 42 3 44 48Z" fill="#2e2930"/><path d="M62 108q13-35 24-38 14 6 24 38Z" fill="#8d58bd"/><path class="building-glow" d="M75 95q11-39 22 0" stroke="#d2a4ff" stroke-width="7" fill="none"/><circle cx="85" cy="72" r="7" fill="#e7b8ff"/></svg>`,
+    tower:`<svg class="landmark-art" viewBox="0 0 160 132" aria-hidden="true"><ellipse cx="80" cy="120" rx="48" ry="8" fill="#57422d" opacity=".23"/><path d="M49 112V40h62v72Z" fill="#9b7957" stroke="#5d4938" stroke-width="4"/><path d="M42 42 80 10l38 32Z" fill="#754c3a" stroke="#523b30" stroke-width="3"/><path d="M57 56h46v9H57Z" fill="#d6b987"/><path d="M68 72h24v40H68Z" fill="#4b3b31"/><path d="M57 50h12v13H57Zm34 0h12v13H91Z" fill="#91d5e4" stroke="#4d4a40" stroke-width="2"/><path d="M80 10V0m0 3h22l-8 7 8 7H80Z" fill="#c75a45" class="building-flag"/><path d="M39 112h82v8H39Z" fill="#69492e"/></svg>`
   };
-  window.setTimeout(typeNext,220);
+  landmarkKinds.forEach(({after,kind},i)=>{
+    const anchor=points[Math.min(98,after)];
+    const next=points[Math.min(99,after+1)];
+    const el=document.createElement("div");
+    el.className="coding-map-landmark landmark-"+kind;el.dataset.mapLandmark=String(i);
+    el.setAttribute("aria-hidden","true");
+    const midX=(anchor.x+next.x)/2;
+    const side=(i%2===0)?-1:1;
+    const offset=Math.max(68,Math.min(112,height*.25));
+    el.style.left=midX+"px";
+    el.style.top=Math.max(68,Math.min(height-68,((anchor.y+next.y)/2)+side*offset))+"px";
+    el.innerHTML=buildingArt[kind];
+    track.appendChild(el);
+  });
+  const svgNS="http://www.w3.org/2000/svg";
+  const svg=document.createElementNS(svgNS,"svg");
+  svg.setAttribute("class","coding-path-svg");svg.setAttribute("viewBox",`0 0 ${totalWidth} ${height}`);svg.setAttribute("width",totalWidth);svg.setAttribute("height",height);svg.setAttribute("aria-hidden","true");
+  const shadow=document.createElementNS(svgNS,"path");shadow.setAttribute("class","coding-path-shadow");
+  const line=document.createElementNS(svgNS,"path");line.setAttribute("class","coding-path-line");
+  let d="";
+  for(let i=0;i<points.length-1;i++){
+    const a=points[i],b=points[i+1],dx=b.x-a.x;
+    const bend=((i%4)-1.5)*15;
+    const c1x=a.x+dx*.38,c2x=a.x+dx*.68;
+    const c1y=a.y+bend,c2y=b.y-bend;
+    d+=(i?" ":`M ${a.x} ${a.y} `)+`C ${c1x} ${c1y}, ${c2x} ${c2y}, ${b.x} ${b.y}`;
+  }
+  shadow.setAttribute("d",d);line.setAttribute("d",d);svg.append(shadow,line);track.appendChild(svg);
+  // Sample the rendered curve itself: every stage center is mathematically on the dotted line.
+  const routeLength=line.getTotalLength();
+  for(let i=0;i<points.length;i++){
+    const p=line.getPointAtLength(routeLength*(i/(points.length-1)));
+    points[i]={x:p.x,y:p.y};
+  }
+  points.forEach((point,index)=>{
+    const stage=index+1;
+    const button=document.createElement("button");
+    button.type="button";button.className="coding-step";button.dataset.mapStage=String(stage);
+    button.style.left=point.x+"px";button.style.top=point.y+"px";
+    button.setAttribute("aria-label","مرحله "+stage+(stage===current?"، مرحله فعلی":""));
+    button.setAttribute("aria-pressed",stage===current?"true":"false");
+    if(stage===current)button.classList.add("is-current");
+    if(stage<current)button.classList.add("is-complete");
+    const circle=document.createElement("span");circle.className="coding-step-circle";circle.textContent=String(stage);
+    button.appendChild(circle);
+    button.addEventListener("click",()=>{
+      current=stage;
+      try{localStorage.setItem(storageKey,String(current));}catch(e){}
+      track.querySelectorAll(".coding-step").forEach((item,i)=>{
+        const active=i+1===current;item.classList.toggle("is-current",active);item.classList.toggle("is-complete",i+1<current);
+        item.setAttribute("aria-pressed",active?"true":"false");item.setAttribute("aria-label","مرحله "+(i+1)+(active?"، مرحله فعلی":""));
+      });
+      const progress=document.getElementById("codingJourneyCurrent");if(progress)progress.textContent=String(current).padStart(2,"0");
+    });
+    track.appendChild(button);
+  });
+  const progress=document.getElementById("codingJourneyCurrent");if(progress)progress.textContent=String(current).padStart(2,"0");
+  requestAnimationFrame(()=>{
+    const target=points[current-1];
+    if(target)viewport.scrollLeft=Math.max(0,target.x-viewport.clientWidth*.43);
+  });
+  if(!viewport.dataset.dragReady){
+    let pointerDown=false,startX=0,startScroll=0;
+    viewport.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;pointerDown=true;startX=e.clientX;startScroll=viewport.scrollLeft;});
+    viewport.addEventListener("pointermove",e=>{if(!pointerDown)return;const delta=e.clientX-startX;if(Math.abs(delta)>3)viewport.scrollLeft=startScroll-delta;});
+    ["pointerup","pointercancel","pointerleave"].forEach(name=>viewport.addEventListener(name,()=>{pointerDown=false;}));
+    viewport.dataset.dragReady="true";
+  }
 }
 
-document.addEventListener("click",event=>{
+/* Map design studio: admin-only UI, independent stage controls and shared layout persistence. */
+(()=>{
+ const URL=SUPABASE_URL,KEY=SUPABASE_PUBLISHABLE_KEY,BUCKET="khatmin-map-assets";
+ let token="",editing=false,uploadBusy=false,bgBusy=false,layout={stagePositions:{},landmarkPositions:{},landmarksHidden:[],objects:[]},selected=null,drag=null,undoStack=[],saveTimer=null;
+ const el=id=>document.getElementById(id),track=()=>el("codingJourneyTrack"),admin=()=>currentAccount?.role==="admin";
+ const headers=(t=token,extra={})=>({apikey:KEY,Authorization:`Bearer ${t||KEY}`,...extra});
+ function say(s){if(el("mapEditorStatus"))el("mapEditorStatus").textContent=s}
+ function snapshot(){undoStack.push(JSON.stringify(layout));if(undoStack.length>40)undoStack.shift()}
+ function queueSave(){if(!editing)return;clearTimeout(saveTimer);say("تغییرات انجام شد؛ در حال ذخیره خودکار…");saveTimer=setTimeout(()=>save(false),700)}
+ function ui(){if(el("codingMapEditorUI"))return;const back=el("codingBack");if(!back)return;
+  const shell=el("codingJourneyTrack")?.closest(".coding-journey-shell");const screen=el("codingScreen");if(!shell||!screen)return;
+  const pen=document.createElement("button");pen.id="codingMapPencil";pen.type="button";pen.textContent="✎";pen.title="باز کردن ابزار طراحی نقشه";pen.setAttribute("aria-label","باز کردن ابزار طراحی نقشه");pen.onclick=open;shell.append(pen);
+  const panel=document.createElement("div");panel.id="codingMapEditorUI";
+  panel.innerHTML=`<div class="map-editor-heading"><strong>کارگاه طراحی نقشه</strong><span id="mapEditorStatus">آماده</span><span id="mapSelectedInfo" class="map-selected-info">هیچ آیتمی انتخاب نشده</span><button id="mapToolbarToggle" type="button" aria-expanded="true">− بستن ابزارها</button></div><div class="map-editor-tools" id="mapEditorTools"><div class="map-editor-bar"><button id="mapUndo">↶ واگرد</button><button id="mapAdd">＋ آپلود یک تصویر</button><button id="mapRemoveBg" disabled>✂ حذف پس‌زمینه</button><button id="mapText">＋ افزودن متن</button><button id="mapDuplicate">تکثیر</button><button id="mapSmaller">− کوچک‌تر</button><button id="mapLarger">＋ بزرگ‌تر</button><button id="mapRotateL">↶ چرخش</button><button id="mapRotateR">↷ چرخش</button><button id="mapFront">جلوتر</button><button id="mapBackLayer">عقب‌تر</button><button id="mapDelete" class="danger">حذف دائمی آیتم</button><button id="mapSave">ذخیره برای همه</button><button id="mapClose">خروج از ویرایش</button><input id="mapFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden></div><div class="map-editor-help">روی ساختمان، تصویر یا نوشته کلیک کن تا انتخاب شود. برای حذف دائمی، «حذف دائمی آیتم» را بزن و تأیید کن. مراحل آموزشی قابل جابه‌جایی‌اند اما حذف نمی‌شوند. نوار ابزار را می‌توانی جمع یا باز کنی.</div></div>`;
+  shell.insertAdjacentElement("afterend",panel);
+  const css=document.createElement("style");css.textContent=`#codingMapPencil{display:none;position:absolute;z-index:10020;right:16px;top:14px;width:48px;height:48px;border:2px solid #fff;border-radius:16px;background:linear-gradient(145deg,#f9d36e,#c77b2e);color:#49301d;font-size:25px;font-weight:900;box-shadow:0 5px 0 #94551f,0 10px 20px #4a301f44;place-items:center}body.signed-in[data-khatmin-role="admin"] #codingScreen.screen-open #codingMapPencil{display:grid}#codingMapEditorUI{display:none;position:relative;z-index:5;flex:0 0 auto;width:min(100% - 20px,1100px);max-height:36vh;overflow:auto;box-sizing:border-box;margin:8px auto 0;padding:10px;border:1px solid #d4b27c;border-radius:18px;background:linear-gradient(145deg,#fff9ebf5,#f2e2c9f5);box-shadow:0 8px 24px #52371f30;direction:rtl;font:700 12px system-ui;color:#35251b}#codingMapEditorUI.active{display:block}.map-editor-heading{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}.map-editor-heading strong{color:#5e3a1e}.map-editor-heading span{font-size:10px;color:#82623c;flex:1;min-width:130px}.map-editor-heading #mapSelectedInfo{flex:0 1 auto;min-width:0;padding:5px 9px;border-radius:9px;background:#f3e6ce;color:#6b4726;font-weight:900}.map-editor-heading button,.map-editor-bar button{border:0;border-radius:10px;padding:8px 11px;background:#80502c;color:white;font-weight:800;cursor:pointer}.map-editor-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px;border-radius:13px;background:#fffdf7;border:1px solid #ead8b8}.map-editor-bar button{font-size:11px}.map-editor-bar button.danger{background:#a83f35}.map-editor-bar button:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(1)}.map-editor-bar #mapSave{background:linear-gradient(135deg,#29875c,#176844)}#mapEditorTools.collapsed{display:none}.map-editor-help{margin:7px auto 0;text-align:center;padding:6px 10px;border-radius:10px;background:#fff8e8;color:#684a2b;font-size:10px;line-height:1.6}body.map-editing #codingJourneyTrack{touch-action:none!important}body.map-editing .coding-step,body.map-editing .coding-map-landmark,body.map-editing .map-user-object{cursor:grab!important;touch-action:none!important;outline:0!important;outline-offset:0!important}body.map-editing #codingScreen .coding-map-landmark{pointer-events:auto!important;cursor:grab!important;z-index:20!important}body.map-editing #codingScreen .coding-map-landmark .landmark-art,body.map-editing #codingScreen .coding-map-landmark .landmark-art *{pointer-events:auto!important}body.map-editing #codingScreen .coding-map-landmark.map-selected{z-index:50!important}body.map-editing .map-selected{outline:3px solid #ff7c2f!important;outline-offset:3px!important;filter:drop-shadow(0 0 8px #ffb34c)!important}.map-user-text{white-space:pre-wrap;min-width:40px;min-height:24px;padding:5px 8px;border-radius:8px;background:#fff4d8;color:#57351d;font-weight:900;text-align:center;cursor:grab;user-select:none}@media(max-width:620px){#codingMapEditorUI{width:calc(100% - 12px);max-height:40vh;margin-top:5px;padding:7px}.map-editor-bar{gap:5px}.map-editor-bar button,.map-editor-heading button{padding:8px 9px;font-size:10px}.map-editor-heading{gap:6px}}`;
+  document.head.append(css);
+  el("mapAdd").onclick=()=>{if(!uploadBusy)el("mapFile").click()};el("mapFile").removeAttribute("multiple");el("mapFile").onchange=upload;el("mapRemoveBg").onclick=removeBackground;el("mapText").onclick=addText;el("mapDuplicate").onclick=duplicate;el("mapSmaller").onclick=()=>resize(-2);el("mapLarger").onclick=()=>resize(2);el("mapRotateL").onclick=()=>rotate(-15);el("mapRotateR").onclick=()=>rotate(15);el("mapFront").onclick=()=>layer(1);el("mapBackLayer").onclick=()=>layer(-1);el("mapSave").onclick=()=>save(true);el("mapDelete").onclick=remove;el("mapUndo").onclick=undo;
+  el("mapToolbarToggle").onclick=()=>{const tools=el("mapEditorTools"),collapsed=tools.classList.toggle("collapsed");el("mapToolbarToggle").textContent=collapsed?"＋ باز کردن ابزارها":"− بستن ابزارها";el("mapToolbarToggle").setAttribute("aria-expanded",String(!collapsed))};
+  el("mapClose").onclick=()=>{clearTimeout(saveTimer);editing=false;document.body.classList.remove("map-editing");panel.classList.remove("active");select(null)};
+ }
+ async function getToken(){try{if(typeof supabase!=="undefined"&&supabase?.auth){const {data}=await supabase.auth.getSession();if(data?.session?.access_token)return data.session.access_token}}catch(e){}return token}
+ async function open(){if(!admin())return;ui();try{token=await getToken();await load();enableDrag();editing=true;document.body.classList.add("map-editing");el("codingMapEditorUI").classList.add("active");el("mapEditorTools").classList.remove("collapsed");el("mapToolbarToggle").textContent="− بستن ابزارها";say("ویرایشگر آماده است؛ تغییرات خودکار ذخیره می‌شوند") }catch(e){say("خطا در دریافت نقشه: "+e.message);alert("دریافت نقشه انجام نشد:\n"+e.message)}}
+ async function load(){const r=await fetch(URL+"/rest/v1/khatmin_map_layouts?select=layout&id=eq.1",{headers:headers(),cache:"no-store"});if(!r.ok)throw Error(await r.text());const rows=await r.json();layout=rows[0]?.layout||{stagePositions:{},landmarkPositions:{},landmarksHidden:[],objects:[]};layout.objects=Array.isArray(layout.objects)?layout.objects:[];apply()}
+ function setPos(n,p){n.style.left=p.x+"%";n.style.top=p.y+"%"}
+ function normalizePosition(n,t){const a=n.getBoundingClientRect(),b=t.getBoundingClientRect();setPos(n,{x:(a.left+a.width/2-b.left)/b.width*100,y:(a.top+a.height/2-b.top)/b.height*100})}
+ function apply(){const t=track();if(!t)return;t.querySelectorAll("[data-map-stage]").forEach(n=>{const p=layout.stagePositions?.[n.dataset.mapStage];if(p)setPos(n,p);else normalizePosition(n,t)});t.querySelectorAll("[data-map-landmark]").forEach(n=>{const deleted=(layout.landmarksHidden||[]).includes(n.dataset.mapLandmark);n.hidden=deleted;if(deleted){n.style.setProperty("display","none","important");n.classList.remove("map-selected");}else{n.style.removeProperty("display");const p=layout.landmarkPositions?.[n.dataset.mapLandmark];if(p)setPos(n,p);else normalizePosition(n,t)}});t.querySelectorAll(".map-user-object").forEach(n=>n.remove());(layout.objects||[]).forEach(o=>{let n;if(o.type==="text"){n=document.createElement("div");n.className="map-user-object map-user-text";n.textContent=o.text||"متن";n.style.fontSize=(o.fontSize||18)+"px"}else{n=document.createElement("img");n.src=o.url;n.alt="";n.draggable=false;n.style.width=(o.width||14)+"%";n.style.height="auto";n.style.objectFit="contain";n.style.filter="drop-shadow(0 9px 7px #5d3a2355)"}n.dataset.mapObject=o.id;n.style.position="absolute";n.style.zIndex=o.zIndex||4;n.style.left=o.x+"%";n.style.top=o.y+"%";n.style.transform=`translate(-50%,-50%) rotate(${o.rotation||0}deg)`;t.append(n)});redraw()}
+ function redraw(){const t=track(),line=t?.querySelector(".coding-path-line"),shadow=t?.querySelector(".coding-path-shadow");if(!line||!shadow)return;const box=t.getBoundingClientRect(),nodes=[...t.querySelectorAll("[data-map-stage]")],pts=nodes.map(n=>{const r=n.getBoundingClientRect();return{x:r.left+r.width/2-box.left,y:r.top+r.height/2-box.top}});let d="";pts.slice(0,-1).forEach((a,i)=>{const b=pts[i+1],dx=b.x-a.x,k=((i%4)-1.5)*15;d+=(i?" ":"")+`M ${a.x} ${a.y} C ${a.x+dx*.38} ${a.y+k}, ${a.x+dx*.68} ${b.y-k}, ${b.x} ${b.y}`});line.setAttribute("d",d);shadow.setAttribute("d",d)}
+ function select(n){selected?.classList.remove("map-selected");selected=n;selected?.classList.add("map-selected");const info=el("mapSelectedInfo");if(info){let label="هیچ آیتمی انتخاب نشده";if(n){if(n.dataset.mapStage)label="مرحله "+n.dataset.mapStage;else if(n.dataset.mapLandmark!==undefined)label=n.querySelector("small")?.textContent||"ساختمان نقشه";else if(n.dataset.mapObject){const o=layout.objects.find(x=>x.id===n.dataset.mapObject);label=o?.type==="text"?(o.text||"متن"):"تصویر افزوده‌شده"}}info.textContent=label}const del=el("mapDelete");if(del)del.disabled=!n;const bg=el("mapRemoveBg");if(bg)bg.disabled=!(n?.dataset.mapObject&&layout.objects.find(x=>x.id===n.dataset.mapObject)?.type==="image")||bgBusy;}
+ function enableDrag(){const t=track();if(!t||t.dataset.mapEditorBound)return;t.dataset.mapEditorBound="1";t.addEventListener("pointerdown",e=>{if(!editing)return;const n=e.target.closest("[data-map-stage],[data-map-landmark],[data-map-object]");if(!n)return;e.preventDefault();e.stopPropagation();snapshot();select(n);const b=t.getBoundingClientRect();drag={n,id:e.pointerId,dx:e.clientX-b.left-(parseFloat(n.style.left)||0)/100*b.width,dy:e.clientY-b.top-(parseFloat(n.style.top)||0)/100*b.height};try{n.setPointerCapture(e.pointerId)}catch(_){}});t.addEventListener("pointermove",e=>{if(!drag||drag.id!==e.pointerId)return;const b=t.getBoundingClientRect();drag.n.style.left=Math.max(1,Math.min(99,(e.clientX-b.left-drag.dx)/b.width*100))+"%";drag.n.style.top=Math.max(2,Math.min(98,(e.clientY-b.top-drag.dy)/b.height*100))+"%";if(drag.n.dataset.mapStage)redraw()});const done=()=>{if(drag){drag=null;persistPositions();redraw();queueSave()}};t.addEventListener("pointerup",done);t.addEventListener("pointercancel",done)}
+ function persistPositions(){const t=track(),r=t.getBoundingClientRect();layout.stagePositions={};layout.landmarkPositions={};t.querySelectorAll("[data-map-stage]").forEach(n=>{const b=n.getBoundingClientRect();layout.stagePositions[n.dataset.mapStage]={x:+((b.left+b.width/2-r.left)/r.width*100).toFixed(4),y:+((b.top+b.height/2-r.top)/r.height*100).toFixed(4)}});t.querySelectorAll("[data-map-landmark]").forEach(n=>{if((layout.landmarksHidden||[]).includes(n.dataset.mapLandmark))return;const b=n.getBoundingClientRect();layout.landmarkPositions[n.dataset.mapLandmark]={x:+((b.left+b.width/2-r.left)/r.width*100).toFixed(4),y:+((b.top+b.height/2-r.top)/r.height*100).toFixed(4)}});layout.objects=(layout.objects||[]).map(o=>{const n=t.querySelector(`[data-map-object="${o.id}"]`);if(!n)return o;const b=n.getBoundingClientRect();return{...o,x:+((b.left+b.width/2-r.left)/r.width*100).toFixed(4),y:+((b.top+b.height/2-r.top)/r.height*100).toFixed(4),zIndex:parseInt(n.style.zIndex)||4}})}
+ async function upload(e){const f=e.target.files?.[0];if(!f)return;if(uploadBusy){e.target.value="";return}uploadBusy=true;el("mapAdd").disabled=true;try{if(!f.type.startsWith("image/"))throw Error("فقط تصویر انتخاب کنید.");if(f.size>8*1024*1024)throw Error("حداکثر حجم تصویر ۸ مگابایت است.");say("در حال آپلود یک تصویر…");const id="asset_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7),ext=(f.name.split(".").pop()||"png").replace(/[^a-z0-9]/gi,"")||"png",path=id+"."+ext;const r=await fetch(URL+"/storage/v1/object/"+BUCKET+"/"+path,{method:"POST",headers:headers(token,{"Content-Type":f.type,"x-upsert":"false"}),body:f});if(!r.ok)throw Error(await r.text());snapshot();layout.objects.push({id,type:"image",url:URL+"/storage/v1/object/public/"+BUCKET+"/"+path,x:50,y:50,width:5,rotation:0,zIndex:4});apply();select(track().querySelector(`[data-map-object="${id}"]`));await save(true)}catch(err){alert("آپلود ناموفق: "+err.message);say("آپلود ناموفق: "+err.message)}finally{e.target.value="";uploadBusy=false;el("mapAdd").disabled=false}}
+ async function removeBackground(){
+  if(bgBusy||!selected?.dataset.mapObject)return;
+  const objectId=selected.dataset.mapObject,o=layout.objects.find(x=>x.id===objectId);
+  if(!o||o.type!=="image")return;
+  bgBusy=true;el("mapRemoveBg").disabled=true;
+  try{
+   say("در حال بارگذاری ابزار حذف پس‌زمینه…");
+   let module;
+   try{module=await import("https://esm.sh/@imgly/background-removal@1.5.5?bundle");}
+   catch(first){module=await import("https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm");}
+   const removeBg=module.removeBackground||module.default;
+   if(typeof removeBg!=="function")throw Error("کتابخانه حذف پس‌زمینه بارگذاری نشد؛ اتصال اینترنت یا دسترسی CDN را بررسی کن.");
+   const response=await fetch(o.url,{mode:"cors",cache:"no-store"});
+   if(!response.ok)throw Error("تصویر اصلی از فضای ذخیره‌سازی دریافت نشد.");
+   const source=await response.blob();
+   say("هوش مصنوعی در حال جدا کردن سوژه است؛ ممکن است کمی طول بکشد…");
+   const transparent=await removeBg(source,{output:{format:"image/png"}});
+   if(!transparent||!transparent.size||transparent.type!=="image/png")throw Error("خروجی PNG شفاف ساخته نشد.");
+   const id="asset_cutout_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7),path=id+".png";
+   const up=await fetch(URL+"/storage/v1/object/"+BUCKET+"/"+path,{method:"POST",headers:headers(token,{"Content-Type":"image/png","x-upsert":"false"}),body:transparent});
+   if(!up.ok)throw Error("ذخیره تصویر بدون پس‌زمینه در فضای فایل ناموفق بود: "+await up.text());
+   snapshot();o.url=URL+"/storage/v1/object/public/"+BUCKET+"/"+path;
+   // Update the currently selected DOM image; do not create a second map item.
+   const image=selected;image.src=o.url;image.dataset.mapObject=o.id;
+   await save(true);say("پس‌زمینه حذف شد و تصویر جدید ذخیره شد ✓");
+  }catch(err){console.error(err);alert("حذف پس‌زمینه انجام نشد: "+(err.message||err));say("حذف پس‌زمینه ناموفق بود");}
+  finally{bgBusy=false;select(selected)}
+ }
+ function addText(){const value=prompt("متن موردنظر را بنویسید:","متن جدید");if(value===null||!value.trim())return;snapshot();const id="text_"+Date.now().toString(36);layout.objects.push({id,type:"text",text:value.trim(),x:50,y:50,fontSize:18,rotation:0,zIndex:5});apply();select(track().querySelector(`[data-map-object="${id}"]`));queueSave()}
+ function remove(){if(!selected)return;if(selected.dataset.mapStage){say("برای حفظ مسیر آموزشی، مرحله‌ها حذف نمی‌شوند؛ می‌توانید آن‌ها را جابه‌جا کنید.");return}const isLandmark=selected.dataset.mapLandmark!==undefined;const itemName=isLandmark?(selected.querySelector("small")?.textContent||"این ساختمان"):(selected.classList.contains("map-user-text")?"این نوشته":"این تصویر");if(!confirm(`«${itemName}» برای همیشه از نقشه حذف شود؟`))return;snapshot();if(isLandmark){const id=selected.dataset.mapLandmark;layout.landmarksHidden=[...new Set([...(layout.landmarksHidden||[]),id])];delete layout.landmarkPositions[id];selected.style.setProperty("display","none","important");selected.hidden=true;selected.removeAttribute("data-map-landmark");}else if(selected.dataset.mapObject){layout.objects=layout.objects.filter(o=>o.id!==selected.dataset.mapObject);selected.remove()}select(null);say("آیتم حذف شد؛ در حال ذخیره تغییرات…");queueSave()}
+ function resize(delta){if(!selected?.dataset.mapObject)return;const o=layout.objects.find(x=>x.id===selected.dataset.mapObject);if(!o)return;snapshot();if(o.type==="text"){o.fontSize=Math.max(8,Math.min(96,(o.fontSize||18)+delta*2));selected.style.fontSize=o.fontSize+"px";}else{o.width=Math.max(3,Math.min(80,(o.width||5)+delta));selected.style.width=o.width+"%";}queueSave()}
+ function rotate(delta){if(!selected?.dataset.mapObject)return;const o=layout.objects.find(x=>x.id===selected.dataset.mapObject);if(!o)return;snapshot();o.rotation=((o.rotation||0)+delta)%360;apply();select(track().querySelector(`[data-map-object="${o.id}"]`));queueSave()}
+ function duplicate(){if(!selected?.dataset.mapObject)return;const o=layout.objects.find(x=>x.id===selected.dataset.mapObject);if(!o)return;snapshot();const copy={...o,id:o.id+"_copy_"+Date.now().toString(36),x:Math.min(96,o.x+3),y:Math.min(96,o.y+3)};layout.objects.push(copy);apply();select(track().querySelector(`[data-map-object="${copy.id}"]`));queueSave()}
+ function layer(dir){if(!selected?.dataset.mapObject)return;const o=layout.objects.find(x=>x.id===selected.dataset.mapObject);if(!o)return;snapshot();o.zIndex=Math.max(1,Math.min(30,(o.zIndex||4)+dir));apply();select(track().querySelector(`[data-map-object="${o.id}"]`));queueSave()}
+ function undo(){if(!undoStack.length)return;clearTimeout(saveTimer);layout=JSON.parse(undoStack.pop());apply();select(null);queueSave()}
+ async function save(manual){
+  try{
+   clearTimeout(saveTimer);persistPositions();
+   const payload={id:1,layout,updated_at:new Date().toISOString()};
+   const r=await fetch(URL+"/rest/v1/khatmin_map_layouts?on_conflict=id",{method:"POST",headers:headers(KEY,{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates,return=representation"}),body:JSON.stringify(payload),cache:"no-store"});
+   if(!r.ok)throw Error(await r.text());
+   // Confirm the server now returns the saved object, avoiding a false success toast.
+   const verify=await fetch(URL+"/rest/v1/khatmin_map_layouts?select=layout&id=eq.1",{headers:headers(KEY),cache:"no-store"});
+   if(!verify.ok)throw Error("ثبت انجام شد اما تأیید خواندن نقشه ناموفق بود: "+await verify.text());
+   const rows=await verify.json();
+   if(!rows.length||!Array.isArray(rows[0]?.layout?.objects))throw Error("داده ذخیره‌شده از دیتابیس قابل تأیید نیست؛ سیاست خواندن جدول را بررسی کن.");
+   say("ذخیره شد و از دیتابیس تأیید شد ✓");return true;
+  }catch(e){say("ذخیره ناموفق: "+e.message);if(manual)alert("ذخیره انجام نشد:\n"+e.message);return false}
+ }
+ window.khatminApplySharedMap=async()=>{try{await load()}catch(e){console.warn("Map layout load failed",e)}};
+ document.addEventListener("DOMContentLoaded",()=>{ui();enableDrag()});
+})();
+
+(()=>{
+ const css=document.createElement("style");css.textContent=`#codingMapLoading{position:fixed;inset:0;z-index:200000;display:grid;place-items:center;overflow:hidden;background:linear-gradient(145deg,#dceaf0 0%,#b9d2dc 45%,#e8e5f2 100%);opacity:0;visibility:hidden;transition:opacity .45s ease,visibility .45s ease;backdrop-filter:blur(22px)}#codingMapLoading.visible{opacity:1;visibility:visible}#codingMapLoading:before,#codingMapLoading:after{content:"";position:absolute;width:75vw;height:42vh;border-radius:50%;background:rgba(255,255,255,.66);filter:blur(35px);animation:mapCloudDrift 7s ease-in-out infinite alternate}#codingMapLoading:before{left:-18vw;top:8vh}#codingMapLoading:after{right:-20vw;bottom:4vh;animation-delay:-3s;background:rgba(255,255,255,.48)}#codingMapLoading .cloud-card{position:relative;z-index:1;padding:28px 34px;border:1px solid rgba(255,255,255,.65);border-radius:26px;background:rgba(255,255,255,.42);box-shadow:0 20px 70px rgba(70,100,120,.12);backdrop-filter:blur(18px);text-align:center;color:#405c70;font:800 15px system-ui}#codingMapLoading .cloud-spinner{width:34px;height:34px;margin:0 auto 14px;border:3px solid rgba(75,112,137,.2);border-top-color:#668ca5;border-radius:50%;animation:mapSpin .8s linear infinite}@keyframes mapSpin{to{transform:rotate(360deg)}}@keyframes mapCloudDrift{to{transform:translate3d(8vw,-4vh,0) scale(1.12)}}`;
+ document.head.append(css);
+ const overlay=document.createElement("div");overlay.id="codingMapLoading";overlay.innerHTML='<div class="cloud-card"><div class="cloud-spinner"></div><div>❤️❤️❤️</div></div>';document.body.append(overlay);
+ window.khatminShowMapLoading=()=>overlay.classList.add("visible");window.khatminHideMapLoading=()=>overlay.classList.remove("visible");
+})();
+
+document.addEventListener("click",async event=>{
   const option=event.target.closest("[data-dashboard-option]");
   if(option){
     event.preventDefault();
     event.stopPropagation();
     if(option.dataset.dashboardOption==="coding"){
-      showCodingComingSoon();
-      return;
-    }
-    openDashboardScreen(option.dataset.dashboardOption);
+      window.khatminShowMapLoading?.();
+      openDashboardScreen("coding");
+      buildCodingJourney();
+      try{await window.khatminApplySharedMap?.();}catch(e){console.warn(e)}
+      requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(()=>window.khatminHideMapLoading?.(),180)));
+    }else{openDashboardScreen(option.dataset.dashboardOption);}
   }
   if(event.target.closest("#folderBack")||event.target.closest("#parameterBack")||event.target.closest("#codingBack")){
     event.preventDefault();
@@ -2622,8 +3018,8 @@ $("folderFileInput").addEventListener("change",async event=>{
   }
 });
 
-function setSignedIn(account,authUser,profile){currentLoginSecret=pass.value;currentAccount=account;currentUser=authUser;$("manageAppsBtn").hidden=account.role!=="admin";document.body.classList.add("signed-in");dock.classList.add("visible");$("roleIcon").textContent=account.icon;$("roleTitle").textContent=account.role==="admin"?"minak":"khati";$("adminCodeManager").hidden=account.role!=="admin";$("adminMessengerManager").hidden=account.role!=="admin";if(account.role==="admin"){renderAdminCodeList();renderAdminContacts();}$("sessionState").textContent=account.title;loginView.style.display="none";$("folderUploadBar").hidden=account.role!=="admin";showTab("laptop");loadEverything();syncMessengerFromCloud();if(account.role==="admin"){loadCustomCodesFromCloud().catch(err=>{const f=$("adminCodeFeedback");if(f)f.textContent="بارگذاری کدها از دیتابیس ناموفق بود: "+err.message;});}}
-function setSignedOut(){currentLoginSecret="";currentAccount=currentUser=currentWorkspace=null;document.body.classList.remove("signed-in");dock.classList.remove("visible");Object.values(views).forEach(e=>e.classList.remove("active"));loginView.style.display="";$("sessionState").textContent="SIGNED OUT";dockButtons.forEach(b=>b.classList.toggle("active",b.dataset.tab==="laptop"))}
+function setSignedIn(account,authUser,profile){document.body.dataset.khatminRole=account.role;currentLoginSecret=pass.value;currentAccount=account;currentUser=authUser;$("manageAppsBtn").hidden=account.role!=="admin";document.body.classList.add("signed-in");dock.classList.add("visible");$("roleIcon").textContent=account.icon;$("roleTitle").textContent=account.role==="admin"?"minak":"khati";$("adminCodeManager").hidden=account.role!=="admin";$("adminMessengerManager").hidden=account.role!=="admin";if(account.role==="admin"){renderAdminCodeList();renderAdminContacts();}$("sessionState").textContent=account.title;loginView.style.display="none";$("folderUploadBar").hidden=account.role!=="admin";closeDashboardScreen();showTab("laptop");loadEverything();syncMessengerFromCloud();if(account.role==="admin"){loadCustomCodesFromCloud().catch(err=>{const f=$("adminCodeFeedback");if(f)f.textContent="بارگذاری کدها از دیتابیس ناموفق بود: "+err.message;});}}
+function setSignedOut(){delete document.body.dataset.khatminRole;currentLoginSecret="";currentAccount=currentUser=currentWorkspace=null;document.body.classList.remove("signed-in");dock.classList.remove("visible");Object.values(views).forEach(e=>e.classList.remove("active"));loginView.style.display="";$("sessionState").textContent="SIGNED OUT";dockButtons.forEach(b=>b.classList.toggle("active",b.dataset.tab==="laptop"))}
 $("showPass").addEventListener("click",()=>{const reveal=pass.type==="password";pass.type=reveal?"text":"password";$("showPass").setAttribute("aria-label",reveal?"Hide password":"Show password")});
 // Immediate login for the preview build: no network request is required
 // to open the correct panel. Supabase remains available for panel data.
