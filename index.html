@@ -1889,6 +1889,140 @@ body.signed-in #codingScreen #codingBack{
 body.signed-in #codingScreen #codingBack svg{width:25px!important;height:25px!important;fill:none!important;stroke:currentColor!important;stroke-width:2.5!important;stroke-linecap:round!important;stroke-linejoin:round!important}
 @media(max-width:650px){body.signed-in #codingScreen #codingBack{width:44px!important;height:44px!important;border-radius:15px!important}}
 </style>
+
+<style id="login-celebration-and-parameter-back">
+/* Login celebration: decorative only, never intercepts panel interaction. */
+.login-celebration{
+  position:fixed;inset:0;z-index:100000;overflow:hidden;pointer-events:none;
+  opacity:0;visibility:hidden;
+  background:
+    radial-gradient(ellipse at 50% 45%,rgba(255,255,255,.10),transparent 58%),
+    radial-gradient(circle at 15% 20%,rgba(255,214,102,.13),transparent 26%),
+    radial-gradient(circle at 85% 25%,rgba(183,145,255,.16),transparent 30%);
+  transition:opacity .45s ease,visibility .45s ease;
+}
+.login-celebration.celebration-active{opacity:1;visibility:visible}
+.login-celebration.celebration-out{opacity:0;visibility:hidden}
+.celebration-balloon{
+  position:absolute;left:var(--x);bottom:-125px;width:clamp(27px,4.2vw,48px);
+  height:clamp(36px,5.4vw,62px);border-radius:52% 52% 48% 48%;
+  background:radial-gradient(ellipse at 30% 23%,rgba(255,255,255,.92),transparent 20%),
+    radial-gradient(ellipse at 34% 30%,rgba(255,255,255,.42),transparent 42%),
+    var(--balloon-color);
+  box-shadow:inset -7px -9px 13px rgba(0,0,0,.12),0 0 24px color-mix(in srgb,var(--balloon-color),transparent 42%);
+  opacity:0;transform:translate3d(0,0,0) scale(var(--scale));
+  animation:balloonRise var(--duration) cubic-bezier(.2,.65,.35,1) var(--delay) both;
+}
+.celebration-balloon:before{
+  content:"";position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);
+  border-left:4px solid transparent;border-right:4px solid transparent;
+  border-top:7px solid var(--balloon-color);
+}
+.celebration-balloon:after{
+  content:"";position:absolute;left:50%;top:100%;width:1px;height:65px;
+  background:linear-gradient(var(--balloon-color),rgba(255,255,255,.08));
+  transform:rotate(5deg);transform-origin:top;
+}
+.celebration-burst{
+  position:absolute;left:var(--bx);top:var(--by);width:5px;height:5px;border-radius:50%;
+  opacity:0;background:#fff;box-shadow:0 0 9px 3px #fff,0 0 22px 7px #ffd166;
+  animation:fireworkPop 1.45s ease-out var(--burst-delay) 3;
+}
+.celebration-burst:before,.celebration-burst:after{
+  content:"";position:absolute;inset:-22px;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,rgba(255,224,145,.98) 0deg 2deg,transparent 3deg 30deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 24%,#000 28% 34%,transparent 39%);
+  mask:radial-gradient(circle,transparent 0 24%,#000 28% 34%,transparent 39%);
+}
+.celebration-burst:after{transform:rotate(14deg) scale(.72);filter:hue-rotate(70deg)}
+@keyframes balloonRise{
+  0%{opacity:0;transform:translate3d(0,0,0) scale(var(--scale))}
+  8%{opacity:1}
+  50%{transform:translate3d(var(--sway),-58vh,0) scale(var(--scale))}
+  100%{opacity:.92;transform:translate3d(calc(var(--sway)*-1),-125vh,0) scale(var(--scale))}
+}
+@keyframes fireworkPop{
+  0%{opacity:0;transform:scale(.1)}
+  18%{opacity:1;transform:scale(1.1)}
+  72%{opacity:.9;transform:scale(1.8)}
+  100%{opacity:0;transform:scale(2.25)}
+}
+
+/* A soft, inflated-looking 20 is the visual centerpiece of the celebration. */
+.login-celebration{
+  isolation:isolate;
+  background:
+    radial-gradient(ellipse at 50% 48%,rgba(255,255,255,.22),transparent 34%),
+    radial-gradient(circle at 15% 20%,rgba(255,214,102,.18),transparent 27%),
+    radial-gradient(circle at 85% 25%,rgba(183,145,255,.20),transparent 31%),
+    radial-gradient(ellipse at 50% 100%,rgba(91,190,255,.12),transparent 55%);
+}
+.celebration-number{
+  position:absolute;z-index:2;left:50%;top:46%;
+  transform:translate(-50%,-50%) scale(.55);
+  display:flex;align-items:center;justify-content:center;
+  padding:0 .12em .08em;
+  font-family:ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;
+  font-size:clamp(112px,27vw,260px);font-weight:1000;line-height:.9;
+  letter-spacing:-.075em;
+  color:#fff;
+  -webkit-text-stroke:2px rgba(255,255,255,.72);
+  background:linear-gradient(145deg,#fff9d9 3%,#ffdc75 22%,#ff8eb5 48%,#b99aff 73%,#80e6ee 96%);
+  background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 7px 0 rgba(153,91,172,.22))
+         drop-shadow(0 13px 20px rgba(65,43,116,.25))
+         drop-shadow(0 0 26px rgba(255,255,255,.75));
+  opacity:0;
+  animation:numberBalloonIn 1.15s cubic-bezier(.16,1.35,.35,1) .18s forwards,
+            numberBalloonFloat 3.4s ease-in-out 1.35s infinite;
+  user-select:none;white-space:nowrap;
+}
+.celebration-number:before{
+  content:"";position:absolute;inset:8% 8% 15%;z-index:-1;border-radius:48%;
+  background:radial-gradient(ellipse,rgba(255,255,255,.28),rgba(255,255,255,0) 68%);
+  filter:blur(15px);transform:scale(1.25);
+}
+.celebration-number:after{
+  content:"";position:absolute;left:50%;top:100%;width:2px;height:clamp(25px,5vh,48px);
+  background:linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,0));
+  opacity:.55;transform:translateX(-50%);
+}
+@keyframes numberBalloonIn{
+  0%{opacity:0;transform:translate(-50%,-42%) scale(.35) rotate(-8deg)}
+  65%{opacity:1;transform:translate(-50%,-53%) scale(1.09) rotate(3deg)}
+  82%{transform:translate(-50%,-48%) scale(.97) rotate(-1deg)}
+  100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}
+}
+@keyframes numberBalloonFloat{
+  0%,100%{transform:translate(-50%,-50%) scale(1)}
+  50%{transform:translate(-50%,-54%) scale(1.025)}
+}
+.login-celebration.celebration-active .celebration-balloon{
+  will-change:transform,opacity;
+}
+.login-celebration.celebration-active .celebration-burst{
+  will-change:transform,opacity;
+}
+@media(max-width:520px){
+  .celebration-number{top:45%;font-size:clamp(104px,34vw,178px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .celebration-number{animation:none!important;opacity:1!important;transform:translate(-50%,-50%)!important}
+}
+
+/* Keep the parameter screen's back control at the physical top-left corner. */
+body.signed-in #parameterScreen{position:fixed}
+body.signed-in #parameterScreen>#parameterBack{
+  position:absolute!important;left:calc(16px + env(safe-area-inset-left))!important;
+  right:auto!important;top:calc(16px + env(safe-area-inset-top))!important;
+  align-self:auto!important;z-index:20!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .celebration-balloon,.celebration-burst{animation-duration:.01ms!important;animation-iteration-count:1!important}
+  .login-celebration{transition:none!important}
+}
+</style>
+
 </head>
 <body>
 <div class="scene" aria-hidden="true"></div>
@@ -3057,7 +3191,45 @@ $("folderFileInput").addEventListener("change",async event=>{
   }
 });
 
-function setSignedIn(account,authUser,profile,loginPassword){document.body.dataset.khatminRole=account.role;currentLoginSecret=String(loginPassword??pass.value??"");currentAccount=account;currentUser=authUser;$("manageAppsBtn").hidden=account.role!=="admin";document.body.classList.add("signed-in");dock.classList.add("visible");$("roleIcon").textContent=account.icon;$("roleTitle").textContent=account.role==="admin"?"minak":"khati";$("adminCodeManager").hidden=account.role!=="admin";$("adminMessengerManager").hidden=account.role!=="admin";if(account.role==="admin"){renderAdminCodeList();renderAdminContacts();}$("sessionState").textContent=account.title;loginView.style.display="none";$("folderUploadBar").hidden=account.role!=="admin";closeDashboardScreen();showTab("laptop");loadEverything();syncMessengerFromCloud();if(account.role==="admin"){loadCustomCodesFromCloud().catch(err=>{const f=$("adminCodeFeedback");if(f)f.textContent="بارگذاری کدها از دیتابیس ناموفق بود: "+err.message;});}}
+
+function launchLoginCelebration(){
+  const old=document.getElementById("loginCelebration");
+  if(old)old.remove();
+  const layer=document.createElement("div");
+  layer.id="loginCelebration";
+  layer.className="login-celebration";
+  layer.setAttribute("aria-hidden","true");
+  const number=document.createElement("div");
+  number.className="celebration-number";
+  number.textContent="20";
+  number.setAttribute("aria-hidden","true");
+  layer.appendChild(number);
+  const palette=["#ff6b9d","#ffd166","#7bdff2","#b8f2a1","#c7a6ff","#ff9f68","#8ee3c8"];
+  for(let i=0;i<20;i++){
+    const balloon=document.createElement("span");
+    balloon.className="celebration-balloon";
+    balloon.style.setProperty("--x",`${(i*47+9)%96}%`);
+    balloon.style.setProperty("--delay",`${(i%7)*-.42}s`);
+    balloon.style.setProperty("--duration",`${6.8+(i%5)*.65}s`);
+    balloon.style.setProperty("--balloon-color",palette[i%palette.length]);
+    balloon.style.setProperty("--sway",`${(i%2?1:-1)*(12+(i%4)*7)}px`);
+    balloon.style.setProperty("--scale",`${.72+(i%5)*.09}`);
+    layer.appendChild(balloon);
+  }
+  for(let i=0;i<7;i++){
+    const burst=document.createElement("i");
+    burst.className="celebration-burst";
+    burst.style.setProperty("--bx",`${8+(i*17)%86}%`);
+    burst.style.setProperty("--by",`${12+(i*23)%56}%`);
+    burst.style.setProperty("--burst-delay",`${i*.38}s`);
+    layer.appendChild(burst);
+  }
+  document.body.appendChild(layer);
+  window.setTimeout(()=>layer.classList.add("celebration-active"),30);
+  window.setTimeout(()=>{layer.classList.add("celebration-out");window.setTimeout(()=>layer.remove(),1100)},8200);
+}
+
+function setSignedIn(account,authUser,profile,loginPassword){document.body.dataset.khatminRole=account.role;currentLoginSecret=String(loginPassword??pass.value??"");currentAccount=account;currentUser=authUser;$("manageAppsBtn").hidden=account.role!=="admin";document.body.classList.add("signed-in");dock.classList.add("visible");$("roleIcon").textContent=account.icon;$("roleTitle").textContent=account.role==="admin"?"minak":"khati";$("adminCodeManager").hidden=account.role!=="admin";$("adminMessengerManager").hidden=account.role!=="admin";if(account.role==="admin"){renderAdminCodeList();renderAdminContacts();}$("sessionState").textContent=account.title;loginView.style.display="none";$("folderUploadBar").hidden=account.role!=="admin";closeDashboardScreen();showTab("laptop");launchLoginCelebration();loadEverything();syncMessengerFromCloud();if(account.role==="admin"){loadCustomCodesFromCloud().catch(err=>{const f=$("adminCodeFeedback");if(f)f.textContent="بارگذاری کدها از دیتابیس ناموفق بود: "+err.message;});}}
 function setSignedOut(){delete document.body.dataset.khatminRole;currentLoginSecret="";currentAccount=currentUser=currentWorkspace=null;document.body.classList.remove("signed-in");dock.classList.remove("visible");Object.values(views).forEach(e=>e.classList.remove("active"));loginView.style.display="";$("sessionState").textContent="SIGNED OUT";dockButtons.forEach(b=>b.classList.toggle("active",b.dataset.tab==="laptop"))}
 $("showPass").addEventListener("click",()=>{const reveal=pass.type==="password";pass.type=reveal?"text":"password";$("showPass").setAttribute("aria-label",reveal?"Hide password":"Show password")});
 // Immediate login for the preview build: no network request is required
