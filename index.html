@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Goldman:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lightweight-charts-drawing@latest/dist/lightweight-charts-drawing.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts-drawing@0.5.1/dist/lightweight-charts-drawing.umd.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
@@ -109,6 +109,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .timeframes button.active{background:var(--panel-3);color:var(--text);border-color:var(--accent)}
 .indicators button.active{background:rgba(139,92,246,.2);color:var(--accent-2);border-color:var(--accent-2)}
 .drawing-tools button.active{background:rgba(16,185,129,.2);color:var(--green-bright);border-color:var(--green-bright)}
+.sl-tp-tools button.active{background:rgba(239,68,68,.2);color:var(--red-bright);border-color:var(--red-bright)}
 .toolbar-divider{width:1px;height:20px;background:var(--border);flex-shrink:0}
 .chart-wrapper{position:relative;flex:1;min-height:0}
 #chart{position:absolute;inset:0}
@@ -234,7 +235,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   .icon-btn{width:34px;height:34px;font-size:14px}
   .toast-container{top:70px}
   .chart-toolbar{padding:6px 8px;gap:8px}
-  .timeframes button,.indicators button,.drawing-tools button{padding:5px 9px;font-size:11px}
+  .timeframes button,.indicators button,.drawing-tools button,.sl-tp-tools button{padding:5px 9px;font-size:11px}
 }
 </style>
 </head>
@@ -292,9 +293,15 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
         <div class="toolbar-divider"></div>
         <div class="drawing-tools" id="drawingTools">
           <button data-tool="none" class="active">🖱️ نشانگر</button>
-          <button data-tool="trendline">📈 خط روند</button>
+          <button data-tool="trend-line">📈 خط روند</button>
           <button data-tool="rectangle">▭ مستطیل</button>
-          <button data-tool="horizontal">─ خط افقی</button>
+          <button data-tool="horizontal-line">─ خط افقی</button>
+        </div>
+        <div class="toolbar-divider"></div>
+        <div class="drawing-tools sl-tp-tools" id="slTpTools">
+          <button data-sltp="none" class="active">🎯 تعیین SL/TP</button>
+          <button data-sltp="sl">🛑 رسم حد ضرر</button>
+          <button data-sltp="tp">🎯 رسم حد سود</button>
         </div>
       </div>
       <div class="chart-wrapper">
@@ -311,16 +318,16 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
       <div class="trade-content">
         <div class="balance-card">
           <div class="balance-row">
-            <span class="balance-label">موجودی آزاد</span>
-            <span class="balance-value" id="balanceValue">10,000.00</span>
+            <span class="balance-label">موجودی کیف پول</span>
+            <span class="balance-value" id="balanceToman">--</span>
           </div>
           <div class="balance-row">
             <span class="balance-label">ارزش کل پرتفوی</span>
-            <span class="balance-value equity" id="equityValue">10,000.00</span>
+            <span class="balance-value equity" id="equityToman">--</span>
           </div>
           <div class="balance-row" style="margin-top:4px;">
-            <span class="balance-label">معادل تومانی (تقریبی)</span>
-            <span class="balance-value" id="equityToman" style="font-size:14px;">--</span>
+            <span class="balance-label">معادل دلاری (تقریبی)</span>
+            <span class="balance-value" id="equityUsdt" style="font-size:13px;color:var(--text-dim);">--</span>
           </div>
         </div>
 
@@ -336,9 +343,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
             </div>
           </div>
 
-          <label class="form-label">مبلغ مارجین (USDT)</label>
+          <label class="form-label">مبلغ مارجین (تومان)</label>
           <div class="amount-input-group">
-            <input type="number" id="amountInput" value="100" min="1" step="1" inputmode="decimal">
+            <input type="number" id="amountInput" value="1000000" min="1000" step="1000" inputmode="decimal">
             <div class="quick-amounts">
               <button data-pct="0.25">25%</button>
               <button data-pct="0.5">50%</button>
@@ -349,13 +356,16 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 
           <div class="sl-tp-row">
             <div class="sl-tp-group">
-              <label>🛑 حد ضرر (اختیاری)</label>
+              <label>🛑 حد ضرر (قیمت)</label>
               <input type="number" id="slInput" placeholder="-" inputmode="decimal">
             </div>
             <div class="sl-tp-group">
-              <label>🎯 حد سود (اختیاری)</label>
+              <label>🎯 حد سود (قیمت)</label>
               <input type="number" id="tpInput" placeholder="-" inputmode="decimal">
             </div>
+          </div>
+          <div style="font-size:9px;color:var(--text-dimmer);text-align:center;margin-top:-4px;">
+            می‌توانید از دکمه‌های «رسم حد ضرر/سود» بالای نمودار هم استفاده کنید
           </div>
 
           <div class="btn-row">
@@ -409,16 +419,16 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 // ============================================================
 // CONFIG
 // ============================================================
-const INITIAL_BALANCE=10000;
-const STORAGE_KEY='arminTrade_global_v3';
+const INITIAL_BALANCE_TOMAN = 100000000; // 100 million Toman
+const STORAGE_KEY='arminTrade_v4';
 const INTERVALS=['1m','5m','15m','1h','4h','1d'];
 const BINANCE_WS='wss://stream.binance.com:9443';
 const BINANCE_REST='https://api.binance.com/api/v3';
-const TOMAN_API='https://arzparz.com/api/v1/latest';
+const TOMAN_API='https://nerkh.jahankhahan.shop/data/live.json';
 const FALLBACK_TOMAN_RATE=189045;
 
 // ============================================================
-// PERSIAN NAMES
+// PERSIAN NAMES MAP
 // ============================================================
 const PERSIAN_NAMES = {
   BTC:'بیت کوین', ETH:'اتریوم', BNB:'بایننس کوین', SOL:'سولانا',
@@ -436,20 +446,25 @@ const PERSIAN_NAMES = {
   SNX:'سینتتیکس', CRV:'کرو', COMP:'کامپاند', DYDX:'دی‌وای‌دی‌ایکس',
 };
 
-// Logo CDN
-function getLogoUrl(symbol){return `https://meta.viewblock.io/${symbol}/logo`;}
+// ============================================================
+// LOGO CDN
+// ============================================================
+function getLogoUrl(baseSymbol) {
+  return `https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/svg/color/${baseSymbol.toLowerCase()}.svg`;
+}
 
 // ============================================================
 // STATE
 // ============================================================
 const state={
-  symbol:'BTCUSDT', interval:'1m', indicator:'none', drawingTool:'none',
+  symbol:'BTCUSDT', interval:'1m', indicator:'none', drawingTool:'none', slTpTool:'none',
   theme:'dark', sound:true,
-  balance:INITIAL_BALANCE, leverage:1,
+  balanceToman:INITIAL_BALANCE_TOMAN, leverage:1,
   positions:[], history:[], prices:{},
   posIdCounter:1, candles:[],
   tomanRate:FALLBACK_TOMAN_RATE,
   allSymbols:[],
+  pendingSL:null, pendingTP:null,
 };
 
 let chart=null, candleSeries=null, volumeSeries=null, smaSeries=null;
@@ -466,7 +481,7 @@ const $=id=>document.getElementById(id);
 // UTILITIES
 // ============================================================
 function fmtPrice(n){if(!n&&n!==0)return '--';if(n>=1000)return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});if(n>=1)return '$'+n.toFixed(4);return '$'+n.toFixed(6);}
-function fmtToman(n){if(!n&&n!==0)return '--';return n.toLocaleString('en-US',{maximumFractionDigits:0})+' تومان';}
+function fmtToman(n){if(!n&&n!==0)return '--';return Math.round(n).toLocaleString('en-US')+' تومان';}
 function fmtNum(n){return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function fmtSmall(n){return n>=1000?n.toFixed(2):n>=1?n.toFixed(3):n.toFixed(6);}
 
@@ -478,7 +493,7 @@ function toast(msg,type='info'){
   el.innerHTML='<span>'+(icons[type]||'')+'</span><span>'+msg+'</span>';
   c.appendChild(el);
   requestAnimationFrame(()=>el.classList.add('show'));
-  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),350);},4000);
+  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),350);},4500);
 }
 
 let audioCtx=null;
@@ -491,19 +506,37 @@ function beep(freq=800,dur=100,vol=0.08){
 // TOMAN RATE
 // ============================================================
 async function fetchTomanRate(){
-  try{const res=await fetch(TOMAN_API);if(res.ok){const data=await res.json();const rate=data?.rates?.USD?.price_toman;if(rate&&rate>0){state.tomanRate=parseFloat(rate);saveState();return;}}}catch(e){}
+  try{
+    const res=await fetch(TOMAN_API);
+    if(res.ok){
+      const data=await res.json();
+      const rate=data?.values?.USD;
+      if(rate&&rate>0){state.tomanRate=parseFloat(rate);saveState();return;}
+    }
+  }catch(e){}
   state.tomanRate=state.tomanRate||FALLBACK_TOMAN_RATE;
 }
 
 // ============================================================
 // PERSISTENCE
 // ============================================================
-function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({balance:state.balance,positions:state.positions,history:state.history.slice(0,100),sound:state.sound,theme:state.theme,posIdCounter:state.posIdCounter,symbol:state.symbol,interval:state.interval,indicator:state.indicator,leverage:state.leverage,tomanRate:state.tomanRate,drawingTool:state.drawingTool}))}catch(e){}}
+function saveState(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({
+      balanceToman:state.balanceToman,positions:state.positions,
+      history:state.history.slice(0,100),sound:state.sound,
+      theme:state.theme,posIdCounter:state.posIdCounter,
+      symbol:state.symbol,interval:state.interval,
+      indicator:state.indicator,leverage:state.leverage,
+      tomanRate:state.tomanRate,drawingTool:state.drawingTool,slTpTool:state.slTpTool,
+    }));
+  }catch(e){}
+}
 function loadState(){
   try{
     const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return;
     const s=JSON.parse(raw);
-    if(typeof s.balance==='number')state.balance=s.balance;
+    if(typeof s.balanceToman==='number')state.balanceToman=s.balanceToman;
     if(Array.isArray(s.positions))state.positions=s.positions.map(p=>({...p,lev:p.lev||1,sl:p.sl||null,tp:p.tp||null}));
     if(Array.isArray(s.history))state.history=s.history.map(h=>({...h,lev:h.lev||1,sl:h.sl||null,tp:h.tp||null}));
     if(typeof s.sound==='boolean')state.sound=s.sound;
@@ -513,7 +546,8 @@ function loadState(){
     if(['none','rsi','macd'].includes(s.indicator))state.indicator=s.indicator;
     if([1,2,5,10,20].includes(s.leverage))state.leverage=s.leverage;
     if(typeof s.tomanRate==='number'&&s.tomanRate>0)state.tomanRate=s.tomanRate;
-    if(['none','trendline','rectangle','horizontal'].includes(s.drawingTool))state.drawingTool=s.drawingTool;
+    if(['none','trend-line','rectangle','horizontal-line'].includes(s.drawingTool))state.drawingTool=s.drawingTool;
+    if(['none','sl','tp'].includes(s.slTpTool))state.slTpTool=s.slTpTool;
     const maxId=Math.max(s.posIdCounter||0,...state.positions.map(p=>p.id||0),...state.history.map(h=>h.id||0),0);
     state.posIdCounter=maxId+1;
   }catch(e){}
@@ -567,10 +601,8 @@ function initChart(){
 function initDrawingManager(){
   if(typeof DrawingManager==='undefined'){console.warn('Drawing library not loaded');return;}
   try{
-    drawingManager=new DrawingManager();
-    drawingManager.attach(chart,candleSeries,$('chart'));
-    // Listen for drawing events (optional)
-    drawingManager.on('drawing:selected',(event)=>{console.log('Selected drawing:',event.drawingId);});
+    drawingManager=new DrawingManager(chart,candleSeries,{magnet:'weak'});
+    drawingManager.on('drawing:selected',(event)=>{console.log('Selected:',event.drawingId);});
   }catch(e){console.warn('Drawing manager init failed:',e);}
 }
 
@@ -580,17 +612,47 @@ function initDrawingManager(){
 function setDrawingTool(tool){
   state.drawingTool=tool;
   document.querySelectorAll('#drawingTools button').forEach(b=>b.classList.toggle('active',b.dataset.tool===tool));
+  // Deactivate SL/TP tool
+  state.slTpTool='none';
+  document.querySelectorAll('#slTpTools button').forEach(b=>b.classList.toggle('active',b.dataset.sltp==='none'));
   if(!drawingManager)return;
-  // Deactivate all first
   try{drawingManager.setTool(null);}catch(e){}
-  if(tool==='trendline'){
-    try{drawingManager.setTool('TrendLine');}catch(e){toast('خطا در فعال‌سازی خط روند','error');}
-  } else if(tool==='rectangle'){
-    try{drawingManager.setTool('Rectangle');}catch(e){toast('خطا در فعال‌سازی مستطیل','error');}
-  } else if(tool==='horizontal'){
-    try{drawingManager.setTool('HorizontalLine');}catch(e){toast('خطا در فعال‌سازی خط افقی','error');}
-  }
+  if(tool==='trend-line'){try{drawingManager.setTool('trend-line');}catch(e){toast('خطا در فعال‌سازی خط روند','error');}}
+  else if(tool==='rectangle'){try{drawingManager.setTool('rectangle');}catch(e){toast('خطا در فعال‌سازی مستطیل','error');}}
+  else if(tool==='horizontal-line'){try{drawingManager.setTool('horizontal-line');}catch(e){toast('خطا در فعال‌سازی خط افقی','error');}}
   saveState();
+}
+
+// ============================================================
+// SL/TP DRAWING MODE
+// ============================================================
+function setSLTPTool(mode){
+  state.slTpTool=mode;
+  document.querySelectorAll('#slTpTools button').forEach(b=>b.classList.toggle('active',b.dataset.sltp===mode));
+  // Deactivate drawing tool
+  state.drawingTool='none';
+  document.querySelectorAll('#drawingTools button').forEach(b=>b.classList.toggle('active',b.dataset.tool==='none'));
+  if(drawingManager)try{drawingManager.setTool(null);}catch(e){}
+  saveState();
+}
+
+// Handle chart click for SL/TP drawing
+function handleChartClick(param){
+  if(state.slTpTool==='none')return;
+  if(!param||!param.point||!param.time)return;
+  const price=candleSeries.coordinateToPrice(param.point.y);
+  if(price===null)return;
+  if(state.slTpTool==='sl'){
+    state.pendingSL=price;
+    $('slInput').value=price.toFixed(2);
+    toast(`حد ضرر روی ${fmtSmall(price)} تنظیم شد`,'info');
+    setSLTPTool('none');
+  }else if(state.slTpTool==='tp'){
+    state.pendingTP=price;
+    $('tpInput').value=price.toFixed(2);
+    toast(`حد سود روی ${fmtSmall(price)} تنظیم شد`,'info');
+    setSLTPTool('none');
+  }
 }
 
 // ============================================================
@@ -638,7 +700,7 @@ function applyTheme(theme){
 }
 
 // ============================================================
-// BINANCE: FETCH INITIAL PRICES (REST)
+// BINANCE: FETCH INITIAL PRICES
 // ============================================================
 async function fetchInitialPrices(){
   try{
@@ -652,7 +714,7 @@ async function fetchInitialPrices(){
 }
 
 // ============================================================
-// BINANCE: FETCH KLINE HISTORY (REST)
+// BINANCE: FETCH KLINE HISTORY
 // ============================================================
 async function loadKlines(symbol,interval){
   if(fetchController)fetchController.abort();
@@ -741,7 +803,8 @@ function updateHeaderPrice(price,changePct){
   $('tickerPrice').textContent=fmtPrice(price);
   const base=state.symbol.slice(0,-4);
   $('tickerSymbol').textContent=`${base}/USDT`;
-  $('tickerToman').textContent=fmtToman(price*state.tomanRate);
+  const tomanPrice=price*state.tomanRate;
+  $('tickerToman').textContent=fmtToman(tomanPrice);
   const change=changePct!==undefined?changePct:(state.prices[state.symbol]?.change??0);
   const chEl=$('tickerChange'),prEl=$('tickerPrice');
   chEl.textContent=(change>=0?'+':'')+change.toFixed(2)+'%';
@@ -810,18 +873,19 @@ async function selectInterval(interval){
 }
 
 // ============================================================
-// TRADING (with clear profit/loss reporting & balance update)
+// TRADING
 // ============================================================
-function calcPnl(pos){
+function calcPnlUsdt(pos){
   const p=state.prices[pos.symbol]?.price;if(!p)return 0;
   return pos.type==='long'?(p-pos.entry)*pos.qty:(pos.entry-p)*pos.qty;
 }
+function calcPnlToman(pos){return calcPnlUsdt(pos)*state.tomanRate;}
 function calcLiq(pos){return pos.type==='long'?pos.entry*(1-1/pos.lev):pos.entry*(1+1/pos.lev);}
 
 function openPosition(type){
-  const amount=parseFloat($('amountInput').value);
-  if(!amount||amount<=0){toast('مقدار معتبر نیست','error');return;}
-  if(amount>state.balance){toast('موجودی کافی نیست','error');return;}
+  const amountToman=parseFloat($('amountInput').value);
+  if(!amountToman||amountToman<=0){toast('مقدار معتبر نیست','error');return;}
+  if(amountToman>state.balanceToman){toast('موجودی کیف پول کافی نیست','error');return;}
   const price=state.prices[state.symbol]?.price;
   if(!price){toast('قیمت لحظه‌ای در دسترس نیست، صبر کنید...','error');return;}
 
@@ -831,14 +895,17 @@ function openPosition(type){
   if(sl!==null){if(isNaN(sl)||sl<=0){toast('حد ضرر نامعتبر','error');return;}if(type==='long'&&sl>=price){toast('حد ضرر باید کمتر از قیمت باشد (خرید)','error');return;}if(type==='short'&&sl<=price){toast('حد ضرر باید بیشتر از قیمت باشد (فروش)','error');return;}}
   if(tp!==null){if(isNaN(tp)||tp<=0){toast('حد سود نامعتبر','error');return;}if(type==='long'&&tp<=price){toast('حد سود باید بیشتر از قیمت باشد (خرید)','error');return;}if(type==='short'&&tp>=price){toast('حد سود باید کمتر از قیمت باشد (فروش)','error');return;}}
 
-  const lev=state.leverage;const qty=(amount*lev)/price;
-  state.balance-=amount;
-  state.positions.unshift({id:state.posIdCounter++,symbol:state.symbol,type,entry:price,size:amount,qty,lev,sl,tp,time:Date.now()});
+  const lev=state.leverage;
+  const marginUsdt=amountToman/state.tomanRate;
+  const qty=(marginUsdt*lev)/price;
+  state.balanceToman-=amountToman;
+  state.positions.unshift({id:state.posIdCounter++,symbol:state.symbol,type,entry:price,marginToman:amountToman,sizeUsdt:marginUsdt,qty,lev,sl,tp,time:Date.now()});
   $('slInput').value='';$('tpInput').value='';
+  state.pendingSL=null;state.pendingTP=null;
 
   const base=state.symbol.slice(0,-4);const persianName=PERSIAN_NAMES[base]||base;
   beep(type==='long'?880:520,120);
-  toast(`${type==='long'?'خرید':'فروش'} ${amount.toFixed(2)} USDT ${persianName} با اهرم ${lev}x`,'success');
+  toast(`${type==='long'?'خرید':'فروش'} ${fmtToman(amountToman)} ${persianName} با اهرم ${lev}x`,'success');
   saveState();renderAll();
 }
 
@@ -848,37 +915,36 @@ function closePosition(id,overridePrice,reason='manual'){
   const price=overridePrice??state.prices[pos.symbol]?.price;
   if(!price){if(reason==='manual')toast('قیمت در دسترس نیست','error');return;}
 
-  const rawPnl=pos.type==='long'?(price-pos.entry)*pos.qty:(pos.entry-price)*pos.qty;
-  const total=Math.max(0,pos.size+rawPnl);
-  const realizedPnl=total-pos.size;
+  const rawPnlUsdt=pos.type==='long'?(price-pos.entry)*pos.qty:(pos.entry-price)*pos.qty;
+  const rawPnlToman=rawPnlUsdt*state.tomanRate;
+  const totalUsdt=Math.max(0,pos.sizeUsdt+rawPnlUsdt);
+  const totalToman=totalUsdt*state.tomanRate;
+  const realizedPnlToman=totalToman-pos.marginToman;
 
-  // Update balance
-  state.balance+=total;
+  // Update Toman balance
+  state.balanceToman+=totalToman;
   state.positions.splice(idx,1);
-  state.history.unshift({...pos,exit:price,exitTime:Date.now(),pnl:realizedPnl,total,reason});
+  state.history.unshift({...pos,exit:price,exitTime:Date.now(),pnlToman:realizedPnlToman,pnlUsdt:rawPnlUsdt,totalToman,reason});
   if(state.history.length>100)state.history.length=100;
 
-  // Clear, explicit notification with profit/loss amount
   const base=pos.symbol.slice(0,-4);
   const persianName=PERSIAN_NAMES[base]||base;
-  const pnlToman=realizedPnl*state.tomanRate;
-  const sign=realizedPnl>=0?'+':'';
+  const sign=realizedPnlToman>=0?'+':'';
 
   if(reason==='liquidated'){
     beep(200,400);
-    toast(`⚠️ ${persianName}: پوزیشن لیکویید شد! زیان: ${sign}${realizedPnl.toFixed(2)} USDT (${fmtToman(pnlToman)})`,'error');
+    toast(`⚠️ ${persianName}: پوزیشن لیکویید شد! زیان: ${sign}${fmtToman(realizedPnlToman)}`,'error');
   }else if(reason==='sl'){
     beep(400,250);
-    toast(`🛑 ${persianName}: حد ضرر فعال شد. نتیجه: ${sign}${realizedPnl.toFixed(2)} USDT (${fmtToman(pnlToman)})`,'error');
+    toast(`🛑 ${persianName}: حد ضرر فعال شد. نتیجه: ${sign}${fmtToman(realizedPnlToman)}`,'error');
   }else if(reason==='tp'){
     beep(1400,200);
-    toast(`🎯 ${persianName}: حد سود فعال شد! سود: ${sign}${realizedPnl.toFixed(2)} USDT (${fmtToman(pnlToman)})`,'success');
+    toast(`🎯 ${persianName}: حد سود فعال شد! سود: ${sign}${fmtToman(realizedPnlToman)}`,'success');
   }else{
-    beep(realizedPnl>=0?1200:300,150);
-    toast(`📊 ${persianName}: ${realizedPnl>=0?'سود':'ضرر'} شما: ${sign}${realizedPnl.toFixed(2)} USDT (${fmtToman(pnlToman)})`,realizedPnl>=0?'success':'error');
+    beep(realizedPnlToman>=0?1200:300,150);
+    toast(`📊 ${persianName}: ${realizedPnlToman>=0?'سود':'ضرر'} شما: ${sign}${fmtToman(realizedPnlToman)}`,realizedPnlToman>=0?'success':'error');
   }
 
-  // Also update wallet display immediately
   saveState();renderAll();
 }
 
@@ -886,8 +952,8 @@ function checkTriggers(symbol,price){
   const toClose=[];
   for(const pos of state.positions){
     if(pos.symbol!==symbol)continue;
-    const rawPnl=pos.type==='long'?(price-pos.entry)*pos.qty:(pos.entry-price)*pos.qty;
-    if(rawPnl<=-pos.size){toClose.push({id:pos.id,price:calcLiq(pos),reason:'liquidated'});continue;}
+    const rawPnlUsdt=pos.type==='long'?(price-pos.entry)*pos.qty:(pos.entry-price)*pos.qty;
+    if(rawPnlUsdt<=-pos.sizeUsdt){toClose.push({id:pos.id,price:calcLiq(pos),reason:'liquidated'});continue;}
     if(pos.sl){if(pos.type==='long'&&price<=pos.sl){toClose.push({id:pos.id,price:pos.sl,reason:'sl'});continue;}if(pos.type==='short'&&price>=pos.sl){toClose.push({id:pos.id,price:pos.sl,reason:'sl'});continue;}}
     if(pos.tp){if(pos.type==='long'&&price>=pos.tp){toClose.push({id:pos.id,price:pos.tp,reason:'tp'});continue;}if(pos.type==='short'&&price<=pos.tp){toClose.push({id:pos.id,price:pos.tp,reason:'tp'});continue;}}
   }
@@ -903,17 +969,18 @@ function clearHistory(){
 // RENDER
 // ============================================================
 function renderBalance(){
-  $('balanceValue').textContent=fmtNum(state.balance);
-  let eq=state.balance;for(const pos of state.positions)eq+=pos.size+calcPnl(pos);
-  $('equityValue').textContent=fmtNum(eq);
-  $('equityToman').textContent=fmtToman(eq*state.tomanRate);
+  $('balanceToman').textContent=fmtToman(state.balanceToman);
+  let eqToman=state.balanceToman;
+  for(const pos of state.positions)eqToman+=pos.marginToman+calcPnlToman(pos);
+  $('equityToman').textContent=fmtToman(eqToman);
+  $('equityUsdt').textContent='$'+fmtNum(eqToman/state.tomanRate)+' USDT';
 }
 function renderPositions(){
   const el=$('positionsList');$('positionsCount').textContent=state.positions.length;
   if(!state.positions.length){el.innerHTML='<div class="empty-state">هیچ پوزیشن بازی وجود ندارد</div>';return;}
   el.innerHTML=state.positions.map(pos=>{
     const base=pos.symbol.slice(0,-4);const persianName=PERSIAN_NAMES[base]||base;
-    const pnl=calcPnl(pos);const pnlClass=pnl>=0?'positive':'negative';const liq=calcLiq(pos);
+    const pnlToman=calcPnlToman(pos);const pnlClass=pnlToman>=0?'positive':'negative';const liq=calcLiq(pos);
     const triggers=[];if(pos.sl)triggers.push(`<span>SL: ${fmtSmall(pos.sl)}</span>`);if(pos.tp)triggers.push(`<span>TP: ${fmtSmall(pos.tp)}</span>`);if(pos.lev>1)triggers.push(`<span>Liq: ${fmtSmall(liq)}</span>`);
     return `
       <div class="position ${pos.type}" data-pos-id="${pos.id}">
@@ -923,10 +990,10 @@ function renderPositions(){
           <span class="pos-symbol">${persianName} (${base})</span>
           <button class="pos-close" data-close-id="${pos.id}" title="بستن">×</button>
         </div>
-        <div class="pos-details"><span>ورود: ${fmtSmall(pos.entry)}</span><span>مارجین: ${pos.size.toFixed(2)} USDT</span></div>
+        <div class="pos-details"><span>ورود: ${fmtSmall(pos.entry)}</span><span>مارجین: ${fmtToman(pos.marginToman)}</span></div>
         ${triggers.length?`<div class="pos-triggers">${triggers.join('')}</div>`:''}
-        <div class="pos-pnl ${pnlClass}">${pnl>=0?'+':''}${pnl.toFixed(2)} USDT</div>
-        <div class="pos-pnl-toman">${fmtToman(pnl*state.tomanRate)}</div>
+        <div class="pos-pnl ${pnlClass}">${pnlToman>=0?'+':''}${fmtToman(pnlToman)}</div>
+        <div class="pos-pnl-toman">${pnlToman>=0?'+':''}${(pnlToman/state.tomanRate).toFixed(2)} USDT</div>
       </div>`;
   }).join('');
   el.querySelectorAll('.pos-close').forEach(btn=>btn.addEventListener('click',()=>closePosition(+btn.dataset.closeId)));
@@ -936,7 +1003,7 @@ function renderHistory(){
   if(!state.history.length){el.innerHTML='<div class="empty-state">تاریخچه‌ای وجود ندارد</div>';return;}
   const reasonLabels={manual:'دستی',sl:'حد ضرر',tp:'حد سود',liquidated:'لیکویید'};
   el.innerHTML=state.history.slice(0,30).map(h=>{
-    const base=h.symbol.slice(0,-4);const persianName=PERSIAN_NAMES[base]||base;const pnlClass=h.pnl>=0?'positive':'negative';
+    const base=h.symbol.slice(0,-4);const persianName=PERSIAN_NAMES[base]||base;const pnlClass=h.pnlToman>=0?'positive':'negative';
     return `
       <div class="history-item">
         <div class="hist-left">
@@ -944,7 +1011,7 @@ function renderHistory(){
           <span>${persianName} (${base})</span>
           ${h.reason&&h.reason!=='manual'?`<span class="hist-reason">${reasonLabels[h.reason]||''}</span>`:''}
         </div>
-        <span class="hist-pnl ${pnlClass}">${h.pnl>=0?'+':''}${h.pnl.toFixed(2)}</span>
+        <span class="hist-pnl ${pnlClass}">${h.pnlToman>=0?'+':''}${fmtToman(h.pnlToman)}</span>
       </div>`;
   }).join('');
 }
@@ -956,8 +1023,8 @@ function maybeRefreshPnl(){
   if(state.positions.length){
     state.positions.forEach(pos=>{
       const el=document.querySelector(`[data-pos-id="${pos.id}"] .pos-pnl`);if(!el)return;
-      const pnl=calcPnl(pos);el.textContent=(pnl>=0?'+':'')+pnl.toFixed(2)+' USDT';el.className='pos-pnl '+(pnl>=0?'positive':'negative');
-      const elT=document.querySelector(`[data-pos-id="${pos.id}"] .pos-pnl-toman`);if(elT)elT.textContent=fmtToman(pnl*state.tomanRate);
+      const pnlToman=calcPnlToman(pos);el.textContent=(pnlToman>=0?'+':'')+fmtToman(pnlToman);el.className='pos-pnl '+(pnlToman>=0?'positive':'negative');
+      const elT=document.querySelector(`[data-pos-id="${pos.id}"] .pos-pnl-toman`);if(elT)elT.textContent=(pnlToman>=0?'+':'')+(pnlToman/state.tomanRate).toFixed(2)+' USDT';
     });
   }
   renderBalance();
@@ -979,8 +1046,9 @@ function bindEvents(){
   document.querySelectorAll('#timeframes button').forEach(b=>b.addEventListener('click',()=>selectInterval(b.dataset.tf)));
   document.querySelectorAll('#indicators button').forEach(b=>b.addEventListener('click',()=>setIndicator(b.dataset.ind)));
   document.querySelectorAll('#drawingTools button').forEach(b=>b.addEventListener('click',()=>setDrawingTool(b.dataset.tool)));
+  document.querySelectorAll('#slTpTools button').forEach(b=>b.addEventListener('click',()=>setSLTPTool(b.dataset.sltp)));
   document.querySelectorAll('#leverageBtns button').forEach(b=>b.addEventListener('click',()=>{state.leverage=+b.dataset.lev;document.querySelectorAll('#leverageBtns button').forEach(x=>x.classList.toggle('active',x===b));saveState();}));
-  document.querySelectorAll('.quick-amounts button').forEach(b=>b.addEventListener('click',()=>{const pct=parseFloat(b.dataset.pct);const v=Math.floor(state.balance*pct*100)/100;$('amountInput').value=Math.max(1,v);}));
+  document.querySelectorAll('.quick-amounts button').forEach(b=>b.addEventListener('click',()=>{const pct=parseFloat(b.dataset.pct);const v=Math.floor(state.balanceToman*pct);$('amountInput').value=Math.max(1000,v);}));
   $('buyBtn').addEventListener('click',()=>openPosition('long'));
   $('sellBtn').addEventListener('click',()=>openPosition('short'));
   $('clearHistoryBtn').addEventListener('click',clearHistory);
@@ -989,6 +1057,8 @@ function bindEvents(){
   $('themeBtn').addEventListener('click',()=>applyTheme(state.theme==='dark'?'light':'dark'));
   $('resetBtn').addEventListener('click',()=>{if(confirm('همه داده‌ها به حالت اولیه بازگردانده شود؟')){localStorage.removeItem(STORAGE_KEY);location.reload();}});
   document.querySelectorAll('.mobile-nav button').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+  // Chart click for SL/TP drawing
+  if(chart){chart.subscribeClick(handleChartClick);}
 }
 
 // ============================================================
@@ -1000,6 +1070,7 @@ async function init(){
   document.querySelectorAll('#timeframes button').forEach(b=>b.classList.toggle('active',b.dataset.tf===state.interval));
   document.querySelectorAll('#leverageBtns button').forEach(b=>b.classList.toggle('active',+b.dataset.lev===state.leverage));
   document.querySelectorAll('#drawingTools button').forEach(b=>b.classList.toggle('active',b.dataset.tool===state.drawingTool));
+  document.querySelectorAll('#slTpTools button').forEach(b=>b.classList.toggle('active',b.dataset.sltp===state.slTpTool));
   initChart();
   bindEvents();
   renderAll();
