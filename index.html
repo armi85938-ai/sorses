@@ -127,7 +127,9 @@ body::before{
   width:30px;height:30px;border-radius:8px;
   background:var(--panel-3);display:flex;align-items:center;justify-content:center;
   font-size:12px;font-weight:800;color:var(--accent-2);flex-shrink:0;
+  overflow:hidden;
 }
+.wi-icon img{width:100%;height:100%;object-fit:contain;padding:4px}
 .watch-item.active .wi-icon{background:var(--grad-accent);color:#fff}
 .wi-symbol{font-size:13px;font-weight:700;font-family:var(--mono);color:var(--text)}
 .wi-name{font-size:10px;color:var(--text-dimmer)}
@@ -400,9 +402,9 @@ body::before{
 
   <div class="body" id="body" data-tab="chart">
     <aside class="panel watchlist-panel">
-      <div class="panel-header"><h3>⭐ همه بازارها (بایننس)</h3></div>
+      <div class="panel-header"><h3>⭐ همه بازارها</h3></div>
       <div style="padding:8px 12px;border-bottom:1px solid var(--border);">
-        <input type="text" id="symbolSearch" placeholder="جستجو (مثلاً BTCUSDT)..." 
+        <input type="text" id="symbolSearch" placeholder="جستجو (مثلاً BTC)..." 
           style="width:100%;padding:8px 12px;border-radius:8px;background:var(--panel-2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:12px;outline:none;">
       </div>
       <div class="watchlist" id="watchlist"></div>
@@ -538,21 +540,44 @@ body::before{
 // CONFIG
 // ============================================================
 const INITIAL_BALANCE=10000;
-const STORAGE_KEY='arminTrade_global_v1';
+const STORAGE_KEY='arminTrade_global_v2';
 const INTERVALS=['1m','5m','15m','1h','4h','1d'];
 const BINANCE_WS='wss://stream.binance.com:9443';
 const BINANCE_REST='https://api.binance.com/api/v3';
-const TOMAN_API='https://arzparz.com/api/v1/latest'; // Live USD/IRT
-const FALLBACK_TOMAN_RATE=189045; // 1 USD ≈ 189,045 Toman (approx.)
+const TOMAN_API='https://arzparz.com/api/v1/latest';
+const FALLBACK_TOMAN_RATE=189045;
 
+// ============================================================
+// PERSIAN NAMES & LOGO MAP
+// ============================================================
+const PERSIAN_NAMES = {
+  BTC:'بیت کوین', ETH:'اتریوم', BNB:'بایننس کوین', SOL:'سولانا',
+  XRP:'ریپل', ADA:'کاردانو', DOGE:'دوج کوین', AVAX:'آوالانچ',
+  DOT:'پولکادات', LINK:'چین لینک', LTC:'لایت کوین', TRX:'ترون',
+  MATIC:'پالیگان', SHIB:'شیبا اینو', UNI:'یونی سواپ', ATOM:'کازموس',
+  XLM:'استلار', ALGO:'الگورند', VET:'وی چین', FIL:'فایل کوین',
+  ETC:'اتریوم کلاسیک', BCH:'بیت کوین کش', NEAR:'نیر', APT:'اپتوس',
+  ARB:'آربیتروم', OP:'اپتیمیزم', SUI:'سویی', SEI:'سی',
+  PEPE:'پپه', WIF:'داگ ویف هت', TIA:'سلستیا', INJ:'اینجکتیو',
+  RNDR:'رندر', FET:'فچ', AGIX:'سینگولاریتی', OCEAN:'اوشن',
+};
+
+// Logo CDN — using viewblock meta which serves SVG/PNG for most symbols
+function getLogoUrl(symbol) {
+  return `https://meta.viewblock.io/${symbol}/logo`;
+}
+
+// ============================================================
+// STATE
+// ============================================================
 const state={
   symbol:'BTCUSDT', interval:'1m', indicator:'none',
   theme:'dark', sound:true,
   balance:INITIAL_BALANCE, leverage:1,
   positions:[], history:[], prices:{},
   posIdCounter:1, candles:[],
-  tomanRate:FALLBACK_TOMAN_RATE, // Toman per USD
-  allSymbols:[], // All available symbols from Binance
+  tomanRate:FALLBACK_TOMAN_RATE,
+  allSymbols:[],
 };
 
 let chart=null, candleSeries=null, volumeSeries=null, smaSeries=null;
@@ -606,7 +631,7 @@ function beep(freq=800,dur=100,vol=0.08){
 }
 
 // ============================================================
-// TOMAN RATE (USD/IRT)
+// TOMAN RATE
 // ============================================================
 async function fetchTomanRate(){
   try{
@@ -621,7 +646,6 @@ async function fetchTomanRate(){
       }
     }
   }catch(e){}
-  // Fallback: keep previous or default
   state.tomanRate=state.tomanRate||FALLBACK_TOMAN_RATE;
 }
 
@@ -867,6 +891,32 @@ function applyTheme(theme){
 }
 
 // ============================================================
+// BINANCE: FETCH INITIAL PRICES (REST) — FIXES "قیمت در دسترس نیست"
+// ============================================================
+async function fetchInitialPrices(){
+  try{
+    const res=await fetch(`${BINANCE_REST}/ticker/price`);
+    if(!res.ok) throw new Error();
+    const data=await res.json();
+    for(const t of data){
+      if(t.symbol.endsWith('USDT')){
+        state.prices[t.symbol]={price:parseFloat(t.price),change:0};
+      }
+    }
+    // Update UI with initial prices
+    Object.keys(state.prices).forEach(sym=>{
+      const p=state.prices[sym];
+      updateWatchUI(sym,p.price,p.change);
+    });
+    if(state.prices[state.symbol]){
+      updateHeaderPrice(state.prices[state.symbol].price,state.prices[state.symbol].change);
+    }
+  }catch(e){
+    console.warn('Initial price fetch failed:',e);
+  }
+}
+
+// ============================================================
 // BINANCE: FETCH KLINE HISTORY (REST)
 // ============================================================
 async function loadKlines(symbol,interval){
@@ -937,11 +987,10 @@ function connectKlineWs(symbol,interval){
 }
 
 // ============================================================
-// BINANCE: WEBSOCKET FOR ALL TICKERS (ALL SYMBOLS)
+// BINANCE: WEBSOCKET FOR ALL TICKERS (REAL-TIME PRICES)
 // ============================================================
 function connectTickerWs(){
   if(tickerWs){tickerWs.onclose=null;tickerWs.close();}
-  // Subscribe to all market mini tickers for real-time prices
   tickerWs=new WebSocket(`${BINANCE_WS}/ws/!miniTicker@arr`);
 
   tickerWs.onmessage=ev=>{
@@ -949,7 +998,7 @@ function connectTickerWs(){
       const arr=JSON.parse(ev.data);
       if(!Array.isArray(arr)) return;
       for(const t of arr){
-        const sym=t.s; // e.g., "BTCUSDT"
+        const sym=t.s;
         const price=parseFloat(t.c);
         const open=parseFloat(t.o);
         const change=open?((price-open)/open)*100:0;
@@ -973,13 +1022,12 @@ async function fetchAllSymbols(){
     if(!res.ok) throw new Error();
     const data=await res.json();
     state.allSymbols=data.symbols
-      .filter(s=>s.status==='TRADING' && s.quoteAsset==='USDT') // Only USDT pairs
+      .filter(s=>s.status==='TRADING' && s.quoteAsset==='USDT')
       .map(s=>s.symbol)
       .sort();
     renderWatchlist();
   }catch(e){
     console.error('Failed to fetch symbols:',e);
-    // Fallback to a default list
     state.allSymbols=['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','ADAUSDT','DOGEUSDT','AVAXUSDT','DOTUSDT','LINKUSDT','LTCUSDT','TRXUSDT'];
     renderWatchlist();
   }
@@ -991,8 +1039,8 @@ async function fetchAllSymbols(){
 function updateHeaderPrice(price,changePct){
   const prev=parseFloat($('tickerPrice').textContent.replace(/[$,]/g,''))||0;
   $('tickerPrice').textContent=fmtPrice(price);
-  const symObj=state.symbol;
-  $('tickerSymbol').textContent=symObj.slice(0,-4)+'/'+symObj.slice(-4); // e.g., BTC/USDT
+  const base=state.symbol.slice(0,-4);
+  $('tickerSymbol').textContent=`${base}/USDT`;
   const toman=price*state.tomanRate;
   $('tickerToman').textContent=fmtToman(toman);
 
@@ -1016,18 +1064,20 @@ function renderWatchlist(){
   if(searchQuery){
     syms=syms.filter(s=>s.toLowerCase().includes(searchQuery.toLowerCase()));
   }
-  // Limit to reasonable number for performance, but allow scrolling
   syms.slice(0,200).forEach(sym=>{
     const base=sym.slice(0,-4);
+    const persianName=PERSIAN_NAMES[base]||base;
     const item=document.createElement('div');
     item.className='watch-item';
     item.dataset.symbol=sym;
     item.innerHTML=`
       <div class="wi-left">
-        <div class="wi-icon">${base[0]}</div>
+        <div class="wi-icon">
+          <img src="${getLogoUrl(base)}" alt="${base}" onerror="this.style.display='none';this.parentElement.textContent='${base[0]}'">
+        </div>
         <div>
           <div class="wi-symbol">${base}/USDT</div>
-          <div class="wi-name">${base}</div>
+          <div class="wi-name">${persianName}</div>
         </div>
       </div>
       <div class="wi-right">
@@ -1045,6 +1095,11 @@ function renderWatchlist(){
     };
   });
   updateActiveSymbol();
+  // Re-apply any cached prices
+  Object.keys(state.prices).forEach(sym=>{
+    const p=state.prices[sym];
+    if(watchItems[sym]) updateWatchUI(sym,p.price,p.change);
+  });
 }
 
 function updateWatchUI(symbol,price,change){
@@ -1146,8 +1201,9 @@ function openPosition(type){
   $('slInput').value='';$('tpInput').value='';
 
   const base=state.symbol.slice(0,-4);
+  const persianName=PERSIAN_NAMES[base]||base;
   beep(type==='long'?880:520,120);
-  toast(`${type==='long'?'خرید':'فروش'} ${amount.toFixed(2)} USDT ${base} با اهرم ${lev}x`,'success');
+  toast(`${type==='long'?'خرید':'فروش'} ${amount.toFixed(2)} USDT ${persianName} با اهرم ${lev}x`,'success');
   saveState();
   renderAll();
 }
@@ -1239,6 +1295,7 @@ function renderPositions(){
   }
   el.innerHTML=state.positions.map(pos=>{
     const base=pos.symbol.slice(0,-4);
+    const persianName=PERSIAN_NAMES[base]||base;
     const pnl=calcPnl(pos);
     const pnlClass=pnl>=0?'positive':'negative';
     const liq=calcLiq(pos);
@@ -1251,7 +1308,7 @@ function renderPositions(){
         <div class="pos-header">
           <span class="pos-type ${pos.type}">${pos.type==='long'?'LONG':'SHORT'}</span>
           ${pos.lev>1?`<span class="pos-lev">${pos.lev}x</span>`:''}
-          <span class="pos-symbol">${base}/USDT</span>
+          <span class="pos-symbol">${persianName} (${base})</span>
           <button class="pos-close" data-close-id="${pos.id}" title="بستن">×</button>
         </div>
         <div class="pos-details">
@@ -1276,12 +1333,13 @@ function renderHistory(){
   const reasonLabels={manual:'دستی',sl:'حد ضرر',tp:'حد سود',liquidated:'لیکویید'};
   el.innerHTML=state.history.slice(0,30).map(h=>{
     const base=h.symbol.slice(0,-4);
+    const persianName=PERSIAN_NAMES[base]||base;
     const pnlClass=h.pnl>=0?'positive':'negative';
     return `
       <div class="history-item">
         <div class="hist-left">
           <span class="hist-type ${h.type}">${h.type==='long'?'L':'S'}</span>
-          <span>${base}/USDT</span>
+          <span>${persianName}</span>
           ${h.reason&&h.reason!=='manual'?`<span class="hist-reason">${reasonLabels[h.reason]||''}</span>`:''}
         </div>
         <span class="hist-pnl ${pnlClass}">${h.pnl>=0?'+':''}${h.pnl.toFixed(2)}</span>
@@ -1355,31 +1413,26 @@ function bindEvents(){
   $('sellBtn').addEventListener('click',()=>openPosition('short'));
   $('clearHistoryBtn').addEventListener('click',clearHistory);
 
-  // Symbol search
   $('symbolSearch').addEventListener('input',(e)=>{
     searchQuery=e.target.value.trim();
     renderWatchlist();
   });
 
-  // Sound
   const sb=$('soundBtn');
   function syncSound(){sb.textContent=state.sound?'🔊':'🔇';sb.classList.toggle('active',state.sound);}
   sb.addEventListener('click',()=>{state.sound=!state.sound;saveState();syncSound();toast(state.sound?'صدا روشن':'صدا خاموش','info');});
   syncSound();
 
-  // Theme
   $('themeBtn').addEventListener('click',()=>{
     applyTheme(state.theme==='dark'?'light':'dark');
   });
 
-  // Reset
   $('resetBtn').addEventListener('click',()=>{
     if(confirm('همه داده‌ها به حالت اولیه بازگردانده شود؟')){
       localStorage.removeItem(STORAGE_KEY);location.reload();
     }
   });
 
-  // Mobile nav
   document.querySelectorAll('.mobile-nav button').forEach(b=>{
     b.addEventListener('click',()=>switchTab(b.dataset.tab));
   });
@@ -1401,16 +1454,18 @@ async function init(){
   bindEvents();
   renderAll();
 
-  // Fetch Toman rate
   await fetchTomanRate();
 
-  // Fetch all symbols
+  // 1. Fetch all symbols and render watchlist
   await fetchAllSymbols();
 
-  // Connect ticker WS for all symbols
+  // 2. Fetch initial prices via REST (fixes the "price not available" issue)
+  await fetchInitialPrices();
+
+  // 3. Connect ticker WS for real-time updates
   connectTickerWs();
 
-  // Load initial chart
+  // 4. Load initial chart and connect live kline WS
   await loadKlines(state.symbol,state.interval);
   setIndicator(state.indicator);
   connectKlineWs(state.symbol,state.interval);
@@ -1418,7 +1473,7 @@ async function init(){
   updateActiveSymbol();
   updateHeaderPrice(0,0);
 
-  // Refresh Toman rate every 5 minutes
+  // Refresh toman rate every 5 minutes
   setInterval(fetchTomanRate,300000);
 }
 
